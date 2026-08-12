@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# os / editor
+.DS_Store
+*.log
+
+# ajian runtime (build ledgers, git-ignored per design)
+.ajian/
+
+# local overrides
+*.local
+.env
+.env.*
