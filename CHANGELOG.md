@@ -31,7 +31,26 @@ All notable changes to `ajian` are recorded here. The format follows
   "you are here, this is next" a user who does not know the pipeline needs.
   `ajian-map` is exempt: it is the skill you run *because* the state is unclear.
 
+- **A language contract in every skill.** Nothing in the skillset had ever said what
+  language to *answer* in, so the quoted gate texts — English string literals — read
+  as text to copy verbatim. An Indonesian user received their six most consequential
+  decisions in English, at precisely the moments comprehension matters most. Each
+  skill now carries a `## Language` section: the body stays English because it is
+  agent-facing, output follows the user, and quoted gate text is meaning to convey
+  rather than a string to copy. Field labels stay fixed so the shape survives
+  translation.
+- **`ajian-map` now answers to confusion, not just vocabulary.** Its `description`
+  triggers on "I'm lost", "where do I start", and the Indonesian a stuck user
+  actually types ("saya bingung", "mulai dari mana", "ini lanjut apa"). Only
+  `ajian-map` gets these: it is the one skill reached for without knowing the
+  pipeline, and spreading them across seven overlapping descriptions would leave the
+  router guessing.
+
 ### Fixed
+- `ajian-map`'s UI signal read `DESIGN.md` to decide whether a surface was built. The
+  record is the work order's `## Built surface` Status, so an interrupted design
+  handoff routed as if design had never run. It now reads the Status and routes
+  `handed to impeccable` back to `ajian-design` for recording rather than rebuilding.
 - `ajian-build`'s executor report had an undefined destination (`[REPORT_FILE]` was
   never resolved anywhere), so reports landed next to the plans and mixed up
   `docs/plans/`. Reports now go to `docs/plans/reports/NN-<slug>.md`.

@@ -25,16 +25,20 @@ document, and a change that contradicts it is a bug in one of the two.
    genuinely diverges, and say so in the file.
 2. **Every vendored file carries an `Adapted from <source>` line.** Keep it.
    `NOTICE.md` is the ledger; the per-file line is the point-of-use credit.
-3. **Skills are English only.** They are agent-facing. User-facing docs
-   (`README*`, `docs/en`, `docs/id`) are dual-language; keep the two in sync.
+3. **Skill bodies are English; skill *output* follows the user.** The prose in
+   `SKILL.md` is English because it is agent-facing — that is not a rule about what
+   language the agent answers in. Every skill carries a `## Language` section saying
+   so, because without it the quoted gate texts read as strings to copy verbatim and
+   an Indonesian user gets their six most important decisions in English. User-facing
+   docs (`README*`, `docs/en`, `docs/id`) are dual-language; keep the two in sync.
 4. **Frontmatter is load-bearing.** Every `SKILL.md` needs `name` (lowercase,
    hyphenated, `ajian-*`) and a `description` written as *when to reach for this*
    — that string is all the router and the harness see before loading the body.
 5. **No hooks.** Chaining is explicit: each skill ends with a `→ Next` breadcrumb,
    and `ajian-map` reads project state to tell the user where they are.
-6. **Two shared texts are duplicated, not factored out.** `## The gate protocol`
-   appears inline and byte-identical in all **seven** skills; `### When a precondition
-   fails` in the **six** that have preconditions (`ajian-map` has none — it is the
+6. **Three shared texts are duplicated, not factored out.** `## Language` and
+   `## The gate protocol` appear inline and byte-identical in all **seven** skills;
+   `### When a precondition fails` in the **six** that have preconditions (`ajian-map` has none — it is the
    skill you run *because* the state is unclear, so a precondition would give a dead
    end to the one skill whose job is to open one). They are duplicated because
    `npx skills add --skill ajian-build` installs a single skill directory: a shared
@@ -44,7 +48,8 @@ document, and a change that contradicts it is a bug in one of the two.
 
    ```bash
    dup() { for f in skills/*/SKILL.md; do sed -n "$1" "$f" | shasum | cut -c1-12; done \
-             | grep -v da39a3ee5e6b | sort -u | wc -l; }   # must print 1 for both
+             | grep -v da39a3ee5e6b | sort -u | wc -l; }   # must print 1 for each
+   dup '/^## Language$/,/^which is the same as not having one\.$/p'
    dup '/^## The gate protocol$/,/^This block is identical in every ajian skill\./p'
    dup '/^### When a precondition fails$/,/^missing step without asking is the same failure/p'
    ```

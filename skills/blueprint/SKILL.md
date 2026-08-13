@@ -120,6 +120,17 @@ able to attach a single ADR without pulling the whole log into context. Both hav
 test-strategy file, because DoD and gates are what an executing agent actually opens; testing
 philosophy alone is not.
 
+## Language
+
+Write to the user in the user's own language. This file is English because it is agent-facing —
+that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
+or Japanese gets their gates in that language.
+
+Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
+Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
+shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
+which is the same as not having one.
+
 ## The gate protocol
 
 A gate is a full stop that waits for the user. Every gate in this skill is written as this block —

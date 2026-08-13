@@ -265,10 +265,17 @@ ajian/
 └── AGENTS.md → CLAUDE.md         contributor guidance
 ```
 
-Dual-language rule: **skills (agent-facing) are English only**; **user-facing
-docs (README, docs/) are dual EN + ID**. Per-skill doc pages follow the
-four-section format: What it does / When to reach for it / Common questions /
-It's working if.
+Dual-language rule: **skill bodies (agent-facing) are English only**; **user-facing
+docs (README, docs/) are dual EN + ID**. Amended: English is the language the
+*prose* is written in, never the language the agent *answers* in. Each skill carries
+a `## Language` section making that explicit and declaring quoted gate text to be
+meaning to convey rather than a string to copy — without it, an Indonesian user
+receives their six most consequential decisions in English, at exactly the moments
+comprehension matters most. Only `ajian-map` carries Indonesian triggers in its
+`description`, because it is the one skill a user reaches for without knowing the
+pipeline's vocabulary; spreading them across seven overlapping descriptions would
+leave the router guessing. Per-skill doc pages follow the four-section format:
+What it does / When to reach for it / Common questions / It's working if.
 
 Agent-ease is provided by four mechanics, so "complete" never means "heavy
 context": `ajian-map` as the runtime entry, SDO-optimized `description`

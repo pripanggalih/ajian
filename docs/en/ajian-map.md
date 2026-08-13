@@ -12,10 +12,15 @@ replaces a session hook (ajian has none by design).
 - At the start of a session, or right after a `/compact` or `/clear`, when you've lost the thread.
 - Any time a skill's `→ Next` breadcrumb isn't in front of you and you're unsure what to run.
 - To sanity-check state when the committed artifacts and your memory seem to disagree.
+- **When you don't know ajian's vocabulary at all.** You don't have to remember its name: "I'm
+  lost", "where do I start", "saya bingung", "mulai dari mana", "ini lanjut apa" all reach it. It is
+  the only ajian skill with no preconditions, so it is always safe to run.
 
 ## Common questions
 
 - **Does it do the work?** No. It only points at the next skill; you invoke that skill yourself.
+- **Will it offer to run everything for me?** It offers exactly one step and waits. Not four, and
+  not silently — a router that launches the pipeline is the thing this skill exists instead of.
 - **What if the signals conflict** (plan ticked but nothing committed, roadmap ticked but never
   merged)? It trusts git and the committed artifacts over recollection, says the conflict plainly,
   and recommends the safe next step rather than guessing.

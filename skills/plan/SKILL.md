@@ -64,6 +64,17 @@ Then wait. **One step, never a chain.** Offering to run the next four skills is 
 skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
 missing step without asking is the same failure with the asking removed.
 
+## Language
+
+Write to the user in the user's own language. This file is English because it is agent-facing —
+that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
+or Japanese gets their gates in that language.
+
+Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
+Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
+shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
+which is the same as not having one.
+
 ## The gate protocol
 
 A gate is a full stop that waits for the user. Every gate in this skill is written as this block —

@@ -5,8 +5,11 @@ description: >-
   router: it reads the project's artifacts (is there a blueprint? what Depth is the work order? is
   there a plan? what does git show?) and answers "you are at work order NN, next: <skill>". Reach
   for it at the start of a session, after a compaction, or any time you are unsure what to run.
-  Triggers include "/ajian-map", "where am I", "what's next", "which ajian skill now". It routes; it
-  does not do the work.
+  Triggers include "/ajian-map", "where am I", "what's next", "which ajian skill now", "I'm lost",
+  "where do I start", and the Indonesian a confused user actually types: "saya bingung", "aku
+  bingung", "mulai dari mana", "ini lanjut apa", "sekarang ngapain", "lanjutnya gimana". This is the
+  skill to reach for when the user does not know the pipeline's vocabulary — it is the only ajian
+  skill with no preconditions, so it is always safe to run. It routes; it does not do the work.
 ---
 
 <!-- Adapted from mattpocock/skills `ask-matt` (the router structure, MIT, Matt Pocock). The ajian
@@ -18,6 +21,17 @@ description: >-
 
 You don't remember every skill or where you left off — especially after a compaction. So ask. This
 skill reads the project and tells you which of the seven skills to run next.
+
+## Language
+
+Write to the user in the user's own language. This file is English because it is agent-facing —
+that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
+or Japanese gets their gates in that language.
+
+Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
+Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
+shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
+which is the same as not having one.
 
 ## The gate protocol
 
@@ -65,9 +79,15 @@ Read these signals, cheapest first, and stop at the first that tells you the ans
    - **`brief`** → it hasn't been sharpened against real code. **Next: `ajian-grill NN`**.
    - **`detailed`** → continue.
 4. **Does it have UI, and is the UI built?** If the work order's "Screens & states" section is
-   filled (it has UI) and `DESIGN.md` does not yet cover this surface → **Next: `ajian-design NN`**
-   (which needs impeccable installed — it stops and asks if it is missing, rather than designing the
-   surface itself). No UI, or the surface is already in `DESIGN.md` → continue.
+   filled, it has UI — then read its `## Built surface` **Status**, which is the record, not
+   `DESIGN.md`:
+   - **`not yet designed`** → **Next: `ajian-design NN`** (it needs impeccable available, and stops
+     and asks if it cannot find it rather than designing the surface itself).
+   - **`handed to impeccable`** → a previous design run never came back to record what was built.
+     **Next: `ajian-design NN`** — it resumes at the recording step. Say plainly that the surface
+     may already exist and nothing has inventoried it yet.
+   - **`recorded`** → the surface is built and inventoried. Continue.
+   No UI → continue.
 5. **Is there a plan?** Look for `docs/plans/NN-<slug>.md`.
    - **No** → **Next: `ajian-plan NN`**.
    - **Yes** → read its checkboxes.
