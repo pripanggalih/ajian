@@ -62,7 +62,7 @@ what the `skills` CLI uses for identity). Invoked e.g. `/ajian-build 03`.
 | Skill | Role | Output | → Next |
 | --- | --- | --- | --- |
 | **`ajian-map`** | state-aware router; reads artifacts (blueprint exists? work-order Depth? plan file? git state?) → "you are at WO-03, next: build" | — | points to a skill |
-| **`ajian-blueprint`** | grill-1 (hybrid, per-theme, one continuous session) → full `docs/blueprint/` + ROADMAP + work-orders (all brief) | foundation docs | `grill 01` |
+| **`ajian-blueprint`** | grill-1 (hybrid, per-theme, one continuous session) → foundation docs flat in `docs/` + ROADMAP + work-orders (all brief) | foundation docs | `grill 01` |
 | **`ajian-grill`** | grill-2 per work-order: recon the real code (subagent), promote brief→detailed, cover design questions if UI, write surface brief | detailed WO + surface brief | UI? `design` : `plan` |
 | **`ajian-design`** | derive `PRODUCT.md` lazily → invoke impeccable (surface brief → new-work → `/document`) | `DESIGN.md` + UI | `plan` |
 | **`ajian-plan`** | writing-plans reads detailed WO + anchored blueprint docs → bite-sized plan | plan file | `build` |
@@ -75,7 +75,7 @@ what the `skills` CLI uses for identity). Invoked e.g. `/ajian-build 03`.
 
 ```
 IDEA
- └ ajian-blueprint   grill-1 → docs/blueprint/ + roadmap + work-orders (brief)
+ └ ajian-blueprint   grill-1 → docs/ (foundation) + roadmap + work-orders (brief)
                      [Gate: foundation]  [Gate: roadmap — sizing is CRITICAL]
 
  per work-order (in order, or optional parallel):
@@ -117,8 +117,8 @@ Two grill stages, two characters:
    pass sizing (one build session) / slice (vertical, demoable) / order
    (dependency, risk, thinnest-first). The value of `to-tickets` sizing lives
    here, as rails — not as a layer.
-6. **Glossary.** `GLOSSARY.md` lives in the blueprint, in mattpocock `CONTEXT.md`
-   format (with the `_Avoid_:` synonym discipline).
+6. **Glossary.** `docs/GLOSSARY.md`, in mattpocock `CONTEXT.md` format (with the
+   `_Avoid_:` synonym discipline).
 7. **ADRs.** One file per ADR at `decisions/NNNN-*.md` (context-thrifty, attach
    one at a time) + a thin ledger `DECISIONS.md` (status + open ADRs).
 8. **PRODUCT.md** is a lazy derived projection of the blueprint, generated at the
@@ -128,9 +128,11 @@ Two grill stages, two characters:
    brand non-negotiables). `DESIGN.md` (impeccable) = the *realized* visual
    system, invented by new-work. Skeleton UI stays unstyled until the first UI
    feature.
-10. **Executor.** Custom executing-plans = one fresh subagent + ledger +
+10. **Executor.** Custom executing-plans = one fresh subagent, **the plan file's
+    `- [ ]` checkboxes are the ledger** (committed, survives compaction),
     commit-per-task, **review once at the end** (not SDD's slow/expensive
-    per-task review).
+    per-task review). Resume = read ticked checkboxes + `git log`. No hidden
+    runtime folder.
 11. **Code review.** mattpocock 2-axis (Standards = Fowler smells + repo
     standards; Spec = faithful to the work-order) + receiving-code-review for how
     to respond to findings.
@@ -144,24 +146,35 @@ Two grill stages, two characters:
 
 ---
 
-## 6. Artifact map
+## 6. Artifact map (inside the target project)
+
+Nothing here is branded `ajian` — the work project stays generic. Foundation
+docs sit flat in `docs/` (no `blueprint/` nesting), level with impeccable's
+root-fixed `PRODUCT.md`/`DESIGN.md`.
 
 ```
-docs/blueprint/
-  INDEX.md  PRD.md  ARCHITECTURE.md  CONVENTIONS.md  QUALITY.md  ROADMAP.md
-  GLOSSARY.md            (CONTEXT.md format, with _Avoid_)
-  DATA-MODEL.md          (only if there is data)
-  DESIGN-SYSTEM.md       (thin constraints, only if there is UI)
-  DECISIONS.md           (ADR ledger)
-  decisions/NNNN-*.md    (one ADR per file)
-  work-orders/NN-*.md    (brief → detailed when its turn comes)
-PRODUCT.md               (lazy derived, owned by impeccable)
-DESIGN.md + .impeccable/ (owned by impeccable, the visual source of truth)
-<repo>/.ajian/<plan>/progress.md   (build ledger, git-ignored)
+<project root>
+  PRODUCT.md               (lazy derived, owned by impeccable — root, fixed)
+  DESIGN.md                (owned by impeccable, visual source of truth — root, fixed)
+  .impeccable/             (impeccable sidecar)
+  docs/
+    INDEX.md               (front door + routing table; AGENTS.md points here)
+    PRD.md  ARCHITECTURE.md  CONVENTIONS.md  QUALITY.md  ROADMAP.md
+    GLOSSARY.md            (CONTEXT.md format, with _Avoid_)
+    DATA-MODEL.md          (only if there is data)
+    DESIGN-SYSTEM.md       (thin constraints, only if there is UI)
+    DECISIONS.md           (ADR ledger)
+    decisions/NNNN-*.md    (one ADR per file)
+    work-orders/NN-*.md    (brief → detailed when its turn comes)
+    plans/NN-<slug>.md     (committed; the plan's checkboxes are the build ledger)
 ```
+
+`PRODUCT.md`/`DESIGN.md` cannot move into `docs/` — impeccable's `context.mjs`
+reads them from the repo root, and impeccable is depended on, not vendored.
 
 A pointer block is wired into the target project's `AGENTS.md`/`CLAUDE.md` by
-`ajian-blueprint`, so any agent opening the project discovers the blueprint.
+`ajian-blueprint` (pointing at `docs/INDEX.md`), so any agent opening the project
+discovers the docs.
 
 ---
 

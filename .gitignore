@@ -5,9 +5,6 @@ node_modules/
 .DS_Store
 *.log
 
-# ajian runtime (build ledgers, git-ignored per design)
-.ajian/
-
 # local overrides
 *.local
 .env
