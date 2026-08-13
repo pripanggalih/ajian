@@ -15,7 +15,11 @@ visual; ajian hanya memasok dua sambungan (PRODUCT.md dari blueprint, dan serah-
 
 ## Pertanyaan umum
 
-- **Perlu impeccable terinstal?** Ya — `npx impeccable install`. Tanpa itu skill berhenti dan memberitahumu.
+- **Perlu impeccable terinstal?** Ya — `npx impeccable install`. Tanpa itu skill berhenti di langkah
+  pertamanya dan memberitahumu. Ia **tidak** akan mendesain atau mengimplementasikan permukaannya
+  sendiri sebagai jalan pintas: itu menghasilkan permukaan di luar pipeline, melompati `ajian-plan`
+  dan `ajian-build` — tanpa plan, tanpa ledger, tanpa review. Pasang impeccable, atau putuskan untuk
+  melewati fase design pada work order ini dan langsung ke `/ajian-plan NN`.
 - **Kenapa tak pakai `init` impeccable untuk menulis PRODUCT.md?** Karena kebenaran produk sudah ada di
   blueprint-mu. ajian memproyeksikannya (dengan header "jangan diedit tangan — ubah blueprint") dan hanya
   menanyakan satu ronde pengisi-celah untuk yang memang tak dimiliki blueprint.

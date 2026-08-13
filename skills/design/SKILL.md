@@ -7,7 +7,9 @@ description: >-
   fresh interview), then invokes impeccable's new-work flow to invent and build the surface and
   record DESIGN.md. Triggers include "/ajian-design NN", "design work order N", "build the UI for
   this feature", "seed the visual world". Only for work orders that have UI; skip straight to
-  ajian-plan otherwise. Requires impeccable to be installed (`npx impeccable install`).
+  ajian-plan otherwise. Requires impeccable to be installed (`npx impeccable install`) — if it is
+  not, this skill stops at its gate and asks for it; it never designs or implements the surface
+  itself.
 ---
 
 <!-- Original ajian wiring: this skill does NOT vendor impeccable — impeccable is a full CLI and
@@ -29,28 +31,49 @@ does not second-guess it. The only things ajian supplies are the two seams below
 
 - The work order `NN` is `Depth: detailed` and has UI (its "Screens & states" section is filled by
   `ajian-grill`). If it is still brief, run `/ajian-grill NN` first.
-- impeccable is installed. If `node .claude/skills/impeccable/scripts/context.mjs` does not exist,
-  tell the user to run `npx impeccable install`, and stop.
+- impeccable is installed. This is checked in Step 0, and it is a hard gate.
 
 ## Pipeline
 
 ```
-0  Orient           read the work order's design brief + DESIGN-SYSTEM constraints
-1  Derive PRODUCT    lazy projection of the blueprint → PRODUCT.md (once), gap-fill only
-2  Invoke impeccable new-work for this surface, seeded with the design brief → DESIGN.md + UI
-3  Record            ensure DESIGN.md reflects the built surface (/impeccable document if needed)
-4  Hand off          commit · → plan
+0  Gate              impeccable installed? no → say so and STOP. Never stand in for it   [BLOCKING]
+1  Orient            read the work order's design brief + DESIGN-SYSTEM constraints
+2  Derive PRODUCT    lazy projection of the blueprint → PRODUCT.md (once), gap-fill only
+3  Invoke impeccable new-work for this surface, seeded with the design brief → DESIGN.md + UI
+4  Record            ensure DESIGN.md reflects the built surface (/impeccable document if needed)
+5  Hand off          commit · → plan
 ```
 
 ---
 
-## Step 0 — Orient
+## Step 0 — Gate: is impeccable installed?
+
+**Do this first, before reading anything else.** Check for
+`.claude/skills/impeccable/scripts/context.mjs`. If it is not there, search once for
+`**/impeccable/scripts/context.mjs` in case it installed elsewhere.
+
+If it is still not found, say exactly this and **stop** — do not continue to Step 1:
+
+> "ajian-design hands the visual work to impeccable, which isn't installed in this project. Run
+> `npx impeccable install`, then re-run `/ajian-design NN`."
+
+**You may not stand in for impeccable.** Without it, this skill designs nothing, writes no UI code,
+picks no colors or type, and does not touch `DESIGN.md` or `PRODUCT.md`. Doing the work yourself
+looks helpful and is the failure this gate exists to prevent: it produces an unreviewed surface
+outside the pipeline, skipping `ajian-plan` and `ajian-build` entirely, with no plan, no ledger,
+and no two-axis review. A missing dependency is the user's call to resolve, not yours to route
+around. Stopping here costs one install; continuing costs the work order's whole trail.
+
+The only other honest exit is the user deciding to skip design for this work order — and that is
+theirs to choose, not yours to offer as an equivalent.
+
+## Step 1 — Orient
 
 Read the detailed work order `docs/work-orders/NN-<slug>.md` — specifically **Screens & states**
 (the design brief) — and `docs/DESIGN-SYSTEM.md` (the thin constraints: accessibility baseline and
 brand non-negotiables). These are the answers you will hand impeccable so it does not re-interview.
 
-## Step 1 — Derive PRODUCT.md (lazy projection of the blueprint)
+## Step 2 — Derive PRODUCT.md (lazy projection of the blueprint)
 
 impeccable reads `PRODUCT.md` at the repo root for product truth. In ajian that truth already
 exists — in the blueprint — so **do not run impeccable's interactive `init`**. Instead:
@@ -66,7 +89,7 @@ exists — in the blueprint — so **do not run impeccable's interactive `init`*
 
 Commit `PRODUCT.md` if it was created or changed.
 
-## Step 2 — Invoke impeccable (new-work)
+## Step 3 — Invoke impeccable (new-work)
 
 Hand the surface to impeccable. Run its setup and new-work flow, seeded with the design brief so
 its interview collapses to a confirmation rather than a fresh interrogation:
@@ -85,7 +108,7 @@ Do not reimplement any of impeccable's steps here. If impeccable asks for someth
 already settled, answer from the blueprint; if it surfaces a genuine new decision, that is the
 user's to make.
 
-## Step 3 — Record the realised design
+## Step 4 — Record the realised design
 
 `DESIGN.md` is the realised visual source of truth. new-work normally writes or replaces it; if for
 any reason the built surface is not reflected in `DESIGN.md`, run `/impeccable document` to record
@@ -96,7 +119,7 @@ If the build revealed a durable constraint the blueprint should own (a brand com
 rule), fold it back into `docs/DESIGN-SYSTEM.md` — the thin constraints stay in the blueprint,
 the realised system stays in `DESIGN.md`.
 
-## Step 4 — Hand off
+## Step 5 — Hand off
 
 Commit the built surface, `DESIGN.md`, and `.impeccable/`. The surface now exists, so the plan can
 name real screens and states.

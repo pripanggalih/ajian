@@ -43,8 +43,9 @@ Read these signals, cheapest first, and stop at the first that tells you the ans
    - **`brief`** → it hasn't been sharpened against real code. **Next: `ajian-grill NN`**.
    - **`detailed`** → continue.
 4. **Does it have UI, and is the UI built?** If the work order's "Screens & states" section is
-   filled (it has UI) and `DESIGN.md` does not yet cover this surface → **Next: `ajian-design NN`**.
-   No UI, or the surface is already in `DESIGN.md` → continue.
+   filled (it has UI) and `DESIGN.md` does not yet cover this surface → **Next: `ajian-design NN`**
+   (which needs impeccable installed — it stops and asks if it is missing, rather than designing the
+   surface itself). No UI, or the surface is already in `DESIGN.md` → continue.
 5. **Is there a plan?** Look for `docs/plans/NN-<slug>.md`.
    - **No** → **Next: `ajian-plan NN`**.
    - **Yes** → read its checkboxes.
