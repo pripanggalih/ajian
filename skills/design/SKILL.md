@@ -31,12 +31,13 @@ does not second-guess it. The only things ajian supplies are the two seams below
 
 - The work order `NN` is `Depth: detailed` and has UI (its "Screens & states" section is filled by
   `ajian-grill`). If it is still brief, run `/ajian-grill NN` first.
-- impeccable is installed. This is checked in Step 0, and it is a hard gate.
+- impeccable is **available** — installed project-local, user-global, or via a plugin. This is
+  checked in Step 0, and it is a hard gate.
 
 ## Pipeline
 
 ```
-0  Gate              impeccable installed? no → say so and STOP. Never stand in for it   [BLOCKING]
+0  Gate              impeccable available? no → show the evidence, ask, STOP            [BLOCKING]
 1  Orient            read the work order's design brief + DESIGN-SYSTEM constraints
 2  Derive PRODUCT    lazy projection of the blueprint → PRODUCT.md (once), gap-fill only
 3  Invoke impeccable new-work for this surface, seeded with the design brief → DESIGN.md + UI
@@ -46,16 +47,38 @@ does not second-guess it. The only things ajian supplies are the two seams below
 
 ---
 
-## Step 0 — Gate: is impeccable installed?
+## Step 0 — Gate: is impeccable available?
 
-**Do this first, before reading anything else.** Check for
-`.claude/skills/impeccable/scripts/context.mjs`. If it is not there, search once for
-`**/impeccable/scripts/context.mjs` in case it installed elsewhere.
+**Do this first, before reading anything else.** What this skill needs is the **impeccable skill,
+callable in this session** — not a file at one particular path. impeccable installs project-local
+(`.claude/skills/`), user-global (`~/.claude/skills/`), or inside a plugin cache, and it resolves
+its own base directory at runtime. A check that knows only one of those locations reports a missing
+dependency that is sitting right there — and an agent told to stop for a reason it can disprove
+learns that this skill's gates are negotiable. That lesson is expensive: it is not confined to this
+gate.
 
-If it is still not found, say exactly this and **stop** — do not continue to Step 1:
+So establish availability, and gather **evidence** rather than issuing a verdict:
 
-> "ajian-design hands the visual work to impeccable, which isn't installed in this project. Run
-> `npx impeccable install`, then re-run `/ajian-design NN`."
+1. Look in the canonical locations:
+
+   ```bash
+   ls -d .claude/skills/impeccable ~/.claude/skills/impeccable \
+         ~/.claude/plugins/cache/*/*/skills/impeccable 2>/dev/null
+   ```
+
+2. Independently, note whether the harness lists an `impeccable` skill as loadable. A skill the
+   runtime offers **is** available, even when none of those paths match.
+
+- **Available by either signal** → continue to Step 1. Do not verify further, and do not go looking
+  for its scripts; Step 3 never calls them.
+- **Neither signal** → you have evidence of absence, not proof of it. Show the user what you ran and
+  what came back, then ask:
+
+  > "ajian-design hands the visual work to impeccable, and I can't find it — `<what the check
+  > returned>`. If it isn't installed, run `npx impeccable install`, then re-run `/ajian-design NN`.
+  > If it is installed somewhere I didn't look, tell me where."
+
+  **Stop there and wait.** Do not continue to Step 1 on your own judgement.
 
 **You may not stand in for impeccable.** Without it, this skill designs nothing, writes no UI code,
 picks no colors or type, and does not touch `DESIGN.md` or `PRODUCT.md`. Doing the work yourself
@@ -91,18 +114,22 @@ Commit `PRODUCT.md` if it was created or changed.
 
 ## Step 3 — Invoke impeccable (new-work)
 
-Hand the surface to impeccable. Run its setup and new-work flow, seeded with the design brief so
-its interview collapses to a confirmation rather than a fresh interrogation:
+Hand the surface to impeccable and let it run its own flow, seeded with the design brief so its
+interview collapses to a confirmation rather than a fresh interrogation:
 
-1. `node .claude/skills/impeccable/scripts/context.mjs --target <the surface's route or file>` —
-   once, as impeccable directs. It loads PRODUCT.md, DESIGN.md, and the matching surface brief.
-2. Enter impeccable's **new-work** flow (`/impeccable` for a new surface or replacement world).
+1. Enter impeccable's **new-work** flow (`/impeccable` for a new surface or replacement world).
    Give it the work order's design brief up front: the **mode** (Persuade / Operate / Read /
    Experience), what changes the work, the key states (empty, loading, error, success), and the
    `DESIGN-SYSTEM.md` constraints. Let impeccable run its own concept and direction machinery — the
    world it invents is its call, not ajian's. Honor its gates (the direction decision is the
    user's).
-3. Let impeccable build the surface and write/replace `DESIGN.md` as its flow dictates.
+2. Let impeccable build the surface and write/replace `DESIGN.md` as its flow dictates.
+
+**Its setup is its own — never run impeccable's scripts for it.** Loading product and design context
+is impeccable's own Setup step, and its instructions already tell it how to locate its base
+directory on any install layout. Reproducing that step here is exactly how this skill acquired a
+hardcoded path that broke on every layout it had not anticipated. impeccable knows where it lives;
+ajian does not need to.
 
 Do not reimplement any of impeccable's steps here. If impeccable asks for something the blueprint
 already settled, answer from the blueprint; if it surfaces a genuine new decision, that is the

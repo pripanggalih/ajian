@@ -15,11 +15,14 @@ supplies the two seams (PRODUCT.md from the blueprint, and the design brief hand
 
 ## Common questions
 
-- **Do I need impeccable installed?** Yes — `npx impeccable install`. Without it the skill stops at
-  its first step and tells you. It will **not** design or implement the surface itself as a
-  fallback: that would produce a surface outside the pipeline, skipping `ajian-plan` and
-  `ajian-build` — no plan, no ledger, no review. Install it, or decide to skip design for this work
-  order and go straight to `/ajian-plan NN`.
+- **Do I need impeccable installed?** Yes — `npx impeccable install`. Project-local, user-global
+  (`~/.claude/skills/`) and plugin installs all count; the skill looks in all of them and also
+  accepts an `impeccable` your harness already offers. Without it the skill stops at its first step,
+  shows you what it checked, and asks — so if it *is* installed somewhere unusual, you can just say
+  where. It will **not** design or implement the surface itself as a fallback: that would produce a
+  surface outside the pipeline, skipping `ajian-plan` and `ajian-build` — no plan, no ledger, no
+  review. Install it, or decide to skip design for this work order and go straight to
+  `/ajian-plan NN`.
 - **Why not use impeccable's `init` to write PRODUCT.md?** Because the product truth already lives in
   your blueprint. ajian projects it (with a "do not hand-edit — change the blueprint" header) and
   only asks a short gap-fill round for what the blueprint genuinely lacks.
