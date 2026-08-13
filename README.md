@@ -1,17 +1,16 @@
 # Ajian
 
-> **Status: design locked, skills implemented, private until attribution is resolved.**
-> English is the source of truth. **[Bahasa Indonesia →](README.id.md)**
+> **Status: design locked, skills implemented.** **[Bahasa Indonesia →](README.id.md)**
 
 `ajian` (Javanese: an incantation of power — each skill is one *ajian*) is a skillset for AI coding
 agents that turns a free-form idea into durable development documents, then builds the project one
 work-order at a time through an explicit, gated sequence of skills. **No session hooks.** Greenfield
 and brownfield. Framework- and harness-agnostic.
 
-It stands on the shoulders of four excellent projects, whose text it vendors and adapts (or, for
-impeccable, depends on). Full, honest attribution is in [`NOTICE.md`](NOTICE.md):
+Its foundation-document machinery is the author's own work; on top of that it stands on the
+shoulders of three excellent projects, whose text it vendors and adapts (or, for impeccable, depends
+on). Full, honest attribution is in [`NOTICE.md`](NOTICE.md):
 
-- **discussion-to-blueprint** — the foundation documents, roadmap, and work orders
 - **[obra/superpowers](https://github.com/obra/superpowers)** (MIT) — planning & execution
 - **[mattpocock/skills](https://github.com/mattpocock/skills)** (MIT) — the grilling engine, 2-axis review, router
 - **[impeccable](https://github.com/pbakaus/impeccable)** (Apache-2.0) — UI/UX craft
@@ -50,8 +49,8 @@ Per-skill pages (What it does / When to reach for it / Common questions / It's w
 
 ## Install
 
-Once the repository is public, install from the [skills.sh](https://www.skills.sh) directory with
-the [vercel-labs `skills`](https://www.skills.sh) CLI:
+Install from the [skills.sh](https://www.skills.sh) directory with the
+[vercel-labs `skills`](https://www.skills.sh) CLI:
 
 ```bash
 npx skills add pripanggalih/ajian
@@ -79,6 +78,5 @@ npx impeccable install
 
 ## License & attribution
 
-MIT ([`LICENSE`](LICENSE)) for ajian's own wiring; vendored upstream text keeps its own notices in
-[`NOTICE.md`](NOTICE.md). The `discussion-to-blueprint` source carries no license metadata; the
-repository stays private until that is resolved (see `NOTICE.md`).
+MIT ([`LICENSE`](LICENSE)) for ajian's own work; vendored upstream text keeps its own notices in
+[`NOTICE.md`](NOTICE.md).

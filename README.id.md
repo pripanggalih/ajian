@@ -1,17 +1,16 @@
 # Ajian
 
-> **Status: desain terkunci, skill sudah diimplementasi, privat sampai atribusi diselesaikan.**
-> Bahasa Inggris adalah sumber kebenaran. **[English →](README.md)**
+> **Status: desain terkunci, skill sudah diimplementasi.** **[English →](README.md)**
 
 `ajian` (Jawa: mantra kesaktian — tiap skill adalah satu *ajian*) adalah skillset untuk agen coding
 AI yang mengubah ide bebas menjadi dokumen pengembangan yang tahan lama, lalu membangun proyek satu
 work-order demi work-order lewat rangkaian skill yang eksplisit dan bergerbang. **Tanpa session
 hook.** Greenfield maupun brownfield. Bebas framework dan harness.
 
-Ia berdiri di atas empat proyek hebat, yang teksnya ia vendor dan sesuaikan (atau, untuk impeccable,
-ia bergantung padanya). Atribusi lengkap dan jujur ada di [`NOTICE.md`](NOTICE.md):
+Mesin dokumen fondasinya adalah karya penulis sendiri; di atasnya ia berdiri di atas tiga proyek
+hebat, yang teksnya ia vendor dan sesuaikan (atau, untuk impeccable, ia bergantung padanya).
+Atribusi lengkap dan jujur ada di [`NOTICE.md`](NOTICE.md):
 
-- **discussion-to-blueprint** — dokumen fondasi, roadmap, dan work order
 - **[obra/superpowers](https://github.com/obra/superpowers)** (MIT) — perencanaan & eksekusi
 - **[mattpocock/skills](https://github.com/mattpocock/skills)** (MIT) — mesin grilling, review 2-sumbu, router
 - **[impeccable](https://github.com/pbakaus/impeccable)** (Apache-2.0) — kualitas UI/UX
@@ -51,7 +50,7 @@ Halaman per-skill (Apa yang dilakukan / Kapan dipakai / Pertanyaan umum / Tanda 
 
 ## Instalasi
 
-Setelah repositori dipublikkan, instal dari direktori [skills.sh](https://www.skills.sh) memakai CLI
+Instal dari direktori [skills.sh](https://www.skills.sh) memakai CLI
 [vercel-labs `skills`](https://www.skills.sh):
 
 ```bash
@@ -80,6 +79,5 @@ npx impeccable install
 
 ## Lisensi & atribusi
 
-MIT ([`LICENSE`](LICENSE)) untuk perkabelan milik ajian sendiri; teks upstream yang divendor
-mempertahankan notis masing-masing di [`NOTICE.md`](NOTICE.md). Sumber `discussion-to-blueprint`
-tidak memuat metadata lisensi; repositori tetap privat sampai itu diselesaikan (lihat `NOTICE.md`).
+MIT ([`LICENSE`](LICENSE)) untuk karya milik ajian sendiri; teks upstream yang divendor
+mempertahankan notis masing-masing di [`NOTICE.md`](NOTICE.md).

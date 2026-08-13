@@ -26,8 +26,7 @@ document, and a change that contradicts it is a bug in one of the two.
 2. **Every vendored file carries an `Adapted from <source>` line.** Keep it.
    `NOTICE.md` is the ledger; the per-file line is the point-of-use credit.
 3. **Skills are English only.** They are agent-facing. User-facing docs
-   (`README*`, `docs/en`, `docs/id`) are dual-language: English is the source of
-   truth, Indonesian mirrors it.
+   (`README*`, `docs/en`, `docs/id`) are dual-language; keep the two in sync.
 4. **Frontmatter is load-bearing.** Every `SKILL.md` needs `name` (lowercase,
    hyphenated, `ajian-*`) and a `description` written as *when to reach for this*
    — that string is all the router and the harness see before loading the body.
@@ -38,5 +37,3 @@ document, and a change that contradicts it is a bug in one of the two.
 
 - Confirm the change still matches `docs/ajian-blueprint.md`, or update both.
 - Keep `NOTICE.md` accurate if you add, drop, or re-source any vendored block.
-- The repository stays **private** until the `discussion-to-blueprint` license
-  question in `NOTICE.md` is resolved.

@@ -11,7 +11,4 @@ All notable changes to `ajian` are recorded here. The format follows
   `ajian-design`, `ajian-plan`, `ajian-build`, `ajian-review`.
 - Plugin manifest (`.claude-plugin/plugin.json`) and marketplace entry.
 - Dual-language user docs (English default, Indonesian mirror).
-- Honest attribution of the four upstream sources in `NOTICE.md`.
-
-_No public release yet. The repository is private until the `discussion-to-blueprint`
-license question in `NOTICE.md` is resolved._
+- Honest attribution of the upstream sources in `NOTICE.md`.

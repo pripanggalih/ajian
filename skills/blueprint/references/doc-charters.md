@@ -1,6 +1,6 @@
-<!-- Adapted from `discussion-to-blueprint` references/doc-charters.md. The only ajian change:
-     DECISIONS is split into a thin ledger plus one file per ADR under decisions/, so a work
-     order can attach a single ADR without loading the whole log. -->
+<!-- The author's own document charters. The only ajian change: DECISIONS is split into a thin
+     ledger plus one file per ADR under decisions/, so a work order can attach a single ADR without
+     loading the whole log. -->
 
 # Document charters and the self-review
 

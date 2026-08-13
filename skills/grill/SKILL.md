@@ -12,9 +12,9 @@ description: >-
 ---
 
 <!-- Adapted from mattpocock/skills `grilling` (the frontier/rounds mechanic, grill-2 flavour in
-     references/grill-engine.md) and `discussion-to-blueprint` (the brief→detailed promotion
-     discipline). Wired into ajian: grill-1 lives in ajian-blueprint (macro, decision-heavy); this
-     is grill-2 (micro, fact-heavy). See NOTICE.md for attribution. -->
+     references/grill-engine.md); the brief→detailed promotion discipline is the author's own.
+     Wired into ajian: grill-1 lives in ajian-blueprint (macro, decision-heavy); this is grill-2
+     (micro, fact-heavy). See NOTICE.md for attribution of the vendored `grilling` text. -->
 
 # Ajian · Grill
 

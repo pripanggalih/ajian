@@ -1,6 +1,6 @@
-<!-- Adapted from `discussion-to-blueprint` references/depth-and-drift.md. One section is rewritten
-     for ajian: the original leaned on "this skill has no downstream"; in ajian a downstream DOES
-     exist (ajian-plan), so the justification is restated on the what/how boundary instead. -->
+<!-- The author's own foundation-doc discipline. One section is rewritten for ajian: the earlier
+     form leaned on "this skill has no downstream"; in ajian a downstream DOES exist (ajian-plan),
+     so the justification is restated on the what/how boundary instead. -->
 
 # Depth, drift, and where the blueprint stops
 

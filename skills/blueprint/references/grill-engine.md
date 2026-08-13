@@ -1,7 +1,7 @@
 <!-- Adapted from mattpocock/skills `grilling` (the frontier/rounds mechanic, quoted nearly
-     verbatim in "The mechanic" below) and railed by the six blueprint themes from
-     `discussion-to-blueprint`. The ajian seam: the frontier is bounded to one theme at a time,
-     and every question carries a recommended answer. See NOTICE.md for attribution. -->
+     verbatim in "The mechanic" below), railed by the author's own six foundation themes. The ajian
+     seam: the frontier is bounded to one theme at a time, and every question carries a recommended
+     answer. See NOTICE.md for attribution of the vendored `grilling` text. -->
 
 # The grill engine (grill-1, macro)
 

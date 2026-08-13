@@ -14,12 +14,12 @@ description: >-
   blueprint — it never writes code or implementation steps.
 ---
 
-<!-- Adapted from `discussion-to-blueprint` (foundation docs, roadmap, work orders) and
-     mattpocock/skills `grilling` (the frontier/rounds interrogation engine, spliced into step 2).
-     Wired into ajian: this is grill-1 (macro). Unlike the original, ajian HAS a downstream
+<!-- The foundation-doc machinery (docs, roadmap, work orders) is the author's own prior work. The
+     interrogation engine spliced into step 2 is adapted from mattpocock/skills `grilling` (the
+     frontier/rounds mechanic). Wired into ajian: this is grill-1 (macro), and a downstream exists
      (ajian-plan owns the "how") — see references/depth-and-drift.md for why the depth discipline
      still holds. Foundation docs are written flat to `docs/`, level with impeccable's root
-     PRODUCT.md / DESIGN.md. See NOTICE.md for attribution. -->
+     PRODUCT.md / DESIGN.md. See NOTICE.md for attribution of vendored sources. -->
 
 # Ajian · Blueprint
 

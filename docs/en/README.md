@@ -1,6 +1,6 @@
 # Ajian — usage guide (English)
 
-The source-of-truth guide. **[Bahasa Indonesia →](../id/README.md)**
+**[Bahasa Indonesia →](../id/README.md)**
 
 Ajian is seven skills that take a project from a wild idea to shipped code, one work-order at a time,
 with a human gate at every decision that is expensive to undo. This guide is the map; each skill has

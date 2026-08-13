@@ -1,6 +1,6 @@
 # Ajian — panduan pemakaian (Bahasa Indonesia)
 
-Cerminan dari panduan sumber. **[English →](../en/README.md)** (bahasa Inggris adalah sumber kebenaran)
+**[English →](../en/README.md)**
 
 Ajian adalah tujuh skill yang membawa proyek dari ide liar sampai kode terkirim, satu work-order demi
 work-order, dengan gerbang manusia di tiap keputusan yang mahal untuk dibatalkan. Panduan ini petanya;

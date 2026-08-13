@@ -2,9 +2,7 @@
 
 > Status: **design locked, skills implemented.** This document is the design
 > reference behind the `ajian` skillset. The seven skills, references, assets,
-> and dual-language docs now exist under `skills/` and `docs/`. The repository
-> stays private until the `discussion-to-blueprint` license question in
-> `NOTICE.md` is resolved (see the checklist in §9).
+> and dual-language docs now exist under `skills/` and `docs/`.
 
 `ajian` (Javanese: an incantation of power — each skill is one *ajian*) turns a
 free-form idea into durable development documents, then builds the project one
@@ -30,7 +28,7 @@ Each altitude is owned by a different layer, so nothing collides:
 | Layer | Owns | Source |
 | --- | --- | --- |
 | grill (interrogation) | *is the idea right?* | mattpocock `grilling` mechanic |
-| blueprint | *what must be true when done* | `discussion-to-blueprint` |
+| blueprint | *what must be true when done* | author's own foundation-doc work |
 | plan | *how to get there* (steps + code) | superpowers `writing-plans` |
 | build | *do it, with recovery* | superpowers `executing-plans` + SDD ledger |
 | design | *the visual world* | impeccable |
@@ -43,7 +41,7 @@ Each altitude is owned by a different layer, so nothing collides:
 | Block | Source | Use |
 | --- | --- | --- |
 | interrogation engine | mattpocock `grilling` | **vendored** |
-| foundation docs + roadmap + work-orders | `discussion-to-blueprint` | **vendored** |
+| foundation docs + roadmap + work-orders | author's own foundation-doc work | **own** |
 | implementation plan | superpowers `writing-plans` | **vendored** |
 | execution | superpowers `executing-plans` + SDD ledger/commit-per-task + `using-git-worktrees` + `finishing-a-development-branch` + `tdd` + `verification-before-completion` | **vendored** |
 | code review | mattpocock `code-review` (2-axis) + superpowers `receiving-code-review` | **vendored** |
@@ -52,7 +50,7 @@ Each altitude is owned by a different layer, so nothing collides:
 
 impeccable is a full CLI + skill (npx, scripts, subagents); it is too large to
 vendor and is installed separately. Everything else is prose we copy and adapt.
-`NOTICE.md` credits all four sources honestly; every copied file carries an
+`NOTICE.md` credits the upstream sources honestly; every copied file carries an
 `Adapted from <source>` header line.
 
 ---
