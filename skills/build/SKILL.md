@@ -28,10 +28,29 @@ it is the heart of this skill.
 
 ## Preconditions
 
-- An approved, committed plan at `docs/plans/NN-<slug>.md` with `- [ ]` task checkboxes. If it is
-  not approved, run `/ajian-plan NN` first.
-- You are not on `main`/`master`. Never start implementation on the default branch without the
-  user's explicit consent.
+- **A committed plan at `docs/plans/NN-<slug>.md` with `- [ ]` task checkboxes.** No plan file, or
+  a plan not in git → `/ajian-plan NN` owns that. The checkboxes are the ledger; a plan outside git
+  cannot survive a compaction or an interruption, which is the whole reason it is committed.
+- **The plan was approved at its gate.** Verify from git that the plan is committed, not from a
+  recollection that the user said yes.
+- **You are not on `main`/`master`.** Never start implementation on the default branch without the
+  user's explicit consent. Say which branch you would create and ask.
+
+### When a precondition fails
+
+**Verify every precondition from the artifacts on disk, never from what the conversation seems to
+say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
+field, a checkbox, and `git log` are not.
+
+When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
+language, name the one skill that owns the gap, and offer to run **that one step**:
+
+> "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
+> does, in plain words>. Run it now?"
+
+Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
+skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
+missing step without asking is the same failure with the asking removed.
 
 ## The gate protocol
 

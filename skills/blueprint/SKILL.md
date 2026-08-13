@@ -43,6 +43,33 @@ The interrogation in step 2 runs on the ajian grill engine — the frontier/roun
 by the six themes below. Read [references/grill-engine.md](references/grill-engine.md) before you
 start asking.
 
+## Preconditions
+
+- **`docs/ROADMAP.md` does not exist.** If it does, a blueprint has already been written and this
+  is a **resumed** run — go to [Resumed runs](#resumed-runs) and extend it. Never regenerate the
+  foundation over a roadmap that exists: its checkboxes are the only record of what shipped, and
+  a re-run that overwrites them erases the project's memory of itself. Re-running this skill after
+  a failed or interrupted attempt is common and expected — that is exactly why this is checked
+  against the file rather than inferred from the conversation.
+- **You are in a git repository.** The foundation is committed at Gate 1; without git there is no
+  gate. If there is no repo, say so and offer to `git init`.
+
+### When a precondition fails
+
+**Verify every precondition from the artifacts on disk, never from what the conversation seems to
+say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
+field, a checkbox, and `git log` are not.
+
+When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
+language, name the one skill that owns the gap, and offer to run **that one step**:
+
+> "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
+> does, in plain words>. Run it now?"
+
+Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
+skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
+missing step without asking is the same failure with the asking removed.
+
 ## The three rules that keep a blueprint alive
 
 A blueprint fails in one of three ways: it rots, it drowns the reader, or nobody opens it.

@@ -33,6 +33,24 @@ does not second-guess it. The only things ajian supplies are the two seams below
   `ajian-grill`). If it is still brief, run `/ajian-grill NN` first.
 - impeccable is **available** — installed project-local, user-global, or via a plugin. This is
   checked in Step 0, and it is a hard gate.
+- The work order's `## Built surface` Status is `not yet designed` or `handed to impeccable`.
+  `recorded` means this surface is already built and inventoried; Step 1 handles each case.
+
+### When a precondition fails
+
+**Verify every precondition from the artifacts on disk, never from what the conversation seems to
+say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
+field, a checkbox, and `git log` are not.
+
+When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
+language, name the one skill that owns the gap, and offer to run **that one step**:
+
+> "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
+> does, in plain words>. Run it now?"
+
+Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
+skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
+missing step without asking is the same failure with the asking removed.
 
 ## The gate protocol
 

@@ -32,17 +32,21 @@ document, and a change that contradicts it is a bug in one of the two.
    — that string is all the router and the harness see before loading the body.
 5. **No hooks.** Chaining is explicit: each skill ends with a `→ Next` breadcrumb,
    and `ajian-map` reads project state to tell the user where they are.
-6. **The gate protocol is one text in seven copies.** Every `SKILL.md` carries the
-   `## The gate protocol` section inline and byte-identical. It is duplicated rather
-   than shared because `npx skills add --skill ajian-build` installs a single skill
-   directory — a file outside it would be a path that does not exist on the user's
-   machine. Change it in all seven or in none:
+6. **Two shared texts are duplicated, not factored out.** `## The gate protocol`
+   appears inline and byte-identical in all **seven** skills; `### When a precondition
+   fails` in the **six** that have preconditions (`ajian-map` has none — it is the
+   skill you run *because* the state is unclear, so a precondition would give a dead
+   end to the one skill whose job is to open one). They are duplicated because
+   `npx skills add --skill ajian-build` installs a single skill directory: a shared
+   reference file would resolve to a path absent on the user's machine — the same
+   class of bug as the hardcoded impeccable path. Change each in all its copies or
+   in none:
 
    ```bash
-   for f in skills/*/SKILL.md; do
-     sed -n '/^## The gate protocol$/,/^This block is identical in every ajian skill\./p' "$f" \
-       | shasum | cut -c1-12
-   done | sort -u | wc -l    # must print 1
+   dup() { for f in skills/*/SKILL.md; do sed -n "$1" "$f" | shasum | cut -c1-12; done \
+             | grep -v da39a3ee5e6b | sort -u | wc -l; }   # must print 1 for both
+   dup '/^## The gate protocol$/,/^This block is identical in every ajian skill\./p'
+   dup '/^### When a precondition fails$/,/^missing step without asking is the same failure/p'
    ```
 
 ## Before you push

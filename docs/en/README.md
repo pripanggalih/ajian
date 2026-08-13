@@ -15,6 +15,12 @@ its own page below.
    It interrogates the idea and writes the foundation docs and roadmap.
 4. From there, follow each skill's `→ Next` breadcrumb. Lost? Run **`/ajian-map`**.
 
+**You don't have to get the order right.** Run a skill too early and it won't refuse and leave you
+stuck, and it won't quietly do the missing work either. It checks the project's actual files, tells
+you in plain language where you are, names the one skill that fills the gap, and asks whether to run
+it. Always one step — never "shall I run the next four?", because that is a whole pipeline traded
+for a single yes.
+
 ## The pipeline
 
 ```

@@ -22,6 +22,15 @@ All notable changes to `ajian` are recorded here. The format follows
   shared reference file would resolve to a path absent on the user's machine.
   `CLAUDE.md` carries the identity check.
 
+- **Per-skill precondition contracts** (locked decision 15). The six skills with real
+  prerequisites verify them from the artifacts on disk — a file, a `Depth:` field, a
+  `Status:` field, a checkbox, `git log` — never from what the conversation appears to
+  say happened. On a failure they refuse, then offer **one** step in plain language:
+  where you are, which skill owns the gap, run it? One mechanism for both problems —
+  downstream it contains a gate that leaked upstream, and upstream it is the
+  "you are here, this is next" a user who does not know the pipeline needs.
+  `ajian-map` is exempt: it is the skill you run *because* the state is unclear.
+
 ### Fixed
 - `ajian-build`'s executor report had an undefined destination (`[REPORT_FILE]` was
   never resolved anywhere), so reports landed next to the plans and mixed up

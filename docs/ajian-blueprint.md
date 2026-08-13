@@ -101,7 +101,7 @@ Two grill stages, two characters:
 
 ---
 
-## 5. Locked decisions (14)
+## 5. Locked decisions (15)
 
 1. **Hybrid grill engine.** mattpocock frontier/rounds mechanic, **railed by the
    six blueprint themes** (guarantees coverage of non-goals, stack, entities,
@@ -173,6 +173,25 @@ Two grill stages, two characters:
     directory at a time; a shared file would resolve to a path absent on the user's
     machine — the same class of bug as the hardcoded impeccable path. `CLAUDE.md`
     carries the identity check that keeps the seven copies in sync.
+15. **Every skill is its own gatekeeper.** The six skills with real prerequisites
+    (`blueprint`, `grill`, `design`, `plan`, `build`, `review`) verify them from the
+    artifacts on disk — a file, a `Depth:` field, a `Status:` field, a checkbox,
+    `git log` — never from what the conversation appears to say happened. A failure
+    is answered by **refuse, then offer one step**: say where the user actually is in
+    plain language, name the one skill that owns the gap, offer to run that step, and
+    wait. One step, never a chain; chaining is (12)'s auto-routing smuggled back in,
+    and running the missing step unasked is the same failure with the asking removed.
+
+    This is one mechanism serving both of ajian's weak points. Downstream, it is
+    containment: a gate that leaks upstream is caught by the next skill's own check,
+    which is what turns the interrupted-design-handoff (9b) from silent into loud.
+    Upstream, it is onboarding: the plain-language "you are here, this is next, run
+    it?" is exactly what a user who does not know the pipeline needs, so compliance
+    and ease stop competing for the same prose.
+
+    `ajian-map` is deliberately exempt. It is the skill you run *because* the state
+    is unclear; giving it a precondition would hand a dead end to the one skill whose
+    job is to open one.
 
 ---
 

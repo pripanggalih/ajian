@@ -22,8 +22,29 @@ verifies, corrects, and finishes.
 
 ## Preconditions
 
-- `ajian-build NN` left a green, committed branch (its plan's checkboxes all ticked).
-- The detailed work order `docs/work-orders/NN-<slug>.md` exists — it is the Spec axis's source.
+- **Every checkbox in `docs/plans/NN-<slug>.md` is ticked.** Unticked boxes mean the build is
+  unfinished; `/ajian-build NN` resumes from the first one. Reviewing a half-built branch reports
+  missing work as defects.
+- **The branch is committed and green.** Confirm from `git status` and a test run, not from the
+  build's report — Step 4 of `ajian-build` exists because that report is not evidence.
+- **The detailed work order `docs/work-orders/NN-<slug>.md` exists** — it is the Spec axis's source.
+  Without it there is no Spec axis, only half a review.
+
+### When a precondition fails
+
+**Verify every precondition from the artifacts on disk, never from what the conversation seems to
+say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
+field, a checkbox, and `git log` are not.
+
+When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
+language, name the one skill that owns the gap, and offer to run **that one step**:
+
+> "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
+> does, in plain words>. Run it now?"
+
+Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
+skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
+missing step without asking is the same failure with the asking removed.
 
 ## The gate protocol
 

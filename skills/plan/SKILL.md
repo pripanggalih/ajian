@@ -38,6 +38,32 @@ created by `ajian-build` at execution time — not here.
 **Save plans to:** `docs/plans/NN-<slug>.md`, matching the work order number. **Commit the plan** —
 its `- [ ]` checkboxes are the ledger `ajian-build` ticks as it goes, so it must be in git.
 
+## Preconditions
+
+- **The work order `docs/work-orders/NN-<slug>.md` is at `Depth: detailed`.** Still `brief` → it has
+  not been sharpened against real code, and a plan written from a brief plans the wrong thing.
+  `/ajian-grill NN` owns that.
+- **If it has UI, its `## Built surface` Status is `recorded`.** See the section below — this is the
+  check that catches an interrupted design handoff.
+- **No plan exists yet at `docs/plans/NN-<slug>.md`.** One does → read it before writing anything;
+  overwriting a plan mid-build discards the ledger `ajian-build` is executing against.
+
+### When a precondition fails
+
+**Verify every precondition from the artifacts on disk, never from what the conversation seems to
+say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
+field, a checkbox, and `git log` are not.
+
+When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
+language, name the one skill that owns the gap, and offer to run **that one step**:
+
+> "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
+> does, in plain words>. Run it now?"
+
+Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
+skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
+missing step without asking is the same failure with the asking removed.
+
 ## The gate protocol
 
 A gate is a full stop that waits for the user. Every gate in this skill is written as this block —

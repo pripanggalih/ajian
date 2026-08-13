@@ -32,6 +32,31 @@ Two things make grill-2 different from grill-1:
   built — reach them, each with a recommendation. Everything a subagent can settle, a subagent
   settles.
 
+## Preconditions
+
+- **`docs/work-orders/NN-<slug>.md` exists** and is at `Depth: brief`. Already `detailed` → it has
+  been grilled; refuse unless the user is deliberately re-opening it (two detailed work orders at
+  once is the drift this pass exists to prevent).
+- **Its dependencies have shipped** — every roadmap line it lists as a dependency is ticked in
+  `docs/ROADMAP.md`. Grilling ahead of a dependency is planning against an imagined past.
+- **`docs/ROADMAP.md` and `docs/INDEX.md` exist.** No blueprint, no work order to sharpen.
+
+### When a precondition fails
+
+**Verify every precondition from the artifacts on disk, never from what the conversation seems to
+say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
+field, a checkbox, and `git log` are not.
+
+When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
+language, name the one skill that owns the gap, and offer to run **that one step**:
+
+> "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
+> does, in plain words>. Run it now?"
+
+Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
+skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
+missing step without asking is the same failure with the asking removed.
+
 ## The gate protocol
 
 A gate is a full stop that waits for the user. Every gate in this skill is written as this block —

@@ -15,6 +15,12 @@ tiap skill punya halaman sendiri di bawah.
    menginterogasi ide dan menulis dokumen fondasi serta roadmap.
 4. Setelah itu, ikuti breadcrumb `→ Next` tiap skill. Bingung? Jalankan **`/ajian-map`**.
 
+**Kamu tak harus tahu urutannya.** Menjalankan skill terlalu awal tidak membuatmu mentok, dan juga
+tidak membuatnya diam-diam mengerjakan yang kurang. Ia memeriksa berkas nyata di proyekmu,
+memberitahu posisimu dengan bahasa manusia, menyebut satu skill yang mengisi celahnya, lalu bertanya
+apakah dijalankan. Selalu satu langkah — tak pernah "sekalian empat berikutnya?", karena itu menukar
+seluruh pipeline dengan satu kata ya.
+
 ## Alur pipeline
 
 ```
