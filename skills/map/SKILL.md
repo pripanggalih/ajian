@@ -20,7 +20,7 @@ description: >-
 # Ajian · Map
 
 You don't remember every skill or where you left off — especially after a compaction. So ask. This
-skill reads the project and tells you which of the seven skills to run next.
+skill reads the project and tells you which of the eight skills to run next.
 
 ## Language
 
@@ -58,9 +58,10 @@ This block is identical in every ajian skill. If its shape changes, it changes i
 ## The pipeline (idea → shipped)
 
 ```
-ajian-blueprint  →  per roadmap line, in order:
-                      ajian-grill  →  (ajian-design, if UI)  →  ajian-plan  →  ajian-build  →  ajian-review
-                    →  next line
+(ajian-adopt, if the project already has documents in another shape)
+  →  ajian-blueprint  →  per roadmap row, top to bottom:
+                           ajian-grill  →  (ajian-design, if UI)  →  ajian-plan  →  ajian-build  →  ajian-review
+                         →  next row
 ```
 
 Each skill ends with a `→ Next` breadcrumb; ajian-map is the way to recover that breadcrumb from
@@ -71,7 +72,20 @@ project state when you've lost the thread. Chaining is explicit — there are no
 Read these signals, cheapest first, and stop at the first that tells you the answer:
 
 1. **Is there a blueprint?** Look for `docs/INDEX.md` and `docs/ROADMAP.md`.
-   - **No** → you are before the pipeline. **Next: `ajian-blueprint`** (grill-1 → foundation docs).
+   - **Both present** → continue to signal 2.
+   - **Neither, and the repo has no documents worth keeping** → you are before the pipeline.
+     **Next: `ajian-blueprint`** (grill-1 → foundation docs).
+   - **Neither, but the repo does hold real documents** — a substantial README, a PRD, an
+     `ARCHITECTURE.md`, a checked-in wiki, leftover Spec Kit or other framework artifacts →
+     **Next: `ajian-adopt`**. Do not send this to `ajian-blueprint`: it would write a second set of
+     documents beside the first, and the project would then have two sources of truth with nothing
+     saying which governs. **Look before you route** — this signal is a presence check on two
+     filenames, so a project whose documents are real but shaped differently reads identically to
+     one that has nothing.
+   - **One present, or present but incomplete** (a roadmap with no work orders, work orders with no
+     `Depth:`, an INDEX routing to files that do not exist) → the layout is partial or was written
+     by an older version of these skills. **Next: `ajian-adopt`**, which repairs shape without
+     rewriting content.
 2. **Which work order is current?** In `docs/ROADMAP.md`, the current line is the **topmost unticked
    row** of the table — position in the table is the build order, not the number in the `#` column.
    A work order's number is its permanent identity (it names its files); rows get reordered and

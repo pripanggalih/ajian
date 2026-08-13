@@ -2,7 +2,7 @@
 
 **[Bahasa Indonesia →](../id/README.md)**
 
-Ajian is seven skills that take a project from a wild idea to shipped code, one work-order at a time,
+Ajian is eight skills that take a project from a wild idea to shipped code, one work-order at a time,
 with a human gate at every decision that is expensive to undo. This guide is the map; each skill has
 its own page below.
 
@@ -11,9 +11,12 @@ its own page below.
 1. Install the skillset (see the root [README](../../README.md)). `ajian-design` also needs
    `npx impeccable install`.
 2. Open your project (empty for greenfield, or an existing repo for brownfield) in your coding agent.
-3. Run **`/ajian-blueprint`** — or just start talking about the idea and invoke it when you're ready.
+3. **Inherited a project that already has docs?** Run **`/ajian-adopt`** first. It surveys what is
+   written, proposes where each document should go, and migrates only what you approve — so ajian
+   builds on your existing docs instead of writing a rival set beside them.
+4. Run **`/ajian-blueprint`** — or just start talking about the idea and invoke it when you're ready.
    It interrogates the idea and writes the foundation docs and roadmap.
-4. From there, follow each skill's `→ Next` breadcrumb. Lost? Run **`/ajian-map`**.
+5. From there, follow each skill's `→ Next` breadcrumb. Lost? Run **`/ajian-map`**.
 
 **You don't have to get the order right.** Run a skill too early and it won't refuse and leave you
 stuck, and it won't quietly do the missing work either. It checks the project's actual files, tells
@@ -24,14 +27,19 @@ for a single yes.
 ## The pipeline
 
 ```
-ajian-blueprint  →  per roadmap line, in order:
-                      ajian-grill  →  (ajian-design, if UI)  →  ajian-plan  →  ajian-build  →  ajian-review
-                    →  next line
+(ajian-adopt, only if the project already has docs in another shape)
+  →  ajian-blueprint  →  per roadmap row, top to bottom:
+                           ajian-grill  →  (ajian-design, if UI)  →  ajian-plan  →  ajian-build  →  ajian-review
+                         →  next row
 ```
 
-- **ajian-blueprint** runs once at the start (and again in "resumed" mode to extend the roadmap).
-- The five per-line skills repeat for every roadmap line, top to bottom.
+- **ajian-adopt** runs at most once, on a project you inherited. Skip it for a fresh start.
+- **ajian-blueprint** runs once at the start (and again in "resumed" mode to extend the roadmap or
+  insert a feature mid-build).
+- The five per-row skills repeat for every roadmap row, top to bottom.
 - **ajian-map** is not in the line — run it any time to locate yourself.
+- Build order is the **row order** in `ROADMAP.md`. The number in the `#` column is each work
+  order's permanent name, so after an insertion it can run out of sequence — that is expected.
 
 ## The gates (where you decide)
 
@@ -79,6 +87,7 @@ docs/
 | Skill | Page |
 | --- | --- |
 | `ajian-map` | [ajian-map.md](ajian-map.md) |
+| `ajian-adopt` | [ajian-adopt.md](ajian-adopt.md) |
 | `ajian-blueprint` | [ajian-blueprint.md](ajian-blueprint.md) |
 | `ajian-grill` | [ajian-grill.md](ajian-grill.md) |
 | `ajian-design` | [ajian-design.md](ajian-design.md) |

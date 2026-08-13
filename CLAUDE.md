@@ -7,7 +7,7 @@ how an AI coding agent behaves. Treat the words as the product.
 
 ```
 .claude-plugin/   plugin + marketplace manifests
-skills/           the seven skills — SKILL.md + references/ + assets/ each
+skills/           the eight skills — SKILL.md + references/ + assets/ each
 docs/             ajian-blueprint.md (the design reference) + en/ + id/ user docs
 README.md         English (default) · README.id.md  Indonesian
 NOTICE.md         honest attribution of the four upstream sources
@@ -37,8 +37,8 @@ document, and a change that contradicts it is a bug in one of the two.
 5. **No hooks.** Chaining is explicit: each skill ends with a `→ Next` breadcrumb,
    and `ajian-map` reads project state to tell the user where they are.
 6. **Three shared texts are duplicated, not factored out.** `## Language` and
-   `## The gate protocol` appear inline and byte-identical in all **seven** skills;
-   `### When a precondition fails` in the **six** that have preconditions (`ajian-map` has none — it is the
+   `## The gate protocol` appear inline and byte-identical in all **eight** skills;
+   `### When a precondition fails` in the **seven** that have preconditions (`ajian-map` has none — it is the
    skill you run *because* the state is unclear, so a precondition would give a dead
    end to the one skill whose job is to open one). They are duplicated because
    `npx skills add --skill ajian-build` installs a single skill directory: a shared

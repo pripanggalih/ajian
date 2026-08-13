@@ -18,9 +18,10 @@ Atribusi lengkap dan jujur ada di [`NOTICE.md`](NOTICE.md):
 ## Alurnya
 
 ```
-ide
+ide  (atau proyek warisan)
+  → ajian-adopt             hanya bila sudah ada dokumen berbentuk lain — survei, petakan, pindahkan
   → ajian-blueprint         grill ide (grill-1), tulis dokumen fondasi + roadmap
-  → per baris roadmap, berurutan:
+  → per baris roadmap, dari atas ke bawah:
       ajian-grill           recon kode nyata (grill-2), tajamkan work order sampai siap dibangun
       ajian-design          (khusus UI) serahkan permukaan ke impeccable → DESIGN.md
       ajian-plan            ubah work order jadi rencana implementasi kecil-kecil
@@ -37,6 +38,7 @@ berikutnya.
 | Skill | Peran |
 | --- | --- |
 | `ajian-map` | router sadar-keadaan — membaca proyek, menyebut posisimu dan skill berikutnya |
+| `ajian-adopt` | bawa proyek warisan masuk ke pipeline — survei dokumennya, petakan, perbaiki bentuk yang melenceng |
 | `ajian-blueprint` | interogasi ide, tulis dokumen fondasi + roadmap + work-order |
 | `ajian-grill` | recon kode nyata sebelum work-order, tajamkan dari brief ke siap-bangun |
 | `ajian-design` | turunkan PRODUCT.md dari blueprint, panggil impeccable untuk membangun UI |

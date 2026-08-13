@@ -18,15 +18,16 @@ on). Full, honest attribution is in [`NOTICE.md`](NOTICE.md):
 ## The flow
 
 ```
-idea
+idea  (or a project you inherited)
+  → ajian-adopt             only if docs already exist in another shape — survey, map, migrate
   → ajian-blueprint         grill the idea (grill-1), write the foundation docs + roadmap
-  → per roadmap line, in order:
+  → per roadmap row, top to bottom:
       ajian-grill           recon the real code (grill-2), sharpen the work order to buildable
       ajian-design          (UI only) hand the surface to impeccable → DESIGN.md
       ajian-plan            turn the work order into a bite-sized implementation plan
       ajian-build           run the whole plan in one subagent, commit per task, ledger = checkboxes
       ajian-review          2-axis review, then finish the branch
-  → next line
+  → next row
 ```
 
 `ajian-map` is the state-aware router: run it any time to find out where you are and what's next.
@@ -36,6 +37,7 @@ idea
 | Skill | Role |
 | --- | --- |
 | `ajian-map` | state-aware router — reads the project, says where you are and what to run next |
+| `ajian-adopt` | bring an inherited project onto the pipeline — survey its docs, map them in, repair drift |
 | `ajian-blueprint` | interrogate the idea, write the foundation docs + roadmap + work-orders |
 | `ajian-grill` | recon the real code before a work-order, sharpen it from brief to buildable |
 | `ajian-design` | derive PRODUCT.md from the blueprint, invoke impeccable to build the UI |

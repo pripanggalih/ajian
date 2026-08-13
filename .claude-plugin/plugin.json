@@ -21,6 +21,7 @@
   ],
   "skills": [
     "./skills/map",
+    "./skills/adopt",
     "./skills/blueprint",
     "./skills/grill",
     "./skills/design",

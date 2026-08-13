@@ -1,7 +1,7 @@
 # Ajian — Skillset Blueprint
 
 > Status: **design locked, skills implemented.** This document is the design
-> reference behind the `ajian` skillset. The seven skills, references, assets,
+> reference behind the `ajian` skillset. The eight skills, references, assets,
 > and dual-language docs now exist under `skills/` and `docs/`.
 
 `ajian` (Javanese: an incantation of power — each skill is one *ajian*) turns a
@@ -55,7 +55,7 @@ vendor and is installed separately. Everything else is prose we copy and adapt.
 
 ---
 
-## 3. The seven skills
+## 3. The eight skills
 
 Installed and named `ajian-<name>` (hyphen prefix = collision guard, and it is
 what the `skills` CLI uses for identity). Invoked e.g. `/ajian-build 03`.
@@ -63,6 +63,7 @@ what the `skills` CLI uses for identity). Invoked e.g. `/ajian-build 03`.
 | Skill | Role | Output | → Next |
 | --- | --- | --- | --- |
 | **`ajian-map`** | state-aware router; reads artifacts (blueprint exists? work-order Depth? plan file? git state?) → "you are at WO-03, next: build" | — | points to a skill |
+| **`ajian-adopt`** | survey an inherited project's documents, propose a per-document mapping onto the blueprint layout, migrate what is approved, repair shape drift in an older ajian layout | a readable `docs/` | `blueprint` (resumed) or `grill` |
 | **`ajian-blueprint`** | grill-1 (hybrid, per-theme, one continuous session) → foundation docs flat in `docs/` + ROADMAP + work-orders (all brief) | foundation docs | `grill 01` |
 | **`ajian-grill`** | grill-2 per work-order: recon the real code (subagent), promote brief→detailed, cover design questions if UI, write surface brief | detailed WO + surface brief | UI? `design` : `plan` |
 | **`ajian-design`** | derive `PRODUCT.md` lazily → invoke impeccable (surface brief → new-work → `/document`) → record the file inventory in the work order's `## Built surface` | `DESIGN.md` + UI | `plan` |
@@ -75,7 +76,9 @@ what the `skills` CLI uses for identity). Invoked e.g. `/ajian-build 03`.
 ## 4. Pipeline
 
 ```
-IDEA
+IDEA  (or an inherited project)
+ ├ ajian-adopt       only if documents already exist in another shape, or an older
+ │                   ajian layout drifted → survey, map, migrate    [Gate: mapping]
  └ ajian-blueprint   grill-1 → docs/ (foundation) + roadmap + work-orders (brief)
                      [Gate: foundation]  [Gate: roadmap — sizing is CRITICAL]
 
@@ -101,7 +104,7 @@ Two grill stages, two characters:
 
 ---
 
-## 5. Locked decisions (15)
+## 5. Locked decisions (16)
 
 1. **Hybrid grill engine.** mattpocock frontier/rounds mechanic, **railed by the
    six blueprint themes** (guarantees coverage of non-goals, stack, entities,
@@ -177,11 +180,11 @@ Two grill stages, two characters:
     line addressed to a user who cannot audit the work, and is what makes a gate
     decidable by someone who does not read code.
 
-    The block is **inlined and duplicated** across all seven skills rather than
+    The block is **inlined and duplicated** across all eight skills rather than
     factored into a shared reference, because the `skills` CLI installs one skill
     directory at a time; a shared file would resolve to a path absent on the user's
     machine — the same class of bug as the hardcoded impeccable path. `CLAUDE.md`
-    carries the identity check that keeps the seven copies in sync.
+    carries the identity check that keeps the eight copies in sync.
 15. **Every skill is its own gatekeeper.** The six skills with real prerequisites
     (`blueprint`, `grill`, `design`, `plan`, `build`, `review`) verify them from the
     artifacts on disk — a file, a `Depth:` field, a `Status:` field, a checkbox,
@@ -201,6 +204,31 @@ Two grill stages, two characters:
     `ajian-map` is deliberately exempt. It is the skill you run *because* the state
     is unclear; giving it a precondition would hand a dead end to the one skill whose
     job is to open one.
+16. **Adoption is a stage; insertion is not.** `ajian-adopt` (the eighth skill) exists
+    because the router's blueprint signal is a presence check on two filenames, so a
+    project whose documents are real but shaped differently reads identically to one
+    that has nothing — and `ajian-blueprint` would answer by writing a second set of
+    documents beside the first. It covers two cases: foreign document shapes, and an
+    older ajian layout that drifted. It **refuses** a project with code and no
+    documents (that is `blueprint` brownfield) and one already adopted (that is
+    `map`), it **never deletes** — content moves and a pointer stays — and it
+    **never invents a roadmap**, because the roadmap has a sizing gate that belongs to
+    `blueprint`.
+
+    Drift is detected by **shape, not by a version stamp.** A stamp is only as good as
+    the discipline that increments it, and a stale one is worse than none because the
+    reader trusts it; reading the artifact cannot lie. `adopt/references/shape-drift.md`
+    is the catalogue.
+
+    **Inserting a feature mid-roadmap is deliberately *not* a skill.** It is
+    `blueprint`'s resumed mode, promoted from a footnote to a full stage with its own
+    gate and three things it never had: an impact check against what already shipped,
+    a decision on unbuilt work orders the insertion makes obsolete (`superseded by NN`
+    or narrowed — never deleted, since they may already carry a plan, a report, or
+    commits), and a re-reading of `DECISIONS.md` for decisions the insertion falsifies.
+    The reason it stays in `blueprint` is ownership: the roadmap is the backbone, and a
+    second skill with the right to reorder its rows means two owners of one file —
+    drift that stays invisible until it is expensive.
 
 ---
 
@@ -246,6 +274,7 @@ ajian/
 │   └── marketplace.json         (optional)
 ├── skills/
 │   ├── map/SKILL.md
+│   ├── adopt/   SKILL.md + references/   (source-mapping, shape-drift)
 │   ├── blueprint/
 │   │   ├── SKILL.md
 │   │   ├── references/
@@ -282,7 +311,7 @@ meaning to convey rather than a string to copy — without it, an Indonesian use
 receives their six most consequential decisions in English, at exactly the moments
 comprehension matters most. Only `ajian-map` carries Indonesian triggers in its
 `description`, because it is the one skill a user reaches for without knowing the
-pipeline's vocabulary; spreading them across seven overlapping descriptions would
+pipeline's vocabulary; spreading them across eight overlapping descriptions would
 leave the router guessing. Per-skill doc pages follow the four-section format:
 What it does / When to reach for it / Common questions / It's working if.
 

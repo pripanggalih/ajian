@@ -7,8 +7,8 @@ All notable changes to `ajian` are recorded here. The format follows
 ## [Unreleased]
 
 ### Added
-- Initial seven-skill pipeline: `ajian-map`, `ajian-blueprint`, `ajian-grill`,
-  `ajian-design`, `ajian-plan`, `ajian-build`, `ajian-review`.
+- Initial eight-skill pipeline: `ajian-map`, `ajian-adopt`, `ajian-blueprint`,
+  `ajian-grill`, `ajian-design`, `ajian-plan`, `ajian-build`, `ajian-review`.
 - Plugin manifest (`.claude-plugin/plugin.json`) and marketplace entry.
 - Dual-language user docs (English default, Indonesian mirror).
 - Honest attribution of the upstream sources in `NOTICE.md`.
@@ -18,11 +18,23 @@ All notable changes to `ajian` are recorded here. The format follows
   a gate. `Evidence` requires real command output or a committed artifact path, which
   removes the agent's freedom to *assess* that a precondition holds; `Risk` is written
   for a user who cannot audit the work. The block is inlined and byte-identical in all
-  seven skills, because the `skills` CLI installs one skill directory at a time and a
+  eight skills, because the `skills` CLI installs one skill directory at a time and a
   shared reference file would resolve to a path absent on the user's machine.
   `CLAUDE.md` carries the identity check.
 
-- **Per-skill precondition contracts** (locked decision 15). The six skills with real
+- **`ajian-adopt`** (locked decision 16), the eighth skill: bring an inherited
+  project onto the pipeline. `ajian-map`'s blueprint signal is a presence check on two
+  filenames, so a project whose documents are real but shaped differently read
+  identically to one that had none — and `ajian-blueprint` answered by writing a second
+  set beside the first. Adopt surveys every document in the repo, proposes a
+  per-document mapping, and migrates only what is approved; it leaves a pointer where
+  content came from and never deletes, so every move is one `git revert` away. It also
+  repairs an older ajian layout by reading artifact **shape** rather than a version
+  stamp — a stamp is only as good as the discipline that increments it, and a stale one
+  is worse than none. It refuses a project with code and no documents (that is
+  `blueprint` brownfield), refuses one already adopted (that is `map`), and never
+  invents a roadmap, since the roadmap's sizing gate belongs to `blueprint`.
+- **Per-skill precondition contracts** (locked decision 15). The seven skills with real
   prerequisites verify them from the artifacts on disk — a file, a `Depth:` field, a
   `Status:` field, a checkbox, `git log` — never from what the conversation appears to
   say happened. On a failure they refuse, then offer **one** step in plain language:
@@ -43,7 +55,7 @@ All notable changes to `ajian` are recorded here. The format follows
   triggers on "I'm lost", "where do I start", and the Indonesian a stuck user
   actually types ("saya bingung", "mulai dari mana", "ini lanjut apa"). Only
   `ajian-map` gets these: it is the one skill reached for without knowing the
-  pipeline, and spreading them across seven overlapping descriptions would leave the
+  pipeline, and spreading them across eight overlapping descriptions would leave the
   router guessing.
 
 ### Changed
