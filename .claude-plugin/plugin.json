@@ -1,0 +1,31 @@
+{
+  "name": "ajian",
+  "description": "A gated skillset that turns a free-form idea into durable development docs, then builds the project one work-order at a time — grill, blueprint, design, plan, build, review. No session hooks. Greenfield and brownfield.",
+  "version": "0.1.0",
+  "author": {
+    "name": "pripanggalih",
+    "url": "https://github.com/pripanggalih"
+  },
+  "homepage": "https://github.com/pripanggalih/ajian",
+  "repository": "https://github.com/pripanggalih/ajian",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "blueprint",
+    "grilling",
+    "planning",
+    "code-review",
+    "workflow",
+    "greenfield",
+    "brownfield"
+  ],
+  "skills": [
+    "./skills/map",
+    "./skills/blueprint",
+    "./skills/grill",
+    "./skills/design",
+    "./skills/plan",
+    "./skills/build",
+    "./skills/review"
+  ]
+}

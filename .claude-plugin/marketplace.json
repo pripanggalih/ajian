@@ -1,0 +1,24 @@
+{
+  "name": "ajian",
+  "owner": {
+    "name": "pripanggalih",
+    "url": "https://github.com/pripanggalih"
+  },
+  "description": "Ajian — a gated development skillset (grill, blueprint, design, plan, build, review) as an installable plugin.",
+  "plugins": [
+    {
+      "name": "ajian",
+      "source": "./",
+      "description": "Turn a free-form idea into durable development docs, then build one work-order at a time.",
+      "category": "engineering",
+      "keywords": [
+        "skills",
+        "blueprint",
+        "grilling",
+        "planning",
+        "code-review",
+        "workflow"
+      ]
+    }
+  ]
+}
