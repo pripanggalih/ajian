@@ -1,7 +1,10 @@
 # Ajian — Skillset Blueprint
 
-> Status: **design locked, not yet implemented.** This document is the single
-> reference for building the `ajian` skillset. No skill code exists yet.
+> Status: **design locked, skills implemented.** This document is the design
+> reference behind the `ajian` skillset. The seven skills, references, assets,
+> and dual-language docs now exist under `skills/` and `docs/`. The repository
+> stays private until the `discussion-to-blueprint` license question in
+> `NOTICE.md` is resolved (see the checklist in §9).
 
 `ajian` (Javanese: an incantation of power — each skill is one *ajian*) turns a
 free-form idea into durable development documents, then builds the project one
