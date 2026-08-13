@@ -123,7 +123,7 @@ So establish availability, and gather **evidence** rather than issuing a verdict
    runtime offers **is** available, even when none of those paths match.
 
 - **Available by either signal** → continue to Step 1. Do not verify further, and do not go looking
-  for its scripts; Step 3 never calls them.
+  for its scripts; Step 4 never calls them.
 - **Neither signal** → you have evidence of absence, not proof of it. Show what you ran, and ask:
 
   ```
