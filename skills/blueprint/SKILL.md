@@ -327,9 +327,17 @@ Propose an ordered feature list. Each item must be a slice that produces working
 software on its own — not a layer ("build the database", "build the API") but a capability.
 Greenfield opens with the walking skeleton.
 
-Keep the granularity coarse: **one roadmap line is one work order is one build session.** Record
+Keep the granularity coarse: **one roadmap row is one work order is one build session.** Record
 build order, dependencies, and the reason for the order (dependency, risk-first, thinnest slice
 first).
+
+**Row order is build order; the number is identity.** A work order's number names its files
+(`work-orders/NN-*`, `plans/NN-*`, `plans/reports/NN-*`), so it is assigned once and never
+reassigned. Numbers are handed out in sequence as features are added, and a feature inserted later
+keeps whatever number it was given while sitting in the row where it must be built. Renumbering to
+keep the column tidy breaks every path, ADR reference, and commit message that names the old
+number — the tidiness is not worth it, and after the first insertion the column is expected to run
+out of sequence.
 
 **Gate 2 is a mini-interrogation, not a rubber stamp.** Put every line through the three sizing
 tests from `roadmap-sizing.md` — *sizing* (one build session), *slice* (vertical and demoable),

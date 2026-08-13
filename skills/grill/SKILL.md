@@ -107,7 +107,8 @@ This block is identical in every ajian skill. If its shape changes, it changes i
 ## Step 0 — Orient
 
 You are given a work order number (`NN`). If none was given, open `docs/ROADMAP.md` and take the
-lowest-numbered unticked line. Then:
+topmost unticked row — position in the table is the
+build order, not the number in the `#` column. Then:
 
 - Read `docs/work-orders/NN-<slug>.md` in full — its intent, scope, anchors, and **open questions**
   are the agenda for this pass.

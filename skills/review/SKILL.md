@@ -141,8 +141,9 @@ collides with the work order or plan.
 
 ## Step 3 — Tick the roadmap
 
-Once the review is clean, mark this work order's line done in `docs/ROADMAP.md` (its checkbox is the
-project-level record of what shipped). Record anything that changed a project-wide decision as a new
+Once the review is clean, tick this work order's **row** in `docs/ROADMAP.md` — find it by its
+number in the `#` column, not by its position, since rows get reordered and inserted (its checkbox
+is the project-level record of what shipped). Record anything that changed a project-wide decision as a new
 `docs/decisions/NNNN-*.md` with a ledger row — not buried in a commit message.
 
 ## Step 4 — Finish the branch
@@ -154,7 +155,14 @@ user's decision — present the menu and wait. Clean up the worktree per that sk
 
 ## Step 5 — Hand off
 
-The work order is merged and its roadmap line ticked. The next work order starts its own pass at
-`ajian-grill`. `ajian-map` will confirm which line is next.
+The work order is merged and its roadmap row ticked. The next work order starts its own pass at
+`ajian-grill`.
 
-**→ Next: `/ajian-grill NN+1`** for the next roadmap line (or `/ajian-map` to confirm where you are).
+**The next work order is not `NN+1`.** Build order is row order, and numbers are permanent
+identities that may run out of sequence after an insertion — so read the next number off the
+**topmost unticked row** of `docs/ROADMAP.md` rather than incrementing. Guessing `NN+1` sends the
+next pass at whatever feature happens to hold that number, which after any insertion is the wrong
+one.
+
+**→ Next: `/ajian-grill <number of the topmost unticked row>`** (or `/ajian-map`, which reads it
+for you).

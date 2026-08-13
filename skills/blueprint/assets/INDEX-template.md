@@ -40,7 +40,8 @@ newcomer needs before opening anything else.>
 
 ## How to run a work order
 
-1. Open the lowest-numbered unticked line in `ROADMAP.md`.
+1. Open the topmost unticked row in `ROADMAP.md` — row order is build order; the `#` column is
+   each work order's permanent identity and may run out of sequence after an insertion.
 2. Read its work order, plus the documents its "read first" list names.
 3. Build it, meeting the Definition of Done in `QUALITY.md`.
 4. Tick the roadmap line, and record anything that changed a project-wide decision as an ADR.

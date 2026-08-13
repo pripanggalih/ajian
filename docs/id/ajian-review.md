@@ -29,7 +29,11 @@ satu gelombang, centang baris `ROADMAP`, lalu selesaikan branch (merge / PR / si
   Path yang dikecualikan disebutkan di laporan.
 - **Apakah ia memutuskan merge?** Tidak. Ia menyajikan menu merge / PR / simpan dan menunggu — integrasi
   keputusanmu. Membuang kerja hanya terjadi kalau kamu meminta eksplisit.
-- **Apa yang dicentang?** Baris `ROADMAP`, begitu review bersih — itulah catatan tingkat proyek soal apa yang dikirim.
+- **Apa yang dicentang?** Baris `ROADMAP`, begitu review bersih — itulah catatan tingkat proyek soal
+  apa yang dikirim. Barisnya dicari lewat nomornya, bukan posisinya, karena baris bisa dipindah.
+- **Work order berikutnya yang mana?** **Baris tak tercentang paling atas**, bukan `NN+1`. Nomor
+  adalah identitas permanen yang bisa jadi tak berurutan begitu ada fitur disisipkan di tengah
+  roadmap, jadi urutannya dibaca dari barisnya. `/ajian-map` membacakannya untukmu.
 
 ## Tanda berhasil
 

@@ -46,6 +46,20 @@ All notable changes to `ajian` are recorded here. The format follows
   pipeline, and spreading them across seven overlapping descriptions would leave the
   router guessing.
 
+### Changed
+- **Roadmap row order is build order; the `#` column is a permanent identity.** One
+  number used to carry both jobs — naming a work order's files and fixing its place
+  in the queue — so inserting a feature mid-build forced a choice between
+  renumbering (breaking `work-orders/NN-*`, `plans/NN-*`, `plans/reports/NN-*`, ADR
+  references and commit messages) and appending (breaking the order). Splitting them
+  retires the choice: rows move, numbers never do, and the column is expected to run
+  out of sequence after the first insertion. "Lowest-numbered unticked line" becomes
+  "topmost unticked row" in `ajian-map`, `ajian-grill`, `ROADMAP-template` and
+  `INDEX-template`; `ajian-review` no longer hands off to `NN+1`, which after any
+  insertion points at whichever feature happens to hold that number. Existing
+  roadmaps are unaffected — while numbers still run in sequence both rules give the
+  same answer.
+
 ### Fixed
 - `ajian-map`'s UI signal read `DESIGN.md` to decide whether a surface was built. The
   record is the work order's `## Built surface` Status, so an interrupted design

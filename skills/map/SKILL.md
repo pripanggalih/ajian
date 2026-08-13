@@ -72,9 +72,11 @@ Read these signals, cheapest first, and stop at the first that tells you the ans
 
 1. **Is there a blueprint?** Look for `docs/INDEX.md` and `docs/ROADMAP.md`.
    - **No** → you are before the pipeline. **Next: `ajian-blueprint`** (grill-1 → foundation docs).
-2. **Which work order is current?** In `docs/ROADMAP.md`, the current line is the lowest-numbered
-   **unticked** line. Call it `NN`. (All ticked → the roadmap is done; offer to extend it via
-   `ajian-blueprint` in resumed mode.)
+2. **Which work order is current?** In `docs/ROADMAP.md`, the current line is the **topmost unticked
+   row** of the table — position in the table is the build order, not the number in the `#` column.
+   A work order's number is its permanent identity (it names its files); rows get reordered and
+   inserted, numbers never move. Take that row's number and call it `NN`. (All ticked → the roadmap
+   is done; offer to extend it via `ajian-blueprint` in resumed mode.)
 3. **What Depth is work order `NN`?** Open `docs/work-orders/NN-<slug>.md`, read its `Depth:` field.
    - **`brief`** → it hasn't been sharpened against real code. **Next: `ajian-grill NN`**.
    - **`detailed`** → continue.

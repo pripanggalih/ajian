@@ -68,7 +68,7 @@ what the `skills` CLI uses for identity). Invoked e.g. `/ajian-build 03`.
 | **`ajian-design`** | derive `PRODUCT.md` lazily → invoke impeccable (surface brief → new-work → `/document`) → record the file inventory in the work order's `## Built surface` | `DESIGN.md` + UI | `plan` |
 | **`ajian-plan`** | writing-plans reads detailed WO + anchored blueprint docs → bite-sized plan | plan file | `build` |
 | **`ajian-build`** | execute the plan in **one fresh subagent**, commit-per-task + ledger, **no per-task review** | code + commits | `review` |
-| **`ajian-review`** | code-review 2-axis (mattpocock) + receiving-code-review discipline → finishing branch | verdict + merge | tick ROADMAP, `grill NN+1` |
+| **`ajian-review`** | code-review 2-axis (mattpocock) + receiving-code-review discipline → finishing branch | verdict + merge | tick ROADMAP, `grill` the next row |
 
 ---
 
@@ -114,10 +114,19 @@ Two grill stages, two characters:
    the work-order owns the *what* — two layers, no conflict.
 4. **Work-order → plan directly.** No to-tickets layer. Decomposition already
    happens at the roadmap and inside writing-plans.
-5. **Roadmap is the backbone.** Its gate is a mini-interrogation; each line must
+5. **Roadmap is the backbone.** Its gate is a mini-interrogation; each row must
    pass sizing (one build session) / slice (vertical, demoable) / order
    (dependency, risk, thinnest-first). The value of `to-tickets` sizing lives
-   here, as rails — not as a layer.
+   here, as rails — not as a layer. **Amended:** row order is build order, and the
+   `#` column is a permanent identity, never a position. A number names a work
+   order's files (`work-orders/NN-*`, `plans/NN-*`, `plans/reports/NN-*`), so
+   reassigning it breaks every path, ADR reference, and commit message that used
+   it. Before this, one number carried both jobs, and inserting a feature mid-build
+   forced a choice between renumbering (breaking references) and appending
+   (breaking order). Splitting the two retires that choice: rows move freely,
+   numbers never do, and after the first insertion the column is expected to run
+   out of sequence. Downstream this also retires `NN+1` as a way to find the next
+   work order — it is read off the topmost unticked row.
 6. **Glossary.** `docs/GLOSSARY.md`, in mattpocock `CONTEXT.md` format (with the
    `_Avoid_:` synonym discipline).
 7. **ADRs.** One file per ADR at `decisions/NNNN-*.md` (context-thrifty, attach

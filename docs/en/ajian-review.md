@@ -29,11 +29,14 @@ before implementing, no performative agreement, push back with reasoning), fix i
   in the report.
 - **Does it decide the merge?** No. It presents the merge / PR / keep menu and waits — integration is
   your call. Discarding work happens only if you explicitly ask.
-- **What gets ticked?** The `ROADMAP` line, once the review is clean — that's the project-level record
-  of what shipped.
+- **What gets ticked?** The `ROADMAP` row, once the review is clean — that's the project-level record
+  of what shipped. It finds the row by its number, not its position, since rows get reordered.
+- **What's the next work order?** The **topmost unticked row**, not `NN+1`. Numbers are permanent
+  identities that can run out of sequence once a feature has been inserted mid-roadmap, so the
+  order is read from the row. `/ajian-map` reads it for you.
 
 ## It's working if
 
 The two axes are reported cleanly and separately, confirmed findings are fixed and re-verified, the
-roadmap line is ticked, and the branch is integrated the way you chose — after which `ajian-grill`
-starts the next line.
+roadmap row is ticked, and the branch is integrated the way you chose — after which `ajian-grill`
+starts the next row.
