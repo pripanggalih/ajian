@@ -101,7 +101,7 @@ Two grill stages, two characters:
 
 ---
 
-## 5. Locked decisions (13)
+## 5. Locked decisions (14)
 
 1. **Hybrid grill engine.** mattpocock frontier/rounds mechanic, **railed by the
    six blueprint themes** (guarantees coverage of non-goals, stack, entities,
@@ -147,12 +147,32 @@ Two grill stages, two characters:
     standards; Spec = faithful to the work-order) + receiving-code-review for how
     to respond to findings.
 12. **No hooks.** Chaining via `→ Next` breadcrumbs at the end of each skill +
-    the state-aware `ajian-map`.
+    the state-aware `ajian-map`. **Reaffirmed** when the gate protocol (14) was
+    added: enforcement was the strongest argument for hooks, and it was declined.
+    A hook enforces only where a hook runs, and ajian claims to be harness-agnostic;
+    trading portability for compliance would buy compliance in one harness and lose
+    it in every other. Gates are enforced by evidence instead — see 14.
 13. **Parallelism.** Default sequential. **Intra-task parallel is rejected**
     (tight coupling → semantic bugs). Parallel only across **independent
     work-orders** (opt-in, git worktrees, gated by dependency edges + a conflict
     scan); interactive phases (grill/design) stay sequential — only plan+build
     fan out.
+14. **Gates are cleared by evidence, not by judgement.** Every gate in every skill
+    is written as one fixed block — `GATE / Done / Evidence / Decide / Risk` — and
+    a stop that omits it is not a gate. Prose gates had already been tried and had
+    already failed: commit `7def67f` hardened the impeccable gate into "a blocking
+    step, not prose", and it was still the gate that got walked through. The
+    diagnosis is that the agent was never short of emphasis — it was left free to
+    *assess* whether a precondition held. `Evidence` removes that freedom by
+    requiring real command output or a committed artifact path. `Risk` is the one
+    line addressed to a user who cannot audit the work, and is what makes a gate
+    decidable by someone who does not read code.
+
+    The block is **inlined and duplicated** across all seven skills rather than
+    factored into a shared reference, because the `skills` CLI installs one skill
+    directory at a time; a shared file would resolve to a path absent on the user's
+    machine — the same class of bug as the hardcoded impeccable path. `CLAUDE.md`
+    carries the identity check that keeps the seven copies in sync.
 
 ---
 

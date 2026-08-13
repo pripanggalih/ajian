@@ -29,7 +29,22 @@ ajian-blueprint  →  per roadmap line, in order:
 
 ## The gates (where you decide)
 
-Ajian never makes an expensive-to-undo decision for you. It stops and waits at:
+Ajian never makes an expensive-to-undo decision for you. Every stop is written in the same shape,
+so a skipped gate is visible by its absence:
+
+```
+GATE — <name of the gate>
+Done:     <what the agent actually did>
+Evidence: <real command output, or a committed file path — not "looks good to me">
+Decide:   <the question you answer>
+Risk:     <what breaks if this is wrong and it proceeds anyway>
+```
+
+`Risk` is the line written for you specifically. If you can't read the code, that line is how you
+still decide well — it says what it costs to be wrong. If a gate arrives without `Evidence`, the
+agent is asking you to trust its impression; ask it to show you.
+
+It stops and waits at:
 
 - **Foundation** — after the docs are written, before the roadmap (in `ajian-blueprint`).
 - **Roadmap** — the sizing mini-interrogation, before work orders exist (in `ajian-blueprint`).

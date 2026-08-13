@@ -25,6 +25,28 @@ verifies, corrects, and finishes.
 - `ajian-build NN` left a green, committed branch (its plan's checkboxes all ticked).
 - The detailed work order `docs/work-orders/NN-<slug>.md` exists — it is the Spec axis's source.
 
+## The gate protocol
+
+A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
+the shape is fixed, and a stop that omits it is not a gate:
+
+```
+GATE — <name of the gate>
+Done:     <what you actually did, one line>
+Evidence: <real command output, or the path of a committed artifact — not your own assessment>
+Decide:   <what the user has to decide, phrased as a question they can answer>
+Risk:     <what breaks if this is wrong and you proceed anyway>
+```
+
+Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
+wants.
+
+`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
+judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+
+This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+
 ## Pipeline
 
 ```
@@ -56,7 +78,19 @@ Run the review per [references/two-axis-review.md](references/two-axis-review.md
 
 Spawn both as parallel sub-agents so they don't pollute each other's context. Present the two
 reports under `## Standards` and `## Spec`, side by side — **do not merge or rerank** them; the
-separation is the point (code can pass one axis and fail the other).
+separation is the point (code can pass one axis and fail the other). Close the presentation with
+the gate:
+
+```
+GATE — Review findings
+Done:     Ran both axes against the diff from <merge-base hash> to HEAD
+Evidence: <files and line count reviewed> · <paths scoped out of Standards as impeccable's
+          built surface> · <N> Standards findings, <M> Spec findings, listed above
+Decide:   Which findings should I fix, and which do you want to push back on?
+Risk:     Findings are input to evaluate, not orders. Fixing a wrong one changes working code
+          for a reviewer's preference; ignoring a real one ships it. I have marked which ones
+          I think are which — tell me where I am wrong.
+```
 
 ## Step 2 — Respond to the findings
 

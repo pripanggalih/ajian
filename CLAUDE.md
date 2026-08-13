@@ -32,8 +32,21 @@ document, and a change that contradicts it is a bug in one of the two.
    — that string is all the router and the harness see before loading the body.
 5. **No hooks.** Chaining is explicit: each skill ends with a `→ Next` breadcrumb,
    and `ajian-map` reads project state to tell the user where they are.
+6. **The gate protocol is one text in seven copies.** Every `SKILL.md` carries the
+   `## The gate protocol` section inline and byte-identical. It is duplicated rather
+   than shared because `npx skills add --skill ajian-build` installs a single skill
+   directory — a file outside it would be a path that does not exist on the user's
+   machine. Change it in all seven or in none:
+
+   ```bash
+   for f in skills/*/SKILL.md; do
+     sed -n '/^## The gate protocol$/,/^This block is identical in every ajian skill\./p' "$f" \
+       | shasum | cut -c1-12
+   done | sort -u | wc -l    # must print 1
+   ```
 
 ## Before you push
 
 - Confirm the change still matches `docs/ajian-blueprint.md`, or update both.
 - Keep `NOTICE.md` accurate if you add, drop, or re-source any vendored block.
+- Run the gate-protocol identity check above.

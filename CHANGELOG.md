@@ -13,6 +13,15 @@ All notable changes to `ajian` are recorded here. The format follows
 - Dual-language user docs (English default, Indonesian mirror).
 - Honest attribution of the upstream sources in `NOTICE.md`.
 
+- **The gate protocol** (locked decision 14). Every gate in every skill is one fixed
+  block — `GATE / Done / Evidence / Decide / Risk` — and a stop that omits it is not
+  a gate. `Evidence` requires real command output or a committed artifact path, which
+  removes the agent's freedom to *assess* that a precondition holds; `Risk` is written
+  for a user who cannot audit the work. The block is inlined and byte-identical in all
+  seven skills, because the `skills` CLI installs one skill directory at a time and a
+  shared reference file would resolve to a path absent on the user's machine.
+  `CLAUDE.md` carries the identity check.
+
 ### Fixed
 - `ajian-build`'s executor report had an undefined destination (`[REPORT_FILE]` was
   never resolved anywhere), so reports landed next to the plans and mixed up

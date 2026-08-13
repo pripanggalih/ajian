@@ -32,6 +32,28 @@ Two things make grill-2 different from grill-1:
   built — reach them, each with a recommendation. Everything a subagent can settle, a subagent
   settles.
 
+## The gate protocol
+
+A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
+the shape is fixed, and a stop that omits it is not a gate:
+
+```
+GATE — <name of the gate>
+Done:     <what you actually did, one line>
+Evidence: <real command output, or the path of a committed artifact — not your own assessment>
+Decide:   <what the user has to decide, phrased as a question they can answer>
+Risk:     <what breaks if this is wrong and you proceed anyway>
+```
+
+Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
+wants.
+
+`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
+judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+
+This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+
 ## Pipeline
 
 ```
@@ -127,8 +149,17 @@ accessibility baseline and brand non-negotiables — leaving the realised visual
 Show the user the promoted work order — specifically the flows, the resolved questions, and any
 new ADR — and wait:
 
-> "Work order NN is now detailed: <one line on what the recon changed and what you decided>.
-> Review the flows and the resolved questions before I hand it on. Tell me what to change."
+```
+GATE — Work order NN detailed
+Done:     Promoted work order NN from brief to detailed against the code as it is
+Evidence: <what recon actually found — paths, existing modules, conventions the shipped code
+          follows and where they drift from CONVENTIONS.md> · <the flows and resolved
+          questions as written> · <any new ADR file path>
+Decide:   Do the flows and the resolved questions match what you want built?
+Risk:     This work order is the Spec axis ajian-review judges the finished code against. A
+          flow that is wrong here produces code that passes review while being wrong, which is
+          the most expensive kind of wrong in this pipeline.
+```
 
 Apply changes, then commit the work order (and any new ADR / DESIGN-SYSTEM seed).
 

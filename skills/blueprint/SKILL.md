@@ -93,6 +93,28 @@ able to attach a single ADR without pulling the whole log into context. Both hav
 test-strategy file, because DoD and gates are what an executing agent actually opens; testing
 philosophy alone is not.
 
+## The gate protocol
+
+A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
+the shape is fixed, and a stop that omits it is not a gate:
+
+```
+GATE — <name of the gate>
+Done:     <what you actually did, one line>
+Evidence: <real command output, or the path of a committed artifact — not your own assessment>
+Decide:   <what the user has to decide, phrased as a question they can answer>
+Risk:     <what breaks if this is wrong and you proceed anyway>
+```
+
+Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
+wants.
+
+`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
+judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+
+This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+
 ## Pipeline
 
 ```
@@ -240,12 +262,19 @@ So make it discoverable by the tools that will actually read it:
 
 ### Gate 1
 
-Commit, then stop:
+Commit first — the `Evidence` line has to point at something that exists in git — then stop:
 
-> "Blueprint written to `docs/` and committed, and `<AGENTS.md|CLAUDE.md>` now points
-> at it. Review the stack in ARCHITECTURE, the entities in DATA-MODEL, and the non-goals in
-> PRD — those are the hardest to correct later. Tell me what to change before I build the
-> roadmap."
+```
+GATE — Foundation
+Done:     Wrote and committed the foundation documents; wired the pointer into <AGENTS.md|CLAUDE.md>
+Evidence: <git commit hash and the file list it touched, from `git show --stat`>
+Decide:   Review the stack in ARCHITECTURE, the entities in DATA-MODEL, and the non-goals in
+          PRD — those are the hardest to correct later. What should change before I build
+          the roadmap?
+Risk:     Every work order, plan, and build downstream is written against these files. A wrong
+          stack or a missing non-goal here is not a document defect — it is code that gets
+          written and later thrown away.
+```
 
 Wait. Apply the changes, re-run the self-review, and only then continue.
 
@@ -267,8 +296,20 @@ first).
 **Gate 2 is a mini-interrogation, not a rubber stamp.** Put every line through the three sizing
 tests from `roadmap-sizing.md` — *sizing* (one build session), *slice* (vertical and demoable),
 *order* (dependencies respected, risk and the thinnest slice first) — and split or merge any line
-that fails, out loud, before you present it. Then present the list and wait. Once approved, write
-`ROADMAP.md` from its template.
+that fails, out loud, before you present it. Then present the list as a gate and wait:
+
+```
+GATE — Roadmap
+Done:     Ordered <N> feature lines and ran each through the sizing / slice / order tests
+Evidence: <the ordered list, and for each line the test result — including every line you
+          split or merged, and why>
+Decide:   Is this the order you want built, and is any line still too big for one session?
+Risk:     One roadmap line is one work order is one build session. A line that is too big
+          produces a plan that stalls halfway through the build; a wrong order means building
+          against a dependency that does not exist yet. Both are found late and cost the line.
+```
+
+Once approved, write `ROADMAP.md` from its template.
 
 ## Step 5 — Write the work orders
 

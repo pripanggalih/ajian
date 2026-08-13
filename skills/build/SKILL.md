@@ -33,6 +33,28 @@ it is the heart of this skill.
 - You are not on `main`/`master`. Never start implementation on the default branch without the
   user's explicit consent.
 
+## The gate protocol
+
+A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
+the shape is fixed, and a stop that omits it is not a gate:
+
+```
+GATE — <name of the gate>
+Done:     <what you actually did, one line>
+Evidence: <real command output, or the path of a committed artifact — not your own assessment>
+Decide:   <what the user has to decide, phrased as a question they can answer>
+Risk:     <what breaks if this is wrong and you proceed anyway>
+```
+
+Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
+wants.
+
+`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
+judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+
+This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+
 ## Pipeline
 
 ```
@@ -63,10 +85,18 @@ whole plan into your own context repeatedly — hand it to the executor as a fil
 ## Step 1 — Pre-flight conflict scan
 
 Before dispatching, scan the plan once for internal contradictions and mandates a reviewer would
-treat as defects (see the pre-flight section of `executor-and-ledger.md`). Present anything found
-as **one batched question** — each finding beside the plan text that mandates it, asking which
-governs. If the scan is clean, proceed without comment. The build is not the place to discover the
-plan fights itself.
+treat as defects (see the pre-flight section of `executor-and-ledger.md`). If the scan is clean,
+proceed without comment. If it is not, stop for **one batched gate** — never one question per
+finding. The build is not the place to discover the plan fights itself.
+
+```
+GATE — Plan conflicts
+Done:     Scanned the plan for internal contradictions before dispatching the executor
+Evidence: <each finding quoted beside the plan text that mandates it, with task numbers>
+Decide:   For each: which one governs?
+Risk:     The executor runs the whole plan continuously without checking in. A contradiction I
+          resolve by guessing becomes committed code in whichever direction I guessed.
+```
 
 ## Step 2 — Execute (one subagent, whole plan)
 
@@ -88,8 +118,20 @@ Handle its return status:
   them before moving on. Proceed to verify.
 - **NEEDS_CONTEXT:** provide the missing context and re-dispatch (same model).
 - **BLOCKED:** assess. Context problem → re-dispatch with more context. Needs more reasoning →
-  re-dispatch one model tier up. Plan is wrong → stop and escalate to the user. Never force the
-  same model to retry unchanged.
+  re-dispatch one model tier up. Plan is wrong → stop and escalate to the user as a gate. Never
+  force the same model to retry unchanged.
+
+  ```
+  GATE — Build blocked
+  Done:     Executor stopped at task <N> of <M>; tasks 1–<N-1> are committed and ticked
+  Evidence: <the executor's BLOCKED reason verbatim> · <git log of what landed> · <the plan
+            text at task N>
+  Decide:   The plan is wrong at task <N>. Fix the plan (`/ajian-plan NN`), change the
+            approach, or drop the task?
+  Risk:     The branch is half-built and the ledger says so. Guessing a fix here writes code
+            the plan never described, which the Spec axis will flag at review as something
+            built that nobody asked for.
+  ```
 
 Never dispatch a second implementer subagent against the same tree in parallel — commits would
 interleave. (Parallel is only ever across *independent* work orders, opt-in, each in its own

@@ -38,6 +38,28 @@ created by `ajian-build` at execution time — not here.
 **Save plans to:** `docs/plans/NN-<slug>.md`, matching the work order number. **Commit the plan** —
 its `- [ ]` checkboxes are the ledger `ajian-build` ticks as it goes, so it must be in git.
 
+## The gate protocol
+
+A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
+the shape is fixed, and a stop that omits it is not a gate:
+
+```
+GATE — <name of the gate>
+Done:     <what you actually did, one line>
+Evidence: <real command output, or the path of a committed artifact — not your own assessment>
+Decide:   <what the user has to decide, phrased as a question they can answer>
+Risk:     <what breaks if this is wrong and you proceed anyway>
+```
+
+Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
+wants.
+
+`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
+judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+
+This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+
 ## Existing surface — plan the wiring, not the screens
 
 If the work order has UI, `ajian-design` ran before you and impeccable **already built the
@@ -216,10 +238,16 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 After writing the plan, **commit it** (`docs/plans/NN-<slug>.md`) — the checkboxes are the ledger,
 so the plan lives in git before execution starts. Then stop for the plan gate:
 
-> "Plan complete, committed to `docs/plans/NN-<slug>.md`. Review it before I build — this is the
-> last stop before code. When you approve, `/ajian-build NN` runs the whole plan in one fresh
-> subagent, ticking these checkboxes and committing per task, with the code review saved for the
-> end."
+```
+GATE — Plan
+Done:     Wrote and committed the implementation plan for work order NN
+Evidence: docs/plans/NN-<slug>.md @ <commit hash> · <N> tasks · self-review run: spec coverage,
+          placeholder scan, type consistency <what each turned up>
+Decide:   This is the last stop before code. What should change before I build?
+Risk:     `/ajian-build NN` runs this whole plan in one fresh subagent, committing per task
+          without checking in. Anything wrong here becomes committed code before you see it
+          again, and the review that would catch it does not run until the build is finished.
+```
 
 Wait for approval; apply any changes and re-commit. There is one executor — `ajian-build` — by
 design: one fresh subagent, the checkbox ledger, commit per task, and a single review at the end

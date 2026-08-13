@@ -19,6 +19,28 @@ description: >-
 You don't remember every skill or where you left off — especially after a compaction. So ask. This
 skill reads the project and tells you which of the seven skills to run next.
 
+## The gate protocol
+
+A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
+the shape is fixed, and a stop that omits it is not a gate:
+
+```
+GATE — <name of the gate>
+Done:     <what you actually did, one line>
+Evidence: <real command output, or the path of a committed artifact — not your own assessment>
+Decide:   <what the user has to decide, phrased as a question they can answer>
+Risk:     <what breaks if this is wrong and you proceed anyway>
+```
+
+Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
+wants.
+
+`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
+judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+
+This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+
 ## The pipeline (idea → shipped)
 
 ```
@@ -56,10 +78,22 @@ Read these signals, cheapest first, and stop at the first that tells you the ans
    - **All boxes ticked and the branch merged / roadmap line ticked** → this work order is done.
      Go back to signal 2 for the next line.
 
-Report the finding in one line, e.g.:
+Report the finding as a gate block. Routing is a decision — yours to inform, the user's to make —
+and the `Evidence` line is what stops a confident guess from passing as a reading of the project:
 
-> "Blueprint present. Work order 03 is `detailed`, no UI, plan exists with 4/7 tasks ticked. You are
-> mid-build. **Next: `/ajian-build 03`** — it resumes at task 5."
+```
+GATE — Where you are
+Done:     Read ROADMAP.md, work order 03, and docs/plans/03-booking-form.md
+Evidence: ROADMAP: lines 01–02 ticked, 03 unticked · WO 03 `Depth: detailed`, no UI
+          docs/plans/03-booking-form.md: 4 of 7 task boxes ticked · git log: 4 task commits
+Decide:   You are mid-build on work order 03. Run `/ajian-build 03` to resume at task 5?
+Risk:     If those 4 commits are not actually on this branch, the build restarts work that
+          exists and you get duplicate commits. Say so and I will check before resuming.
+```
+
+**One step, never a chain.** Name the single next skill and ask. Do not offer to run the rest of
+the pipeline for the user, and do not run even the one skill until they say so — routing that
+launches itself is the thing this skill exists instead of.
 
 ## When the signals conflict
 
