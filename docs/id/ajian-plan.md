@@ -27,6 +27,12 @@ tonton lulus, commit). Rencana disimpan ke `docs/plans/NN-<slug>.md` dan **masuk
   `## Existing surface` yang memberitahu executor file mana yang tidak boleh dibuat ulang.
   Menspesifikasi ulang kualitas visual di luar batas; kalau surface-nya salah, itu urusan
   `/ajian-design NN`.
+- **Work order UI-ku ditolak dan disebut soal Status.** Work order UI hanya bisa direncanakan pada
+  `Status: recorded`. `not yet designed` berarti jalankan `/ajian-design NN` dulu. `handed to
+  impeccable` berarti design sudah dimulai, kendali berpindah ke impeccable, dan tidak pernah
+  kembali untuk mencatat apa yang terbangun — jadi tidak ada yang tahu file mana saja yang ada.
+  Jalankan ulang `/ajian-design NN`; ia melanjutkan di langkah pencatatan, bukan membangun ulang
+  surface-nya.
 - **Tanpa placeholder?** Betul — tiap langkah memuat isi sebenarnya; "tambahkan penanganan error" atau
   "mirip Task N" adalah kegagalan plan.
 

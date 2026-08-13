@@ -60,8 +60,20 @@ Plan around them:
   direction passed impeccable's gate. If the surface is genuinely wrong for the work order, that is
   a `/ajian-design NN` problem, not a plan task.
 
-If the work order has UI and `## Built surface` says "Not yet designed", stop and send it to
-`/ajian-design NN`. Planning a surface that is about to be generated wastes both.
+**A UI work order is only plannable at `Status: recorded`.** Read the `## Built surface` Status
+before anything else and treat it as a gate, not a hint:
+
+- **`recorded`** — the inventory is real. Plan around it.
+- **`not yet designed`** — the surface does not exist yet. Stop and send it to `/ajian-design NN`.
+  Planning a surface that is about to be generated wastes both.
+- **`handed to impeccable`** — `ajian-design` reached the handoff and never came back to record what
+  was built. Something may well be in the tree, but nothing here knows what. **Do not infer the
+  inventory from `git diff`** — the guess goes wrong precisely on the files both sides touch, which
+  are the expensive ones. Stop and send it back to `/ajian-design NN`; it resumes at the recording
+  step rather than rebuilding.
+
+This is the one check that catches an interrupted design handoff. Skipping it is how a plan ends up
+containing tasks to create screens that already exist.
 
 ## Scope Check
 

@@ -109,6 +109,9 @@ brief (never removing the brief's intent, scope, or acceptance criteria):
 - **Data effects** — which entities are created, read, updated, invalidated, and which
   `DATA-MODEL.md` invariants it upholds.
 - **Screens & states** (UI only) — the surface's design brief from step 2, by name.
+- **Built surface** (UI only) — leave it at `Status: not yet designed`. The section exists so
+  `ajian-design` has somewhere to stamp the handoff before it invokes impeccable; do not fill it
+  in, and do not delete it from a work order that has UI.
 - **Resolved questions** — each open question, with its answer and where the answer now lives.
 
 **Still no implementation steps, function names, or code.** `detailed` deepens *what must be true*;

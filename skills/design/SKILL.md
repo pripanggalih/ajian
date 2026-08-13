@@ -39,10 +39,12 @@ does not second-guess it. The only things ajian supplies are the two seams below
 ```
 0  Gate              impeccable available? no → show the evidence, ask, STOP            [BLOCKING]
 1  Orient            read the work order's design brief + DESIGN-SYSTEM constraints
+                     Status already `handed to impeccable`? → this is a re-entry, resume at 5
 2  Derive PRODUCT    lazy projection of the blueprint → PRODUCT.md (once), gap-fill only
-3  Invoke impeccable new-work for this surface, seeded with the design brief → DESIGN.md + UI
-4  Record            ensure DESIGN.md reflects the built surface (/impeccable document if needed)
-5  Hand off          commit · → plan
+3  Mark the handoff  Built surface → `handed to impeccable` + branch, commit    [before you leave]
+4  Invoke impeccable new-work for this surface, seeded with the design brief → DESIGN.md + UI
+5  Record            ensure DESIGN.md reflects the built surface (/impeccable document if needed)
+6  Inventory         Built surface → files + Status `recorded`, commit · → plan
 ```
 
 ---
@@ -96,6 +98,16 @@ Read the detailed work order `docs/work-orders/NN-<slug>.md` — specifically **
 (the design brief) — and `docs/DESIGN-SYSTEM.md` (the thin constraints: accessibility baseline and
 brand non-negotiables). These are the answers you will hand impeccable so it does not re-interview.
 
+**Read `## Built surface` first, and branch on its Status:**
+
+- **`not yet designed`** — the normal path. Continue to Step 2.
+- **`handed to impeccable`** — a previous run reached the handoff and never came back (see Step 3).
+  The surface may already exist. **Do not re-invoke impeccable.** Skip to Step 5 and record what is
+  actually in the tree on the branch the stamp names. If the tree holds nothing, say so and ask
+  whether to restart the handoff.
+- **`recorded`** — this surface is already designed and inventoried. Say so and stop; re-designing
+  it is a `/ajian-design NN` the user must ask for deliberately, not one you decide on.
+
 ## Step 2 — Derive PRODUCT.md (lazy projection of the blueprint)
 
 impeccable reads `PRODUCT.md` at the repo root for product truth. In ajian that truth already
@@ -112,7 +124,24 @@ exists — in the blueprint — so **do not run impeccable's interactive `init`*
 
 Commit `PRODUCT.md` if it was created or changed.
 
-## Step 3 — Invoke impeccable (new-work)
+## Step 3 — Mark the handoff before you make it
+
+You are about to hand control to another skill. It has its own flow, its own gates, and its own
+closing breadcrumb — and it does not owe you a return. Steps 5 and 6 below may simply never run.
+
+So write the record of the handoff **now**, while you still hold the turn. In the work order's
+`## Built surface`:
+
+- **Status:** `handed to impeccable`
+- **Branch:** the branch impeccable's output must land on — the one `ajian-build` will extend
+
+Commit that. It costs one commit and it converts the failure mode from silent to loud: if control
+never returns, the stamp is on disk, `ajian-plan` refuses the work order until the inventory is
+real, and re-running `/ajian-design NN` resumes at Step 5 instead of building the surface twice.
+Without it, an interrupted handoff looks exactly like a work order that was never designed — and
+the next skill down cheerfully plans screens that already exist.
+
+## Step 4 — Invoke impeccable (new-work)
 
 Hand the surface to impeccable and let it run its own flow, seeded with the design brief so its
 interview collapses to a confirmation rather than a fresh interrogation:
@@ -135,7 +164,7 @@ Do not reimplement any of impeccable's steps here. If impeccable asks for someth
 already settled, answer from the blueprint; if it surfaces a genuine new decision, that is the
 user's to make.
 
-## Step 4 — Record the realised design
+## Step 5 — Record the realised design
 
 `DESIGN.md` is the realised visual source of truth. new-work normally writes or replaces it; if for
 any reason the built surface is not reflected in `DESIGN.md`, run `/impeccable document` to record
@@ -146,20 +175,20 @@ If the build revealed a durable constraint the blueprint should own (a brand com
 rule), fold it back into `docs/DESIGN-SYSTEM.md` — the thin constraints stay in the blueprint,
 the realised system stays in `DESIGN.md`.
 
-## Step 5 — Record the inventory, then hand off
+## Step 6 — Record the inventory, then hand off
 
 The surface now exists as real code in the tree. Everything downstream has to know that, or it will
 build it a second time. Two things make the handoff survive:
 
 **Commit it where the build will find it.** Commit the built surface, `DESIGN.md`, and
-`.impeccable/` **on the branch `ajian-build` will extend** — the feature branch for `NN` if one
-exists, otherwise the branch the build will fork from. A surface committed on a branch the build
-never sees is a surface the build rebuilds.
+`.impeccable/` **on the branch `ajian-build` will extend** — the branch Step 3 stamped. A surface
+committed on a branch the build never sees is a surface the build rebuilds.
 
-**Fill the work order's `## Built surface` section** in `docs/work-orders/NN-<slug>.md`: the branch,
-the files impeccable created or replaced, and what it left stubbed for the build (data, state,
-routing, tests). This is the channel — `ajian-plan` reads the work order first, so an inventory
-recorded anywhere else is an inventory it will not see. Commit the work order with it.
+**Complete the work order's `## Built surface` section** in `docs/work-orders/NN-<slug>.md`. Step 3
+already stamped the Status and the branch; now fill in the files impeccable created or replaced and
+what it left stubbed for the build (data, state, routing, tests), and move the Status from
+`handed to impeccable` to **`recorded`**. That flip is what releases the work order: `ajian-plan`
+refuses to plan a UI work order at any other Status. Commit the work order with it.
 
 Be exact about the file list; `ajian-review` scopes its Standards axis by it, so a path missing here
 gets audited against `CONVENTIONS.md` as if ajian had written it.

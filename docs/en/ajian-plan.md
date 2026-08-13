@@ -26,6 +26,11 @@ code, watch it pass, commit). The plan is saved to `docs/plans/NN-<slug>.md` and
   — data, state, routing, tests — opening with an `## Existing surface` block that tells the
   executor which files not to recreate. Re-specifying visual craft is out of bounds; if the surface
   is wrong, that's a `/ajian-design NN` problem.
+- **It refuses my UI work order and mentions a Status.** A UI work order is only plannable at
+  `Status: recorded`. `not yet designed` means run `/ajian-design NN` first. `handed to impeccable`
+  means design started, control passed to impeccable, and it never came back to record what was
+  built — so nothing knows which files exist. Re-run `/ajian-design NN`; it resumes at the recording
+  step instead of building the surface a second time.
 - **No placeholders?** Right — every step carries the actual content; "add error handling" or "similar
   to Task N" are plan failures.
 

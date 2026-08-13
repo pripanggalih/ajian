@@ -56,12 +56,16 @@ what.>
 - **Constraints:** <the NFR budgets from ARCHITECTURE.md that apply here>
 
 ## Built surface
-<!-- drop if no UI. Left empty by ajian-grill; filled by ajian-design once impeccable has built
-     the surface. It is the inventory ajian-plan reads so it wires this code up instead of
-     recreating it, and ajian-review reads so it does not audit impeccable's craft. -->
-<Files impeccable created or replaced, and the branch they were committed on. "Not yet designed"
-until ajian-design has run.>
+<!-- drop if no UI. Born at `Status: not yet designed`. ajian-design stamps `handed to impeccable`
+     BEFORE it invokes impeccable, and `recorded` once the inventory below is real.
 
+     The Status line is what makes an interrupted handoff visible. Control passes to impeccable and
+     may not come back to ajian-design, so a section written only afterwards is a section that
+     silently stays empty — and an empty inventory is how ajian-plan ends up planning screens that
+     already exist. ajian-plan refuses a UI work order unless Status is `recorded`; ajian-review
+     reads the file list so it does not audit impeccable's craft as if ajian had written it. -->
+
+- **Status:** <not yet designed | handed to impeccable | recorded>
 - **Branch:** <the branch the surface is committed on — the same one ajian-build will extend>
 - **Files:** <paths, one per line>
 - **Wiring left to the build:** <what is still stubbed: data, state, routing, tests>

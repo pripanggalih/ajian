@@ -36,6 +36,11 @@ visual; ajian hanya memasok dua sambungan (PRODUCT.md dari blueprint, dan serah-
   executor `ajian-build` diberitahu file itu sudah ada, dan `ajian-review` mengeluarkan hasil karya
   impeccable dari sumbu Standards. Design juga commit di branch yang akan dilanjutkan build, supaya
   surface-nya tidak hilang.
+- **Sesi berakhir di dalam impeccable — desainku hilang?** Tidak. Sebelum menyerahkan kendali,
+  `ajian-design` menstempel `## Built surface` di work order dengan `Status: handed to impeccable`
+  beserta branch tujuannya, lalu commit. Jadi keterputusannya kelihatan: `ajian-plan` menolak work
+  order itu sampai inventarisnya nyata, dan menjalankan ulang `/ajian-design NN` melanjutkan di
+  langkah pencatatan, bukan membangun surface-nya dua kali.
 - **Di mana kebenaran visual tinggal?** Di `DESIGN.md` (terwujud) dan `.impeccable/`. `DESIGN-SYSTEM.md`
   di blueprint hanya menyimpan batasan tipis (baseline a11y, non-negosiasi merek).
 

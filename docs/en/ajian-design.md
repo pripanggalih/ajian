@@ -34,6 +34,11 @@ supplies the two seams (PRODUCT.md from the blueprint, and the design brief hand
   `ajian-plan` reads it and plans around those files instead of recreating them, `ajian-build`'s
   executor is told they exist, and `ajian-review` leaves impeccable's craft out of the Standards
   axis. Design also commits on the branch the build will extend, so the surface doesn't go missing.
+- **The session ended inside impeccable — did I lose the design?** No. Before handing over,
+  `ajian-design` stamps the work order's `## Built surface` with `Status: handed to impeccable` and
+  the target branch, and commits it. So the interruption is visible: `ajian-plan` refuses the work
+  order until the inventory is real, and re-running `/ajian-design NN` resumes at the recording step
+  rather than building the surface twice.
 - **Where does the visual truth live?** In `DESIGN.md` (realised) and `.impeccable/`. The blueprint's
   `DESIGN-SYSTEM.md` keeps only the thin constraints (a11y baseline, brand non-negotiables).
 
