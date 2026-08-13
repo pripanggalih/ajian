@@ -21,6 +21,12 @@ satu gelombang, centang baris `ROADMAP`, lalu selesaikan branch (merge / PR / si
   yang satu menutupi yang lain.
 - **Bagaimana temuan diperbaiki?** Satu gelombang perbaikan (satu subagent dengan daftar terkonfirmasi
   lengkap), berurutan — pemblokir/keamanan dulu — lalu verifikasi-ulang segar. Bukan satu pemerbaik per temuan.
+- **Apakah ia mereview UI hasil impeccable?** Tidak. Pada work order UI ia membaca inventaris
+  `## Built surface` di work order lalu mengeluarkan file-file itu dari sumbu Standards — kualitas
+  karya impeccable sudah lewat gerbang arahnya bersamamu — dan hanya mereview penyambungan yang
+  ditambahkan build ke file itu. Sumbu Spec diberitahu file itu sudah ada sebelum titik acuan, jadi
+  ia tidak melaporkan layarnya belum diimplementasi cuma karena di-commit sebelum branch dibuat.
+  Path yang dikecualikan disebutkan di laporan.
 - **Apakah ia memutuskan merge?** Tidak. Ia menyajikan menu merge / PR / simpan dan menunggu — integrasi
   keputusanmu. Membuang kerja hanya terjadi kalau kamu meminta eksplisit.
 - **Apa yang dicentang?** Baris `ROADMAP`, begitu review bersih — itulah catatan tingkat proyek soal apa yang dikirim.

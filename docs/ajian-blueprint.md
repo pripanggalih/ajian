@@ -65,7 +65,7 @@ what the `skills` CLI uses for identity). Invoked e.g. `/ajian-build 03`.
 | **`ajian-map`** | state-aware router; reads artifacts (blueprint exists? work-order Depth? plan file? git state?) → "you are at WO-03, next: build" | — | points to a skill |
 | **`ajian-blueprint`** | grill-1 (hybrid, per-theme, one continuous session) → foundation docs flat in `docs/` + ROADMAP + work-orders (all brief) | foundation docs | `grill 01` |
 | **`ajian-grill`** | grill-2 per work-order: recon the real code (subagent), promote brief→detailed, cover design questions if UI, write surface brief | detailed WO + surface brief | UI? `design` : `plan` |
-| **`ajian-design`** | derive `PRODUCT.md` lazily → invoke impeccable (surface brief → new-work → `/document`) | `DESIGN.md` + UI | `plan` |
+| **`ajian-design`** | derive `PRODUCT.md` lazily → invoke impeccable (surface brief → new-work → `/document`) → record the file inventory in the work order's `## Built surface` | `DESIGN.md` + UI | `plan` |
 | **`ajian-plan`** | writing-plans reads detailed WO + anchored blueprint docs → bite-sized plan | plan file | `build` |
 | **`ajian-build`** | execute the plan in **one fresh subagent**, commit-per-task + ledger, **no per-task review** | code + commits | `review` |
 | **`ajian-review`** | code-review 2-axis (mattpocock) + receiving-code-review discipline → finishing branch | verdict + merge | tick ROADMAP, `grill NN+1` |
@@ -129,6 +129,15 @@ Two grill stages, two characters:
    brand non-negotiables). `DESIGN.md` (impeccable) = the *realized* visual
    system, invented by new-work. Skeleton UI stays unstyled until the first UI
    feature.
+9b. **The built surface is handed over, not rebuilt.** On a UI work order,
+    `ajian-design` leaves real code in the tree before the plan exists. It records
+    the file inventory in the work order's `## Built surface` (branch, files, what
+    is still stubbed) — the work order is the channel because `ajian-plan` reads it
+    first. `ajian-plan` then plans the *wiring* and forbids recreating those files;
+    `ajian-build`'s executor is told they exist; `ajian-review` excludes them from
+    the Standards axis (impeccable's craft already passed its own direction gate)
+    and tells the Spec axis they predate the fixed point, so UI acceptance criteria
+    are not reported as unimplemented.
 10. **Executor.** Custom executing-plans = one fresh subagent, **the plan file's
     `- [ ]` checkboxes are the ledger** (committed, survives compaction),
     commit-per-task, **review once at the end** (not SDD's slow/expensive

@@ -21,6 +21,12 @@ before implementing, no performative agreement, push back with reasoning), fix i
   masking the other.
 - **How are findings fixed?** One fix wave (a single subagent with the full confirmed list), in order
   — blocking/security first — then a fresh re-verification. Not one fixer per finding.
+- **Does it review the UI impeccable generated?** No. On a UI work order it reads the work order's
+  `## Built surface` inventory and scopes those files out of the Standards axis — impeccable's craft
+  passed its own direction gate with you — reviewing only the wiring the build added to them. The
+  Spec axis is told those files predate the fixed point, so it doesn't report the screens as
+  unimplemented just because they were committed before the branch. The scoped-out paths are named
+  in the report.
 - **Does it decide the merge?** No. It presents the merge / PR / keep menu and waits — integration is
   your call. Discarding work happens only if you explicitly ask.
 - **What gets ticked?** The `ROADMAP` line, once the review is clean — that's the project-level record

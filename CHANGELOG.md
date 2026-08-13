@@ -23,3 +23,12 @@ All notable changes to `ajian` are recorded here. The format follows
   itself — landing UI outside the pipeline, with no plan, ledger, or review. The
   check is now a blocking Step 0 that stops, and standing in for impeccable is
   explicitly forbidden.
+- Nothing downstream of `ajian-design` knew impeccable had already built the
+  surface — `plan`, `build`, and `review` mentioned neither `DESIGN.md` nor the
+  built files. Plans could specify screens that already existed, the surface
+  could land on a branch the build never saw, the Standards axis audited
+  impeccable's generated markup, and the Spec axis reported UI as unimplemented
+  when it sat outside the diff. `ajian-design` now records a `## Built surface`
+  inventory in the work order and commits on the build's branch; `ajian-plan`
+  plans the wiring and forbids recreating those files; the executor is told they
+  exist; `ajian-review` scopes them out of Standards and flags them to Spec.

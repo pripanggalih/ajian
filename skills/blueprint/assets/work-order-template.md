@@ -55,6 +55,17 @@ what.>
 - **Reuse:** <inventory entries from CONVENTIONS.md to build on rather than re-create>
 - **Constraints:** <the NFR budgets from ARCHITECTURE.md that apply here>
 
+## Built surface
+<!-- drop if no UI. Left empty by ajian-grill; filled by ajian-design once impeccable has built
+     the surface. It is the inventory ajian-plan reads so it wires this code up instead of
+     recreating it, and ajian-review reads so it does not audit impeccable's craft. -->
+<Files impeccable created or replaced, and the branch they were committed on. "Not yet designed"
+until ajian-design has run.>
+
+- **Branch:** <the branch the surface is committed on — the same one ajian-build will extend>
+- **Files:** <paths, one per line>
+- **Wiring left to the build:** <what is still stubbed: data, state, routing, tests>
+
 ## Open questions
 <The gaps left on purpose. Resolve them when this work order is promoted to `detailed`, not
 before. Anything that turns out to be project-wide becomes an ADR instead.>

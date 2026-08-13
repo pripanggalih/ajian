@@ -25,6 +25,13 @@ visual; ajian hanya memasok dua sambungan (PRODUCT.md dari blueprint, dan serah-
   menanyakan satu ronde pengisi-celah untuk yang memang tak dimiliki blueprint.
 - **Siapa yang memutuskan arah visual?** Gerbang arah milik impeccable — itu milikmu. ajian tak
   meragukan dunia yang diciptakan impeccable.
+- **Kalau design sudah membangun UI, build ngerjain apa?** Penyambungannya. impeccable meninggalkan
+  layar sungguhan di pohon kerja; build menyambungkannya ke data, state, routing, dan test. Supaya
+  keduanya tidak bertabrakan, design mencatat inventaris file di bagian `## Built surface` work
+  order — `ajian-plan` membacanya lalu merencanakan di sekitar file itu alih-alih membuatnya ulang,
+  executor `ajian-build` diberitahu file itu sudah ada, dan `ajian-review` mengeluarkan hasil karya
+  impeccable dari sumbu Standards. Design juga commit di branch yang akan dilanjutkan build, supaya
+  surface-nya tidak hilang.
 - **Di mana kebenaran visual tinggal?** Di `DESIGN.md` (terwujud) dan `.impeccable/`. `DESIGN-SYSTEM.md`
   di blueprint hanya menyimpan batasan tipis (baseline a11y, non-negosiasi merek).
 

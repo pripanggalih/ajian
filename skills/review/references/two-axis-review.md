@@ -6,7 +6,9 @@ description: Review the changes since a fixed point (commit, branch, tag, or mer
 <!-- Adapted from mattpocock/skills `code-review` (MIT, Matt Pocock), copied nearly verbatim. The
      ajian seam: the Spec axis's source is the detailed work order (docs/work-orders/NN-*.md) and
      its acceptance criteria, not an issue tracker; the Standards axis's documented sources are the
-     blueprint's docs/CONVENTIONS.md and docs/QUALITY.md. See NOTICE.md. -->
+     blueprint's docs/CONVENTIONS.md and docs/QUALITY.md; and step 3b (scoping out the
+     impeccable-built surface) is original ajian with no upstream counterpart — it exists because
+     ajian-design can put generated UI in the tree before the build starts. See NOTICE.md. -->
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
@@ -62,18 +64,39 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
+### 3b. Scope out the impeccable-built surface
+
+On a UI work order the screens were built by impeccable in `ajian-design`, before this build. Read
+the work order's `## Built surface` section for the file inventory. If it is absent or says "Not
+yet designed", skip this step — everything in the diff was written by the build.
+
+Otherwise the inventory changes both briefs:
+
+- **Standards:** exclude those paths. impeccable owns visual craft and passed its own direction
+  gate with the user; auditing its generated markup against `CONVENTIONS.md` and the smell baseline
+  produces findings nobody will act on and buries the ones about the build's own code. Review the
+  *wiring* the build added to those files, not the surface it inherited.
+- **Spec:** state plainly that these files already existed at the fixed point. Otherwise the axis
+  sees acceptance criteria about screens with no matching code in the diff and reports the feature
+  as unimplemented — a false finding produced by where the commits landed, not by the work.
+
+Say in the final report which paths were scoped out, so the exclusion is visible rather than silent.
+
 ### 4. Spawn both sub-agents in parallel
 
 **Standards sub-agent prompt** — include:
 
 - The full diff command and commit list.
 - The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full — the sub-agent has no other access to it.
+- Any paths scoped out in step 3b, with the instruction to review only the wiring added to them.
 - The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
 **Spec sub-agent prompt** — include:
 
 - The diff command and commit list.
 - The path or fetched contents of the spec.
+- Any paths from step 3b, noted as **already present at the fixed point** — the screens exist; only
+  their wiring is in this diff.
 - The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.

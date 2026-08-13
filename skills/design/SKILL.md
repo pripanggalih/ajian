@@ -119,9 +119,22 @@ If the build revealed a durable constraint the blueprint should own (a brand com
 rule), fold it back into `docs/DESIGN-SYSTEM.md` — the thin constraints stay in the blueprint,
 the realised system stays in `DESIGN.md`.
 
-## Step 5 — Hand off
+## Step 5 — Record the inventory, then hand off
 
-Commit the built surface, `DESIGN.md`, and `.impeccable/`. The surface now exists, so the plan can
-name real screens and states.
+The surface now exists as real code in the tree. Everything downstream has to know that, or it will
+build it a second time. Two things make the handoff survive:
+
+**Commit it where the build will find it.** Commit the built surface, `DESIGN.md`, and
+`.impeccable/` **on the branch `ajian-build` will extend** — the feature branch for `NN` if one
+exists, otherwise the branch the build will fork from. A surface committed on a branch the build
+never sees is a surface the build rebuilds.
+
+**Fill the work order's `## Built surface` section** in `docs/work-orders/NN-<slug>.md`: the branch,
+the files impeccable created or replaced, and what it left stubbed for the build (data, state,
+routing, tests). This is the channel — `ajian-plan` reads the work order first, so an inventory
+recorded anywhere else is an inventory it will not see. Commit the work order with it.
+
+Be exact about the file list; `ajian-review` scopes its Standards axis by it, so a path missing here
+gets audited against `CONVENTIONS.md` as if ajian had written it.
 
 **→ Next: `/ajian-plan NN`** (or `/ajian-map` if unsure).

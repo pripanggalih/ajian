@@ -36,6 +36,14 @@ Subagent (general-purpose):
     [Scene-setting from the controller: where this plan fits, the branch/worktree you are on, any
     interfaces from earlier work orders, and the controller's resolution of any ambiguity it saw.]
 
+    ## If the plan has an "Existing surface" block
+
+    On a UI work order the screens were already built, before this plan, by a design tool. Those
+    files are listed in the plan's `## Existing surface` block and they are already in the tree.
+    Wire them up — data, state, routing, tests — and do not rebuild them, restyle them, or
+    "improve" their markup. If a task seems to ask you to create a file that block already lists,
+    that is a plan defect: stop and report it rather than guessing which one wins.
+
     ## Working directory
 
     Work from: [directory]. You are on branch [BRANCH]; never commit to main/master.

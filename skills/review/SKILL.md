@@ -44,6 +44,10 @@ Run the review per [references/two-axis-review.md](references/two-axis-review.md
 
 - **Fixed point:** the commit the branch forked from — `git merge-base <base> HEAD`. Confirm it
   resolves and the diff is non-empty before spawning sub-agents.
+- **Scope out the built surface:** on a UI work order, read the work order's `## Built surface`
+  inventory. Those files came from impeccable in `ajian-design`, not from this build — exclude them
+  from the Standards axis (review only the wiring added to them) and tell the Spec axis they
+  already existed at the fixed point. Report which paths were scoped out.
 - **Standards axis:** does the diff follow `docs/CONVENTIONS.md` and `docs/QUALITY.md`, plus the
   Fowler smell baseline? (Documented repo standards override the baseline; smells are judgement
   calls; skip what tooling enforces.)

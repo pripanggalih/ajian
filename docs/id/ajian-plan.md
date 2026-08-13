@@ -21,6 +21,12 @@ tonton lulus, commit). Rencana disimpan ke `docs/plans/NN-<slug>.md` dan **masuk
   melebihi ~selusin task atau terlalu panjang untuk satu konteks, berarti **work order (atau baris
   roadmap-nya) salah ukur** — ia berhenti dan mengembalikannya ke `ajian-grill` / roadmap untuk dipecah,
   ketimbang menulis plan raksasa yang gagal di tengah jalan.
+- **UI-nya sudah terbangun — aku merencanakan apa?** Pada work order UI, `ajian-design` sudah
+  meninggalkan layar sungguhan di pohon kerja. Plan membaca inventaris `## Built surface` di work
+  order lalu merencanakan *penyambungannya* — data, state, routing, test — dibuka dengan blok
+  `## Existing surface` yang memberitahu executor file mana yang tidak boleh dibuat ulang.
+  Menspesifikasi ulang kualitas visual di luar batas; kalau surface-nya salah, itu urusan
+  `/ajian-design NN`.
 - **Tanpa placeholder?** Betul — tiap langkah memuat isi sebenarnya; "tambahkan penanganan error" atau
   "mirip Task N" adalah kegagalan plan.
 

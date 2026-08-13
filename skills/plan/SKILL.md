@@ -11,9 +11,11 @@ description: >-
 
 <!-- Adapted from superpowers `writing-plans` (MIT, Jesse Vincent), copied nearly verbatim. The
      ajian seams: the input is a detailed work order (not a loose spec); plans are saved to
-     docs/plans/NN-<slug>.md and committed (the checkboxes are ajian-build's ledger); and the
-     execution handoff points at ajian-build, not superpowers' subagent-driven-development. See
-     NOTICE.md for attribution. -->
+     docs/plans/NN-<slug>.md and committed (the checkboxes are ajian-build's ledger); the
+     execution handoff points at ajian-build, not superpowers' subagent-driven-development; and a
+     UI work order may arrive with its surface already built by impeccable, so the plan wires
+     existing code up rather than planning it from zero (the "Existing surface" section below —
+     original ajian, no upstream counterpart). See NOTICE.md for attribution. -->
 
 # Ajian · Plan
 
@@ -35,6 +37,31 @@ created by `ajian-build` at execution time — not here.
 
 **Save plans to:** `docs/plans/NN-<slug>.md`, matching the work order number. **Commit the plan** —
 its `- [ ]` checkboxes are the ledger `ajian-build` ticks as it goes, so it must be in git.
+
+## Existing surface — plan the wiring, not the screens
+
+If the work order has UI, `ajian-design` ran before you and impeccable **already built the
+surface**. Read the work order's `## Built surface` section and `DESIGN.md` before writing a single
+task, and open the files it lists. They are real code in the tree, on the branch the build will
+extend.
+
+Plan around them:
+
+- **Never write a task that creates a screen the inventory already lists.** The executor will
+  either overwrite impeccable's work or stall on a file the plan swears does not exist. Both are
+  worse than no plan.
+- **Plan what impeccable left stubbed** — the work order's "Wiring left to the build" line: data
+  fetching, state, routing, validation, error paths, tests. That is the build's actual job on a UI
+  work order.
+- **Open the plan with an `## Existing surface` block** listing those paths verbatim under the
+  heading *do not recreate*, so the executor reads it before its first task. Say which files it may
+  modify to wire things up and which are impeccable's to leave alone.
+- **Visual craft is not yours to re-specify.** Do not plan tokens, spacing, or layout changes — the
+  direction passed impeccable's gate. If the surface is genuinely wrong for the work order, that is
+  a `/ajian-design NN` problem, not a plan task.
+
+If the work order has UI and `## Built surface` says "Not yet designed", stop and send it to
+`/ajian-design NN`. Planning a surface that is about to be generated wastes both.
 
 ## Scope Check
 

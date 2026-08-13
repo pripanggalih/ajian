@@ -25,6 +25,12 @@ supplies the two seams (PRODUCT.md from the blueprint, and the design brief hand
   only asks a short gap-fill round for what the blueprint genuinely lacks.
 - **Who decides the visual direction?** Impeccable's direction gate — it's yours. ajian doesn't
   second-guess the world impeccable invents.
+- **If design already builds the UI, what's left for build?** The wiring. impeccable leaves real
+  screens in the tree; the build connects them to data, state, routing, and tests. To keep the two
+  from colliding, design records the file inventory in the work order's `## Built surface` section —
+  `ajian-plan` reads it and plans around those files instead of recreating them, `ajian-build`'s
+  executor is told they exist, and `ajian-review` leaves impeccable's craft out of the Standards
+  axis. Design also commits on the branch the build will extend, so the surface doesn't go missing.
 - **Where does the visual truth live?** In `DESIGN.md` (realised) and `.impeccable/`. The blueprint's
   `DESIGN-SYSTEM.md` keeps only the thin constraints (a11y baseline, brand non-negotiables).
 
