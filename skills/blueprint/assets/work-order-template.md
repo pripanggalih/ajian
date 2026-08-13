@@ -16,8 +16,14 @@
 
 # <NN> — <Feature>
 
-**Depth:** brief <!-- brief | detailed -->
-**Roadmap line:** <N> · **Depends on:** <line numbers, or none> · **Interface:** <yes | no>
+**Depth:** brief <!-- brief | detailed | superseded by NN -->
+**Roadmap row:** <this work order's number> · **Depends on:** <numbers, or none> · **Interface:** <yes | no>
+
+<!-- `superseded by NN` is set only on a resumed run, when an inserted feature covers
+     substantially all of this one. The file stays — it may already carry a plan, a report, or
+     commits — and its ROADMAP row is struck through rather than removed. Never delete a work
+     order; `superseded` is revertible and deletion is not. -->
+
 
 ## Read first
 <Only what this feature needs. An agent that reads five irrelevant documents anchors on the

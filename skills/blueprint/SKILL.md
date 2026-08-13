@@ -9,7 +9,11 @@ description: >-
   "/ajian-blueprint", "turn this into a blueprint", "buat dokumen pengembangan", "jadikan patokan",
   "bikin PRD dan arsitekturnya", "lock the decisions", "buat roadmap dan urutan kerjanya",
   "siapkan dokumennya biar bisa dikerjakan agent". Handles greenfield (choose the stack),
-  brownfield (scan the repo, extend it), and resumed runs (deepen the next feature). Framework-
+  brownfield (scan the repo, extend it), and resumed runs. A resumed run both deepens the next
+  feature and is **the** way to insert or change a feature in a roadmap already being built —
+  "add a feature", "sisipkan fitur", "ubah roadmap", "improve this mid-project" — because the
+  roadmap has one owner and this is it; it checks the impact on what already shipped, resolves
+  unbuilt work orders the change makes obsolete, and supersedes decisions it falsifies. Framework-
   and executor-agnostic: the output is consumed by any AI coding agent or human. Stops at the
   blueprint — it never writes code or implementation steps.
 ---
@@ -181,7 +185,9 @@ one short question where you cannot.
   in, not a degraded one** — being invoked as the first message of a session is expected.
 - **Distil** — a design discussion already ran above. Step 2 opens by replaying what it settled
   and interrogates only what it left open.
-- **Resumed** — `docs/ROADMAP.md` exists. Skip to [Resumed runs](#resumed-runs).
+- **Resumed** — `docs/ROADMAP.md` exists. Skip to [Resumed runs](#resumed-runs). This covers both
+  deepening the next feature and **inserting or changing one mid-build** — the roadmap has a single
+  owner, and this is it.
 
 Do not force a run into *distil* because a few requirements were mentioned in passing. Material
 counts as settled only if the user actually decided it, not if it merely came up.
@@ -391,17 +397,93 @@ at a time.
 
 ## Resumed runs
 
-`docs/ROADMAP.md` exists. The job is to keep the blueprint true and prepare the next
-feature — not to regenerate anything.
+`docs/ROADMAP.md` exists. The job is to keep the blueprint true and change the plan safely — never
+to regenerate anything. This is also the **only** place a feature is inserted into a roadmap that is
+already being built: the roadmap has one owner, because a second skill with the right to reorder its
+rows means two owners of one file, and that drift stays invisible until it is expensive.
 
-1. **Reconcile with reality.** Read the code that shipped since the last run. Update the reuse
-   inventory in `CONVENTIONS.md` from what now exists, and correct any document the code has
-   overtaken. Record what changed as a new ADR when a decision actually changed.
-2. **Extend, never regenerate, `ROADMAP.md`.** Existing checkboxes are the only record of what
-   shipped. Add or reorder lines; do not rewrite the file.
-3. **Promote the next feature** from `Depth: brief` to `Depth: detailed`, interrogating only the open
-   questions that work order already lists.
-4. Re-run the self-review over everything you touched, then commit.
+Two kinds of resumed run, and they diverge at step 2:
+
+- **Extend** — the roadmap is fine, the next feature just needs deepening. Steps 1, 4, 5.
+- **Insert or change** — a new feature must go into the middle, or a planned one must change.
+  All five steps, and step 3 is the one that does not exist anywhere else.
+
+### 1 · Reconcile with reality
+
+Read the code that shipped since the last run. Update the reuse inventory in `CONVENTIONS.md` from
+what now exists, and correct any document the code has overtaken. Record what changed as a new ADR
+when a decision actually changed.
+
+### 2 · Place the new feature (insert runs only)
+
+**Extend, never regenerate, `ROADMAP.md`.** Existing checkboxes are the only record of what shipped;
+add and reorder **rows**, never rewrite the file.
+
+Put the new feature through the three sizing tests from
+[references/roadmap-sizing.md](references/roadmap-sizing.md) exactly as Gate 2 does — a row added
+later gets no discount on sizing, and a mid-project insertion is the row most likely to be too big,
+because it arrives as a wish rather than a slice.
+
+Then place it: **give it the next free number and put its row where it must be built.** Numbers are
+permanent identities and are never reassigned; row position is the build order. A feature inserted
+now may well be numbered 09 and sit between rows 2 and 3. That looks untidy and is correct — the
+alternative renumbers rows below it and breaks every `plans/NN-*`, `plans/reports/NN-*`, ADR
+reference and commit message that named the old number.
+
+### 3 · Check the impact on what already exists
+
+This is the step that makes an insertion different from an extension, and it is the reason
+insertion is not a matter of adding a row. A feature arriving mid-project almost always touches
+something already decided or already built. Three questions, answered by reading the repo:
+
+**What shipped on the assumption this feature did not exist?** Read the merged work orders the new
+feature touches. Code that shipped under an assumption the insertion breaks is not this skill's to
+fix — but it is this skill's to *name*, because the new work order's scope depends on it, and
+discovering it during the build is discovering it too late.
+
+**Which unbuilt work orders does this make obsolete?** Look for overlap with every unticked row. For
+each overlap, present both options and let the user choose — the boundary is a product judgement,
+not a mechanical one:
+
+- **`Status: superseded by NN`** — when the insertion covers substantially all of it. The row is
+  struck through in `ROADMAP.md` and the file stays.
+- **Narrow it** — when the insertion covers part. Remove what has moved, leave the rest, and say in
+  the work order what moved and where.
+
+**Never delete a work order.** It may already carry a plan, a build report, or commits, and
+`superseded` is revertible in a way deletion is not.
+
+**Which recorded decisions does this falsify?** Re-read `DECISIONS.md`. A decision the insertion
+contradicts is raised as a **new ADR** that supersedes the old one, with the old one's status
+updated in the ledger. Editing the original in place erases the reason the project once chose
+differently, which is the whole value of the ledger.
+
+#### Gate
+
+```
+GATE — Roadmap change
+Done:     Placed <feature> as row <position>, number <NN>, and checked its impact
+Evidence: <the sizing tests it passed> · <the merged work orders it touches, by path> ·
+          <each overlapping unbuilt work order, with the overlap described> · <each
+          decision in DECISIONS.md the insertion contradicts>
+Decide:   Is this the right position? For each overlap: supersede, or narrow? For each
+          contradicted decision: raise a superseding ADR?
+Risk:     An overlap I miss becomes two work orders that both claim to build the same
+          thing, and the one that finds it is ajian-review's Spec axis — weeks later,
+          after the code has been written twice.
+```
+
+### 4 · Promote the next feature
+
+From `Depth: brief` to `Depth: detailed`, interrogating only the open questions that work order
+already lists. On an insert run the next feature may now be the inserted one — read it off the
+topmost unticked row rather than assuming.
+
+### 5 · Self-review and commit
+
+Re-run the self-review over everything you touched, then commit.
+
+**→ Next: `/ajian-grill <number of the topmost unticked row>`** (or `/ajian-map` if unsure).
 
 ---
 
@@ -413,5 +495,12 @@ feature — not to regenerate anything.
 - No implementation steps, task breakdowns, code, or time estimates in any file.
 - Stack recorded once, in `ARCHITECTURE.md` plus its ADR — never transcribed into a work order.
 - Roadmap ordered and rationalised; greenfield opens with a walking skeleton.
-- Exactly one work order per roadmap line; exactly one at `Depth: detailed`.
+- Exactly one work order per roadmap row; exactly one at `Depth: detailed`.
 - Both gates were real stops that waited for the user.
+
+On a resumed run that inserted or changed a feature, additionally:
+
+- The new row passed the same three sizing tests as any Gate 2 row.
+- It took the next free number; no existing number was reassigned.
+- Every overlapping unbuilt work order was resolved as `superseded` or narrowed — none deleted.
+- Every decision the insertion contradicts has a superseding ADR, and the ledger says so.

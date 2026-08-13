@@ -34,6 +34,20 @@ All notable changes to `ajian` are recorded here. The format follows
   is worse than none. It refuses a project with code and no documents (that is
   `blueprint` brownfield), refuses one already adopted (that is `map`), and never
   invents a roadmap, since the roadmap's sizing gate belongs to `blueprint`.
+- **Inserting or changing a feature mid-roadmap**, in `ajian-blueprint`'s resumed mode
+  (locked decision 16). Resumed mode already said "add or reorder lines", but only as a
+  footnote, and it did the one easy part — writing the row. What was missing is the part
+  that makes an insertion different from an extension: a feature arriving mid-project
+  almost always touches something already decided or already built. Resumed mode is now
+  a full stage with its own gate, and it names the merged work orders the change
+  touches, resolves every overlapping unbuilt work order as `superseded by NN` or
+  narrowed (the user's choice per overlap — never deleted, since one may already carry a
+  plan, a report, or commits), and raises a superseding ADR for every decision the change
+  falsifies rather than editing the original. The new row passes the same three sizing
+  tests as any Gate 2 row: an insertion arrives as a wish, which is exactly why it is the
+  row most likely to be oversized. It stays in `blueprint` rather than becoming a skill
+  because the roadmap has one owner; two skills able to reorder its rows is drift that
+  stays invisible until it is expensive.
 - **Per-skill precondition contracts** (locked decision 15). The seven skills with real
   prerequisites verify them from the artifacts on disk — a file, a `Depth:` field, a
   `Status:` field, a checkbox, `git log` — never from what the conversation appears to
