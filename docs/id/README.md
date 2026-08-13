@@ -50,6 +50,7 @@ docs/
   DECISIONS.md  decisions/NNNN-*.md
   work-orders/NN-*.md
   plans/NN-<slug>.md            (masuk git; checkbox-nya adalah ledger build)
+  plans/reports/NN-<slug>.md    (satu laporan build per plan — bukti verifikasi dari executor)
 ```
 
 ## Halaman per-skill

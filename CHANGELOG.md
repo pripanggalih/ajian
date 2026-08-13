@@ -12,3 +12,8 @@ All notable changes to `ajian` are recorded here. The format follows
 - Plugin manifest (`.claude-plugin/plugin.json`) and marketplace entry.
 - Dual-language user docs (English default, Indonesian mirror).
 - Honest attribution of the upstream sources in `NOTICE.md`.
+
+### Fixed
+- `ajian-build`'s executor report had an undefined destination (`[REPORT_FILE]` was
+  never resolved anywhere), so reports landed next to the plans and mixed up
+  `docs/plans/`. Reports now go to `docs/plans/reports/NN-<slug>.md`.

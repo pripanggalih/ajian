@@ -20,6 +20,11 @@ review** — the single review is saved for `ajian-review`.
   divergence from superpowers' subagent-driven-development (see `references/executor-and-ledger.md`).
 - **Where's the ledger?** It *is* the committed plan file's checkboxes — no hidden `.superpowers/sdd/`
   folder. Progress lives in git, in the open, and survives compaction.
+- **Where does the build report go?** `docs/plans/reports/NN-<slug>.md`, one per plan, committed. It
+  holds the verification evidence — commands and their output, TDD RED/GREEN, files changed,
+  concerns — the controller reads instead of trusting a success claim, and the trail anyone
+  auditing the work order later can follow. It sits in its own folder so `docs/plans/` stays plans
+  only. `ajian-review` doesn't read it: that review judges the diff, not the executor's account.
 - **Can it run builds in parallel?** Only across *independent* work orders, opt-in, each in its own
   worktree, gated by dependency edges and a file-overlap scan. Never across tasks within a plan.
 - **Does it review or merge?** No — that's `ajian-review`.

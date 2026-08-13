@@ -50,6 +50,7 @@ docs/
   DECISIONS.md  decisions/NNNN-*.md
   work-orders/NN-*.md
   plans/NN-<slug>.md            (committed; its checkboxes are the build ledger)
+  plans/reports/NN-<slug>.md    (one build report per plan — the executor's verification evidence)
 ```
 
 ## Per-skill pages

@@ -84,7 +84,9 @@ Subagent (general-purpose):
 
     ## Report format
 
-    Write your full report to [REPORT_FILE]:
+    Write your full report to [REPORT_FILE] — `docs/plans/reports/NN-<slug>.md`, matching the
+    plan's number and slug. Reports live in their own folder so `docs/plans/` holds only plans.
+    Commit it with the last task. It contains:
     - What you implemented, task by task
     - What you tested and the results (the exact command and its output)
     - TDD evidence where the plan required it (RED command+output, GREEN command+output)

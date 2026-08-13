@@ -168,6 +168,7 @@ root-fixed `PRODUCT.md`/`DESIGN.md`.
     decisions/NNNN-*.md    (one ADR per file)
     work-orders/NN-*.md    (brief → detailed when its turn comes)
     plans/NN-<slug>.md     (committed; the plan's checkboxes are the build ledger)
+    plans/reports/NN-<slug>.md  (one build report per plan — the executor's verification evidence)
 ```
 
 `PRODUCT.md`/`DESIGN.md` cannot move into `docs/` — impeccable's `context.mjs`

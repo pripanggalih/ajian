@@ -41,6 +41,17 @@ compaction.
 - Because the ledger is the plan and the plan is committed, `git clean -fdx` cannot destroy it, and
   there is no sibling scratch directory to confuse with another plan's.
 
+## The report ≠ the ledger
+
+The executor also writes one build report — the verification evidence (commands and their output,
+TDD RED/GREEN, files changed, concerns) the controller reads in Step 3 instead of trusting a
+success claim, and the trail anyone auditing the work order later can follow. It is not an input to
+`ajian-review`: that review judges the diff, not the executor's account of it. The report goes to
+`docs/plans/reports/NN-<slug>.md`, in its own folder — the
+ledger and the report are different artifacts with different lifetimes, and mixing them into
+`docs/plans/` makes the plan folder ambiguous to read and to route on. One report per plan, same
+number and slug, committed with the last task.
+
 ## Pre-flight conflict scan (before dispatching)
 
 Before the executor starts, scan the plan once — this is the controller's job, cheap and one-time:

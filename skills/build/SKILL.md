@@ -74,7 +74,9 @@ Dispatch **one** fresh executor subagent using
 [assets/executor-prompt.md](assets/executor-prompt.md). Choose its model deliberately (see Model
 Selection in `executor-and-ledger.md`) and **state the model explicitly**. Hand it: the plan file
 path, the branch/worktree, the resume task, any interfaces from earlier work orders it cannot know,
-your resolution of any ambiguity from the pre-flight scan, and the report-file path.
+your resolution of any ambiguity from the pre-flight scan, and the report-file path
+(`docs/plans/reports/NN-<slug>.md` — the same number and slug as the plan; the reports folder keeps
+`docs/plans/` holding plans only).
 
 The executor runs every remaining task in order, TDD-shaped, committing per task and ticking each
 task's checkboxes in the plan file as it goes (each tick its own commit). It executes
@@ -103,7 +105,7 @@ plan's acceptance criteria and the work order's Definition of Done (`docs/QUALIT
 each is met. If anything is red, it is not done: send the specifics back to the executor.
 
 Confirm the plan file's checkboxes are all ticked and committed — the ledger should show the build
-complete.
+complete — and that the build report is committed at `docs/plans/reports/NN-<slug>.md`.
 
 ## Step 4 — Hand off
 

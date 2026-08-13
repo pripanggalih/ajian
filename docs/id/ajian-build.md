@@ -20,6 +20,11 @@ segar sesudahnya. **Tanpa review per-task** — review tunggal disimpan untuk `a
   subagent-driven-development milik superpowers (lihat `references/executor-and-ledger.md`).
 - **Di mana ledger-nya?** Ia *adalah* checkbox file plan yang di-commit — tanpa folder tersembunyi
   `.superpowers/sdd/`. Progres tinggal di git, terbuka, dan bertahan melewati compaction.
+- **Laporan build-nya ke mana?** `docs/plans/reports/NN-<slug>.md`, satu per plan, masuk git. Isinya
+  bukti verifikasi — perintah beserta outputnya, RED/GREEN TDD, file yang berubah, kekhawatiran —
+  yang dibaca controller alih-alih memercayai klaim sukses, sekaligus jejak yang bisa ditelusuri
+  siapa pun yang mengaudit work order itu nanti. Ia punya folder sendiri supaya `docs/plans/` tetap
+  berisi plan saja. `ajian-review` tidak membacanya: review itu menilai diff, bukan cerita executor.
 - **Bisakah build paralel?** Hanya antar work order yang *independen*, opt-in, masing-masing di worktree
   sendiri, digerbangi tepi dependensi dan pemindaian tumpang-tindih file. Tak pernah antar-task dalam satu plan.
 - **Apakah ia mereview atau merge?** Tidak — itu `ajian-review`.
