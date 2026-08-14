@@ -5,14 +5,14 @@
 Mereview build yang selesai pada **dua sumbu independen** dan mengintegrasikan branch. **Standards** —
 apakah diff mengikuti `CONVENTIONS.md`, `QUALITY.md`, dan baseline smell Fowler? **Spec** — apakah ia
 setia mengimplementasi work order? Keduanya jalan sebagai sub-agent paralel dan dilaporkan
-berdampingan, tak pernah diperingkat ulang. Kamu menanggapi temuan dengan disiplin receiving-code-review
+berdampingan, tak pernah diperingkat ulang. Kau menanggapi temuan dengan disiplin receiving-code-review
 (verifikasi sebelum implementasi, tanpa persetujuan pura-pura, bantah dengan penalaran), perbaiki dalam
 satu gelombang, centang baris `ROADMAP`, lalu selesaikan branch (merge / PR / simpan — pilihanmu).
 
 ## Kapan dipakai
 
 - Setelah `ajian-build` meninggalkan branch hijau yang di-commit.
-- Kapan pun kamu ingin review dua-sumbu atas branch terhadap titik tetap.
+- Kapan pun kau ingin review dua-sumbu atas branch terhadap titik tetap.
 
 ## Pertanyaan umum
 
@@ -28,7 +28,7 @@ satu gelombang, centang baris `ROADMAP`, lalu selesaikan branch (merge / PR / si
   ia tidak melaporkan layarnya belum diimplementasi cuma karena di-commit sebelum branch dibuat.
   Path yang dikecualikan disebutkan di laporan.
 - **Apakah ia memutuskan merge?** Tidak. Ia menyajikan menu merge / PR / simpan dan menunggu — integrasi
-  keputusanmu. Membuang kerja hanya terjadi kalau kamu meminta eksplisit.
+  keputusanmu. Membuang kerja hanya terjadi kalau kau meminta eksplisit.
 - **Apa yang dicentang?** Baris `ROADMAP`, begitu review bersih — itulah catatan tingkat proyek soal
   apa yang dikirim. Barisnya dicari lewat nomornya, bukan posisinya, karena baris bisa dipindah.
 - **Work order berikutnya yang mana?** **Baris tak tercentang paling atas**, bukan `NN+1`. Nomor

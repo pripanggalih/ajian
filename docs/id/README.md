@@ -13,12 +13,12 @@ tiap skill punya halaman sendiri di bawah.
 2. Buka proyekmu (kosong untuk greenfield, atau repo yang sudah ada untuk brownfield) di agen coding-mu.
 3. **Mewarisi proyek yang sudah punya dokumen?** Jalankan **`/ajian-adopt`** dulu. Ia mensurvei apa
    yang sudah tertulis, mengusulkan ke mana tiap dokumen sebaiknya pindah, dan memindahkan hanya
-   yang kamu setujui — jadi ajian membangun di atas dokumenmu, bukan menulis tandingannya di sebelah.
+   yang kau setujui — jadi ajian membangun di atas dokumenmu, bukan menulis tandingannya di sebelah.
 4. Jalankan **`/ajian-blueprint`** — atau mulai saja bicarakan idenya lalu panggil saat siap. Ia
    menginterogasi ide dan menulis dokumen fondasi serta roadmap.
 5. Setelah itu, ikuti breadcrumb `→ Next` tiap skill. Bingung? Jalankan **`/ajian-map`**.
 
-**Kamu tak harus tahu urutannya.** Menjalankan skill terlalu awal tidak membuatmu mentok, dan juga
+**Kau tak harus tahu urutannya.** Menjalankan skill terlalu awal tidak membuatmu mentok, dan juga
 tidak membuatnya diam-diam mengerjakan yang kurang. Ia memeriksa berkas nyata di proyekmu,
 memberitahu posisimu dengan bahasa manusia, menyebut satu skill yang mengisi celahnya, lalu bertanya
 apakah dijalankan. Selalu satu langkah — tak pernah "sekalian empat berikutnya?", karena itu menukar
@@ -41,7 +41,7 @@ seluruh pipeline dengan satu kata ya.
 - Lima skill per-baris berulang untuk tiap baris roadmap, dari atas ke bawah.
 - **ajian-map** tidak di dalam baris — jalankan kapan saja untuk menemukan posisimu.
 
-## Gerbang keputusan (tempat kamu memutuskan)
+## Gerbang keputusan (tempat kau memutuskan)
 
 Ajian tak pernah mengambil keputusan mahal-dibatalkan untukmu. Tiap perhentian ditulis dalam bentuk
 yang sama, sehingga gerbang yang dilewati kelihatan justru karena bloknya hilang:
@@ -56,13 +56,13 @@ GATE — <nama gerbang>
 - <output perintah nyata, atau path berkas yang sudah di-commit — bukan "kelihatannya beres">
 
 **Decide**
-- <pertanyaan yang kamu jawab>
+- <pertanyaan yang kau jawab>
 
 **Risk**
 - <apa yang rusak kalau ini salah dan ia jalan terus>
 ```
 
-`Risk` adalah baris yang ditulis khusus untukmu. Kalau kamu tak bisa membaca kodenya, baris itulah
+`Risk` adalah baris yang ditulis khusus untukmu. Kalau kau tak bisa membaca kodenya, baris itulah
 yang membuatmu tetap bisa memutuskan dengan baik — ia menyebut ongkos kalau keputusannya salah.
 Kalau sebuah gerbang datang tanpa `Evidence`, agent sedang memintamu percaya pada kesannya; minta
 ia menunjukkan buktinya.

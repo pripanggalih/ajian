@@ -10,7 +10,7 @@ segar sesudahnya. **Tanpa review per-task** — review tunggal disimpan untuk `a
 
 ## Kapan dipakai
 
-- Setelah kamu menyetujui plan sebuah work order.
+- Setelah kau menyetujui plan sebuah work order.
 - Untuk melanjutkan build yang terputus — ia lanjut dari checkbox pertama yang belum dicentang plus `git log`.
 
 ## Pertanyaan umum

@@ -11,8 +11,8 @@ rekomendasi di tiap pertanyaan. Ia menulis apa yang harus benar, bukan cara memb
 ## Kapan dipakai
 
 - Di **awal** build, greenfield maupun brownfield — ia memegang seluruh percakapan desain.
-- Di **akhir** diskusi desain — ia menyuling apa yang sudah kamu putuskan dan menginterogasi celahnya.
-- Di mode **resumed**, saat `ROADMAP.md` sudah ada dan kamu ingin memperluas atau menyelaraskannya
+- Di **akhir** diskusi desain — ia menyuling apa yang sudah kau putuskan dan menginterogasi celahnya.
+- Di mode **resumed**, saat `ROADMAP.md` sudah ada dan kau ingin memperluas atau menyelaraskannya
   dengan kode yang sudah dikirim.
 - **Di tengah proyek, untuk menyisipkan atau mengubah fitur.** Ini juga mode resumed, dan inilah
   satu-satunya tempat roadmap yang sudah dibangun boleh diubah — roadmap punya satu pemilik.
@@ -34,7 +34,7 @@ rekomendasi di tiap pertanyaan. Ia menulis apa yang harus benar, bukan cara memb
 - **Bagaimana dengan rencana lama yang bertabrakan dengan fitur baru itu?** Ia memeriksanya. Work
   order yang sudah merged dan tersentuh akan disebutkan supaya cakupan baru memperhitungkannya; work
   order yang belum dibangun dan tumpang tindih akan ditandai `superseded by NN` atau dipersempit —
-  **kamu yang memilih per tumpang tindih**, karena letak garisnya adalah penilaian produk. Tidak ada
+  **kau yang memilih per tumpang tindih**, karena letak garisnya adalah penilaian produk. Tidak ada
   yang dihapus; work order yang disupersede mungkin sudah punya plan, laporan, atau commit. Keputusan
   di `DECISIONS.md` yang jadi salah mendapat ADR pengganti, bukan diedit diam-diam.
 

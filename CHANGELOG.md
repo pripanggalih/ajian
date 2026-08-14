@@ -6,6 +6,11 @@ All notable changes to `ajian` are recorded here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Indonesian docs address the reader as **kau** throughout, not `kamu`. The two had
+  been mixed by accident; `kau` is the register the author writes in, and the clitic
+  `-mu` the docs already used everywhere pairs with it.
+
 ## [0.1.0] - 2026-08-14
 
 First tagged release. The eight skills, the locked blueprint they implement, and

@@ -10,15 +10,15 @@ yang menggantikan session hook (ajian sengaja tak punya).
 ## Kapan dipakai
 
 - Di awal sesi, atau tepat setelah `/compact` atau `/clear`, saat kehilangan alur.
-- Kapan pun breadcrumb `→ Next` sebuah skill tak di depanmu dan kamu ragu menjalankan apa.
+- Kapan pun breadcrumb `→ Next` sebuah skill tak di depanmu dan kau ragu menjalankan apa.
 - Untuk memeriksa keadaan saat artefak yang di-commit dan ingatanmu tampak tak sejalan.
-- **Saat kamu sama sekali tak tahu kosakata ajian.** Kamu tak perlu ingat namanya: "saya bingung",
+- **Saat kau sama sekali tak tahu kosakata ajian.** Kau tak perlu ingat namanya: "saya bingung",
   "mulai dari mana", "ini lanjut apa", "sekarang ngapain", "lanjutnya gimana" semuanya sampai ke
   sini. Ia satu-satunya skill ajian tanpa prasyarat, jadi selalu aman dijalankan.
 
 ## Pertanyaan umum
 
-- **Apakah ia mengerjakan pekerjaannya?** Tidak. Ia hanya menunjuk skill berikutnya; kamu yang memanggil skill itu.
+- **Apakah ia mengerjakan pekerjaannya?** Tidak. Ia hanya menunjuk skill berikutnya; kau yang memanggil skill itu.
 - **Apakah ia akan menawarkan mengerjakan semuanya?** Ia menawarkan tepat satu langkah lalu
   menunggu. Bukan empat, dan tidak diam-diam — router yang menjalankan sendiri pipeline-nya adalah
   justru hal yang digantikan skill ini.
@@ -29,6 +29,6 @@ yang menggantikan session hook (ajian sengaja tak punya).
 
 ## Tanda berhasil
 
-Kamu bisa menjalankannya setelah gangguan apa pun dan mendapat jawaban benar lagi spesifik seperti
-"Work order 03 sudah detailed, plan 4/7 task tercentang — kamu di tengah build; berikutnya:
+Kau bisa menjalankannya setelah gangguan apa pun dan mendapat jawaban benar lagi spesifik seperti
+"Work order 03 sudah detailed, plan 4/7 task tercentang — kau di tengah build; berikutnya:
 `/ajian-build 03`, lanjut dari task 5."
