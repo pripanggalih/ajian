@@ -1,5 +1,9 @@
 # Ajian
 
+[![release](https://img.shields.io/github/v/tag/pripanggalih/ajian?label=release&sort=semver)](https://github.com/pripanggalih/ajian/releases)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![skills](https://img.shields.io/badge/skills-8-informational)](#alurnya)
+
 > **Status: desain terkunci, skill sudah diimplementasi.** **[English →](README.md)**
 
 `ajian` (Jawa: mantra kesaktian — tiap skill adalah satu *ajian*) adalah skillset untuk agen coding

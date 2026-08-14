@@ -6,6 +6,12 @@ All notable changes to `ajian` are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-14
+
+First tagged release. The eight skills, the locked blueprint they implement, and
+the dual-language docs are all in it; everything below was written before this
+tag existed, so it is the whole history rather than a delta.
+
 ### Added
 - Initial eight-skill pipeline: `ajian-map`, `ajian-adopt`, `ajian-blueprint`,
   `ajian-grill`, `ajian-design`, `ajian-plan`, `ajian-build`, `ajian-review`.
@@ -121,3 +127,6 @@ All notable changes to `ajian` are recorded here. The format follows
   inventory in the work order and commits on the build's branch; `ajian-plan`
   plans the wiring and forbids recreating those files; the executor is told they
   exist; `ajian-review` scopes them out of Standards and flags them to Spec.
+
+[Unreleased]: https://github.com/pripanggalih/ajian/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/pripanggalih/ajian/releases/tag/v0.1.0

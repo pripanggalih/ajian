@@ -1,5 +1,9 @@
 # Ajian
 
+[![release](https://img.shields.io/github/v/tag/pripanggalih/ajian?label=release&sort=semver)](https://github.com/pripanggalih/ajian/releases)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![skills](https://img.shields.io/badge/skills-8-informational)](#the-flow)
+
 > **Status: design locked, skills implemented.** **[Bahasa Indonesia →](README.id.md)**
 
 `ajian` (Javanese: an incantation of power — each skill is one *ajian*) is a skillset for AI coding
