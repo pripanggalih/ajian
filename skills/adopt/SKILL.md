@@ -66,16 +66,30 @@ which is the same as not having one.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
-the shape is fixed, and a stop that omits it is not a gate:
+A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
+in this order, and a stop that omits them is not a gate:
 
 ```
 GATE — <name of the gate>
-Done:     <what you actually did, one line>
-Evidence: <real command output, or the path of a committed artifact — not your own assessment>
-Decide:   <what the user has to decide, phrased as a question they can answer>
-Risk:     <what breaks if this is wrong and you proceed anyway>
+
+**Done**
+- <what you actually did>
+
+**Evidence**
+- <one checkable fact per bullet — real command output, or the path of a committed artifact,
+  never your own assessment>
+
+**Decide**
+- <what the user has to decide, phrased as a question they can answer>
+
+**Risk**
+- <what breaks if this is wrong and you proceed anyway>
 ```
+
+The fence above only delimits the template. **What you emit is plain markdown, never a code
+block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
+one pass is a gate the user approves without reading, which is the failure this protocol exists
+to prevent.
 
 Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
 wants.
@@ -156,13 +170,22 @@ Present it as a table: **source path → destination → what moves → what sta
 
 ```
 GATE — Adoption mapping
-Done:     Surveyed <N> documents, classified them, and diagnosed <M> gaps and <K> shape drifts
-Evidence: <the mapping table> · <the gap list> · <the drift list, each naming the file and the
-          field or section that is missing>
-Decide:   Which of these moves do you approve? Anything I have put in the wrong bucket?
-Risk:     I move content and leave a pointer; I never delete, so every move is revertible. But a
-          document I classify as "stays where it is" stays a second source of truth, and a
-          document I move that you needed in place will surprise the next reader of that path.
+
+**Done**
+- Surveyed <N> documents, classified them, and diagnosed <M> gaps and <K> shape drifts
+
+**Evidence**
+- <the mapping table>
+- <the gap list>
+- <the drift list, each naming the file and the field or section that is missing>
+
+**Decide**
+- Which of these moves do you approve? Anything I have put in the wrong bucket?
+
+**Risk**
+- I move content and leave a pointer; I never delete, so every move is revertible
+- A document I classify as "stays where it is" stays a second source of truth
+- A document I move that you needed in place will surprise the next reader of that path
 ```
 
 Approval is **per document**, not for the table as a whole. A user who approves nine of eleven
@@ -203,12 +226,22 @@ not the same as believing the migration went well:
 
 ```
 GATE — Adoption complete
-Done:     Migrated <N> documents, filled <M> gaps, repaired <K> shape drifts
-Evidence: <the commits, one per document> · <ajian-map's signals, run in order, and what each
-          returned> · <the next step they resolve to>
-Decide:   Anything that landed in the wrong place, or that should not have moved?
-Risk:     Documents I left in place still hold their original text. If one of them contradicts
-          what I wrote into the blueprint, the agent reading this project will believe both.
+
+**Done**
+- Migrated <N> documents, filled <M> gaps, repaired <K> shape drifts
+
+**Evidence**
+- <the commits, one per document>
+- <ajian-map's signals, run in order, and what each returned>
+- <the next step they resolve to>
+
+**Decide**
+- Anything that landed in the wrong place, or that should not have moved?
+
+**Risk**
+- Documents I left in place still hold their original text
+- If one of them contradicts what I wrote into the blueprint, the agent reading this project will
+  believe both
 ```
 
 If the signals do not resolve — a work order with no `Depth:`, a roadmap with no rows — say so

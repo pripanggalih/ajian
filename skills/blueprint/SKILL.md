@@ -137,16 +137,30 @@ which is the same as not having one.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
-the shape is fixed, and a stop that omits it is not a gate:
+A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
+in this order, and a stop that omits them is not a gate:
 
 ```
 GATE — <name of the gate>
-Done:     <what you actually did, one line>
-Evidence: <real command output, or the path of a committed artifact — not your own assessment>
-Decide:   <what the user has to decide, phrased as a question they can answer>
-Risk:     <what breaks if this is wrong and you proceed anyway>
+
+**Done**
+- <what you actually did>
+
+**Evidence**
+- <one checkable fact per bullet — real command output, or the path of a committed artifact,
+  never your own assessment>
+
+**Decide**
+- <what the user has to decide, phrased as a question they can answer>
+
+**Risk**
+- <what breaks if this is wrong and you proceed anyway>
 ```
+
+The fence above only delimits the template. **What you emit is plain markdown, never a code
+block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
+one pass is a gate the user approves without reading, which is the failure this protocol exists
+to prevent.
 
 Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
 wants.
@@ -310,14 +324,22 @@ Commit first — the `Evidence` line has to point at something that exists in gi
 
 ```
 GATE — Foundation
-Done:     Wrote and committed the foundation documents; wired the pointer into <AGENTS.md|CLAUDE.md>
-Evidence: <git commit hash and the file list it touched, from `git show --stat`>
-Decide:   Review the stack in ARCHITECTURE, the entities in DATA-MODEL, and the non-goals in
-          PRD — those are the hardest to correct later. What should change before I build
-          the roadmap?
-Risk:     Every work order, plan, and build downstream is written against these files. A wrong
-          stack or a missing non-goal here is not a document defect — it is code that gets
-          written and later thrown away.
+
+**Done**
+- Wrote and committed the foundation documents
+- Wired the pointer into <AGENTS.md|CLAUDE.md>
+
+**Evidence**
+- <git commit hash and the file list it touched, from `git show --stat`>
+
+**Decide**
+- Review the stack in ARCHITECTURE, the entities in DATA-MODEL, and the non-goals in PRD — those
+  are the hardest to correct later. What should change before I build the roadmap?
+
+**Risk**
+- Every work order, plan, and build downstream is written against these files
+- A wrong stack or a missing non-goal here is not a document defect — it is code that gets written
+  and later thrown away
 ```
 
 Wait. Apply the changes, re-run the self-review, and only then continue.
@@ -352,13 +374,22 @@ that fails, out loud, before you present it. Then present the list as a gate and
 
 ```
 GATE — Roadmap
-Done:     Ordered <N> feature lines and ran each through the sizing / slice / order tests
-Evidence: <the ordered list, and for each line the test result — including every line you
-          split or merged, and why>
-Decide:   Is this the order you want built, and is any line still too big for one session?
-Risk:     One roadmap line is one work order is one build session. A line that is too big
-          produces a plan that stalls halfway through the build; a wrong order means building
-          against a dependency that does not exist yet. Both are found late and cost the line.
+
+**Done**
+- Ordered <N> feature lines and ran each through the sizing / slice / order tests
+
+**Evidence**
+- <the ordered list, with the test result for each line>
+- <every line you split or merged, and why>
+
+**Decide**
+- Is this the order you want built, and is any line still too big for one session?
+
+**Risk**
+- One roadmap line is one work order is one build session
+- A line that is too big produces a plan that stalls halfway through the build
+- A wrong order means building against a dependency that does not exist yet
+- Both are found late and cost the line
 ```
 
 Once approved, write `ROADMAP.md` from its template.
@@ -462,15 +493,25 @@ differently, which is the whole value of the ledger.
 
 ```
 GATE — Roadmap change
-Done:     Placed <feature> as row <position>, number <NN>, and checked its impact
-Evidence: <the sizing tests it passed> · <the merged work orders it touches, by path> ·
-          <each overlapping unbuilt work order, with the overlap described> · <each
-          decision in DECISIONS.md the insertion contradicts>
-Decide:   Is this the right position? For each overlap: supersede, or narrow? For each
-          contradicted decision: raise a superseding ADR?
-Risk:     An overlap I miss becomes two work orders that both claim to build the same
-          thing, and the one that finds it is ajian-review's Spec axis — weeks later,
-          after the code has been written twice.
+
+**Done**
+- Placed <feature> as row <position>, number <NN>, and checked its impact
+
+**Evidence**
+- <the sizing tests it passed>
+- <the merged work orders it touches, by path>
+- <each overlapping unbuilt work order, with the overlap described>
+- <each decision in DECISIONS.md the insertion contradicts>
+
+**Decide**
+- Is this the right position?
+- For each overlap: supersede, or narrow?
+- For each contradicted decision: raise a superseding ADR?
+
+**Risk**
+- An overlap I miss becomes two work orders that both claim to build the same thing
+- The one that finds it is ajian-review's Spec axis — weeks later, after the code has been written
+  twice
 ```
 
 ### 4 · Promote the next feature

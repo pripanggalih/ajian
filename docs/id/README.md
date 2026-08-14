@@ -48,10 +48,18 @@ yang sama, sehingga gerbang yang dilewati kelihatan justru karena bloknya hilang
 
 ```
 GATE — <nama gerbang>
-Done:     <apa yang benar-benar sudah dikerjakan agent>
-Evidence: <output perintah nyata, atau path berkas yang sudah di-commit — bukan "kelihatannya beres">
-Decide:   <pertanyaan yang kamu jawab>
-Risk:     <apa yang rusak kalau ini salah dan ia jalan terus>
+
+**Done**
+- <apa yang benar-benar sudah dikerjakan agent>
+
+**Evidence**
+- <output perintah nyata, atau path berkas yang sudah di-commit — bukan "kelihatannya beres">
+
+**Decide**
+- <pertanyaan yang kamu jawab>
+
+**Risk**
+- <apa yang rusak kalau ini salah dan ia jalan terus>
 ```
 
 `Risk` adalah baris yang ditulis khusus untukmu. Kalau kamu tak bisa membaca kodenya, baris itulah

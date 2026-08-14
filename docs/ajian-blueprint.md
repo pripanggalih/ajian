@@ -180,6 +180,12 @@ Two grill stages, two characters:
     line addressed to a user who cannot audit the work, and is what makes a gate
     decidable by someone who does not read code.
 
+    The five fields are fixed; their **rendering is bulleted markdown, not a code
+    block** — a label line per field and one checkable fact per bullet. The original
+    `Done: … Evidence: …` layout packed everything into wrapped prose inside a fence,
+    and a gate the user cannot scan in one pass is a gate the user approves without
+    reading — the same walked-through failure the block was written to stop.
+
     The block is **inlined and duplicated** across all eight skills rather than
     factored into a shared reference, because the `skills` CLI installs one skill
     directory at a time; a shared file would resolve to a path absent on the user's

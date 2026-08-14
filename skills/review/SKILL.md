@@ -59,16 +59,30 @@ which is the same as not having one.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
-the shape is fixed, and a stop that omits it is not a gate:
+A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
+in this order, and a stop that omits them is not a gate:
 
 ```
 GATE — <name of the gate>
-Done:     <what you actually did, one line>
-Evidence: <real command output, or the path of a committed artifact — not your own assessment>
-Decide:   <what the user has to decide, phrased as a question they can answer>
-Risk:     <what breaks if this is wrong and you proceed anyway>
+
+**Done**
+- <what you actually did>
+
+**Evidence**
+- <one checkable fact per bullet — real command output, or the path of a committed artifact,
+  never your own assessment>
+
+**Decide**
+- <what the user has to decide, phrased as a question they can answer>
+
+**Risk**
+- <what breaks if this is wrong and you proceed anyway>
 ```
+
+The fence above only delimits the template. **What you emit is plain markdown, never a code
+block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
+one pass is a gate the user approves without reading, which is the failure this protocol exists
+to prevent.
 
 Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
 wants.
@@ -115,13 +129,22 @@ the gate:
 
 ```
 GATE — Review findings
-Done:     Ran both axes against the diff from <merge-base hash> to HEAD
-Evidence: <files and line count reviewed> · <paths scoped out of Standards as impeccable's
-          built surface> · <N> Standards findings, <M> Spec findings, listed above
-Decide:   Which findings should I fix, and which do you want to push back on?
-Risk:     Findings are input to evaluate, not orders. Fixing a wrong one changes working code
-          for a reviewer's preference; ignoring a real one ships it. I have marked which ones
-          I think are which — tell me where I am wrong.
+
+**Done**
+- Ran both axes against the diff from <merge-base hash> to HEAD
+
+**Evidence**
+- <files and line count reviewed>
+- <paths scoped out of Standards as impeccable's built surface>
+- <N> Standards findings, <M> Spec findings, listed above
+
+**Decide**
+- Which findings should I fix, and which do you want to push back on?
+
+**Risk**
+- Findings are input to evaluate, not orders
+- Fixing a wrong one changes working code for a reviewer's preference; ignoring a real one ships it
+- I have marked which ones I think are which — tell me where I am wrong
 ```
 
 ## Step 2 — Respond to the findings
