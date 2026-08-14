@@ -35,16 +35,30 @@ which is the same as not having one.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
-the shape is fixed, and a stop that omits it is not a gate:
+A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
+in this order, and a stop that omits them is not a gate:
 
 ```
 GATE — <name of the gate>
-Done:     <what you actually did, one line>
-Evidence: <real command output, or the path of a committed artifact — not your own assessment>
-Decide:   <what the user has to decide, phrased as a question they can answer>
-Risk:     <what breaks if this is wrong and you proceed anyway>
+
+**Done**
+- <what you actually did>
+
+**Evidence**
+- <one checkable fact per bullet — real command output, or the path of a committed artifact,
+  never your own assessment>
+
+**Decide**
+- <what the user has to decide, phrased as a question they can answer>
+
+**Risk**
+- <what breaks if this is wrong and you proceed anyway>
 ```
+
+The fence above only delimits the template. **What you emit is plain markdown, never a code
+block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
+one pass is a gate the user approves without reading, which is the failure this protocol exists
+to prevent.
 
 Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
 wants.
@@ -119,12 +133,22 @@ and the `Evidence` line is what stops a confident guess from passing as a readin
 
 ```
 GATE — Where you are
-Done:     Read ROADMAP.md, work order 03, and docs/plans/03-booking-form.md
-Evidence: ROADMAP: lines 01–02 ticked, 03 unticked · WO 03 `Depth: detailed`, no UI
-          docs/plans/03-booking-form.md: 4 of 7 task boxes ticked · git log: 4 task commits
-Decide:   You are mid-build on work order 03. Run `/ajian-build 03` to resume at task 5?
-Risk:     If those 4 commits are not actually on this branch, the build restarts work that
-          exists and you get duplicate commits. Say so and I will check before resuming.
+
+**Done**
+- Read ROADMAP.md, work order 03, and docs/plans/03-booking-form.md
+
+**Evidence**
+- ROADMAP: lines 01–02 ticked, 03 unticked
+- WO 03: `Depth: detailed`, no UI
+- docs/plans/03-booking-form.md: 4 of 7 task boxes ticked
+- git log: 4 task commits
+
+**Decide**
+- You are mid-build on work order 03. Run `/ajian-build 03` to resume at task 5?
+
+**Risk**
+- If those 4 commits are not actually on this branch, the build restarts work that exists and you
+  get duplicate commits. Say so and I will check before resuming
 ```
 
 **One step, never a chain.** Name the single next skill and ask. Do not offer to run the rest of

@@ -73,6 +73,18 @@ All notable changes to `ajian` are recorded here. The format follows
   router guessing.
 
 ### Changed
+- **The gate block is bulleted markdown, not wrapped prose.** The five fields are
+  unchanged — `GATE / Done / Evidence / Decide / Risk` still define the shape — but every
+  gate rendered as five long lines inside a code fence, and each one wrapped. What
+  reached the user was a paragraph they had to parse before they could decide, at the
+  six moments in the pipeline where a decision is most expensive to get wrong. A gate the
+  user cannot scan in one pass is a gate the user approves without reading, which is the
+  same walked-through failure the block was written to stop — emphasis had already been
+  tried and had already failed. Each field is now a label line with one checkable fact
+  per bullet, and the protocol says explicitly that what the agent emits is plain
+  markdown, never a code block; the fence in `SKILL.md` only delimits the template. The
+  shared block stays byte-identical across all eight skills, the twelve worked examples
+  follow it, and both user READMEs and locked decision 14 record the rendering rule.
 - **Roadmap row order is build order; the `#` column is a permanent identity.** One
   number used to carry both jobs — naming a work order's files and fixing its place
   in the queue — so inserting a feature mid-build forced a choice between

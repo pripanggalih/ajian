@@ -65,16 +65,30 @@ which is the same as not having one.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
-the shape is fixed, and a stop that omits it is not a gate:
+A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
+in this order, and a stop that omits them is not a gate:
 
 ```
 GATE — <name of the gate>
-Done:     <what you actually did, one line>
-Evidence: <real command output, or the path of a committed artifact — not your own assessment>
-Decide:   <what the user has to decide, phrased as a question they can answer>
-Risk:     <what breaks if this is wrong and you proceed anyway>
+
+**Done**
+- <what you actually did>
+
+**Evidence**
+- <one checkable fact per bullet — real command output, or the path of a committed artifact,
+  never your own assessment>
+
+**Decide**
+- <what the user has to decide, phrased as a question they can answer>
+
+**Risk**
+- <what breaks if this is wrong and you proceed anyway>
 ```
+
+The fence above only delimits the template. **What you emit is plain markdown, never a code
+block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
+one pass is a gate the user approves without reading, which is the failure this protocol exists
+to prevent.
 
 Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
 wants.
@@ -121,11 +135,19 @@ finding. The build is not the place to discover the plan fights itself.
 
 ```
 GATE — Plan conflicts
-Done:     Scanned the plan for internal contradictions before dispatching the executor
-Evidence: <each finding quoted beside the plan text that mandates it, with task numbers>
-Decide:   For each: which one governs?
-Risk:     The executor runs the whole plan continuously without checking in. A contradiction I
-          resolve by guessing becomes committed code in whichever direction I guessed.
+
+**Done**
+- Scanned the plan for internal contradictions before dispatching the executor
+
+**Evidence**
+- <each finding quoted beside the plan text that mandates it, with task numbers>
+
+**Decide**
+- For each: which one governs?
+
+**Risk**
+- The executor runs the whole plan continuously without checking in
+- A contradiction I resolve by guessing becomes committed code in whichever direction I guessed
 ```
 
 ## Step 2 — Execute (one subagent, whole plan)
@@ -153,14 +175,23 @@ Handle its return status:
 
   ```
   GATE — Build blocked
-  Done:     Executor stopped at task <N> of <M>; tasks 1–<N-1> are committed and ticked
-  Evidence: <the executor's BLOCKED reason verbatim> · <git log of what landed> · <the plan
-            text at task N>
-  Decide:   The plan is wrong at task <N>. Fix the plan (`/ajian-plan NN`), change the
-            approach, or drop the task?
-  Risk:     The branch is half-built and the ledger says so. Guessing a fix here writes code
-            the plan never described, which the Spec axis will flag at review as something
-            built that nobody asked for.
+
+  **Done**
+  - Executor stopped at task <N> of <M>; tasks 1–<N-1> are committed and ticked
+
+  **Evidence**
+  - <the executor's BLOCKED reason verbatim>
+  - <git log of what landed>
+  - <the plan text at task N>
+
+  **Decide**
+  - The plan is wrong at task <N>. Fix the plan (`/ajian-plan NN`), change the approach, or drop
+    the task?
+
+  **Risk**
+  - The branch is half-built and the ledger says so
+  - Guessing a fix here writes code the plan never described, which the Spec axis will flag at
+    review as something built that nobody asked for
   ```
 
 Never dispatch a second implementer subagent against the same tree in parallel — commits would

@@ -48,10 +48,18 @@ so a skipped gate is visible by its absence:
 
 ```
 GATE — <name of the gate>
-Done:     <what the agent actually did>
-Evidence: <real command output, or a committed file path — not "looks good to me">
-Decide:   <the question you answer>
-Risk:     <what breaks if this is wrong and it proceeds anyway>
+
+**Done**
+- <what the agent actually did>
+
+**Evidence**
+- <real command output, or a committed file path — not "looks good to me">
+
+**Decide**
+- <the question you answer>
+
+**Risk**
+- <what breaks if this is wrong and it proceeds anyway>
 ```
 
 `Risk` is the line written for you specifically. If you can't read the code, that line is how you

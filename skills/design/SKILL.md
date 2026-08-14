@@ -65,16 +65,30 @@ which is the same as not having one.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill is written as this block —
-the shape is fixed, and a stop that omits it is not a gate:
+A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
+in this order, and a stop that omits them is not a gate:
 
 ```
 GATE — <name of the gate>
-Done:     <what you actually did, one line>
-Evidence: <real command output, or the path of a committed artifact — not your own assessment>
-Decide:   <what the user has to decide, phrased as a question they can answer>
-Risk:     <what breaks if this is wrong and you proceed anyway>
+
+**Done**
+- <what you actually did>
+
+**Evidence**
+- <one checkable fact per bullet — real command output, or the path of a committed artifact,
+  never your own assessment>
+
+**Decide**
+- <what the user has to decide, phrased as a question they can answer>
+
+**Risk**
+- <what breaks if this is wrong and you proceed anyway>
 ```
+
+The fence above only delimits the template. **What you emit is plain markdown, never a code
+block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
+one pass is a gate the user approves without reading, which is the failure this protocol exists
+to prevent.
 
 Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
 wants.
@@ -128,15 +142,23 @@ So establish availability, and gather **evidence** rather than issuing a verdict
 
   ```
   GATE — impeccable availability
-  Done:     Looked for impeccable in the project, the user directory, and the plugin caches
-  Evidence: <the exact command you ran and exactly what it returned> · harness skill list:
-            <impeccable listed / not listed>
-  Decide:   If it isn't installed, run `npx impeccable install` and re-run `/ajian-design NN`.
-            If it is installed somewhere I didn't look, where?
-  Risk:     I will not design this surface myself. Doing so produces an unreviewed surface
-            outside the pipeline — no plan, no ledger, no two-axis review — and you would not
-            find out until review. Skipping design for this work order is a valid choice, but
-            it is yours to make, not mine.
+
+  **Done**
+  - Looked for impeccable in the project, the user directory, and the plugin caches
+
+  **Evidence**
+  - <the exact command you ran and exactly what it returned>
+  - harness skill list: <impeccable listed / not listed>
+
+  **Decide**
+  - If it isn't installed, run `npx impeccable install` and re-run `/ajian-design NN`
+  - If it is installed somewhere I didn't look, where?
+
+  **Risk**
+  - I will not design this surface myself
+  - Doing so produces an unreviewed surface outside the pipeline — no plan, no ledger, no two-axis
+    review — and you would not find out until review
+  - Skipping design for this work order is a valid choice, but it is yours to make, not mine
   ```
 
   **Stop there and wait.** Do not continue to Step 1 on your own judgement.
