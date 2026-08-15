@@ -6,10 +6,54 @@ All notable changes to `ajian` are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-15
+
+Every skill got shorter without losing a gate. `ajian-plan` had grown to 2.2x its
+upstream, and the weight was not the plan-writing prose — that is copied verbatim from
+`writing-plans` and still is — but ajian's own additions around it, which asked the model
+to *judge* things a shell command answers. Planning was slow and token-hungry compared
+with running `writing-plans` directly, which is the comparison that matters: ajian is
+supposed to add pipeline seams, not overhead.
+
 ### Changed
+- **Preconditions are one shell command, not a paragraph of judgement.** Seven skills
+  stated their prerequisites as prose and told the model to verify each one from disk
+  rather than from the conversation — `ajian-plan` went as far as "the conversation is
+  the least reliable record in this pipeline". Read literally, and it was, that forbids
+  the model from trusting its own context, so it re-read the work order, the `Depth:`
+  field and the `Status:` field on every turn it felt uncertain. Each skill now opens
+  with one command whose output answers every precondition at once, followed by one
+  line per failure naming the skill that owns it, and the instruction is to run it
+  **once** and trust the output for the session. `ajian-map` already read exactly these
+  signals, so the prose was duplicating a router that exists.
+- **`ajian-plan`'s reads are lazy.** It used to open `ARCHITECTURE.md`, `CONVENTIONS.md`,
+  `QUALITY.md` and anything they pointed at before writing a single task, then copy
+  Global Constraints verbatim out of all four. The work order is the spec; a blueprint
+  document is opened only when a task actually needs it, and `CONVENTIONS.md` /
+  `QUALITY.md` only for a constraint the work order references without spelling out.
+- **The `Existing surface` branch table replaces three prose branches.** Same three
+  outcomes for `recorded` / `not yet designed` / `handed to impeccable`, same refusal to
+  infer the inventory from `git diff`, in a third of the words.
+- **Gates are emitted as plain markdown, no code fence.** The five stacked fields are
+  unchanged and stay stacked — the fence was the problem, not the layout. It made every
+  gate in the skills read as a template to be reproduced rather than the shape of what to
+  emit, and cost a paragraph in each skill explaining that the fence "only delimits the
+  template". The header is now `**GATE — <name>**`; both user READMEs show the same.
+- **Skill `description` frontmatter is trigger phrases plus one sentence of scope.** The
+  router only ever sees that string, and `ajian-blueprint`'s ran to seventeen lines.
+  Every trigger phrase, Indonesian included, is preserved.
+- **The three shared blocks are shorter and still byte-identical across all eight
+  skills.** `CLAUDE.md`'s `dup()` sentinels move with them.
 - Indonesian docs address the reader as **kau** throughout, not `kamu`. The two had
   been mixed by accident; `kau` is the register the author writes in, and the clitic
   `-mu` the docs already used everywhere pairs with it.
+
+### Fixed
+- Nothing vendored was touched. The six sections `ajian-plan` copies from `writing-plans`
+  — `File Structure`, `Task Right-Sizing`, `Bite-Sized Task Granularity`,
+  `Task Structure`, `No Placeholders`, `Self-Review` — are byte-identical to upstream
+  before and after, as is `plan-document-reviewer-prompt.md`, and no file under any
+  skill's `references/` or `assets/` changed.
 
 ## [0.1.0] - 2026-08-14
 
@@ -133,5 +177,6 @@ tag existed, so it is the whole history rather than a delta.
   plans the wiring and forbids recreating those files; the executor is told they
   exist; `ajian-review` scopes them out of Standards and flags them to Spec.
 
-[Unreleased]: https://github.com/pripanggalih/ajian/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/pripanggalih/ajian/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/pripanggalih/ajian/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/pripanggalih/ajian/releases/tag/v0.1.0
