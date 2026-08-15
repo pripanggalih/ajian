@@ -6,6 +6,54 @@ All notable changes to `ajian` are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-15
+
+The interrogations were slow, and the cost was not in the questions — it was in the
+waiting before them. `ajian-grill` numbered its recon subagent as a pipeline stage ahead
+of the grill, so the first round did not go out until a full codebase sweep came back.
+`grilling`, the vendored mechanic both grill passes run on, says the opposite in as many
+words: *"Don't block on it... ask the rest of the frontier now."* That instruction lived
+in `references/grill-engine.md`, which is read at the grill step — by which time the
+recon had already blocked. Fixing it makes ajian more faithful to upstream, not less.
+
+### Changed
+- **Recon runs underneath the rounds, not in front of them.** `ajian-grill`'s `1 Recon`
+  stage is gone; step 1 dispatches recon and opens the first round immediately, and only
+  the questions downstream of its findings wait for the report. The non-blocking rule now
+  sits in `SKILL.md` where it governs the dispatch, instead of in a reference read after
+  it.
+- **The brownfield repo scan is a background subagent.** `ajian-blueprint` said *scan the
+  repo before step 2*. It now dispatches the scan and starts step 2 anyway: themes 1 and 2
+  (problem, users & scope) do not depend on it, so they are asked while it works, and only
+  *the stack* and *conventions & quality* wait.
+- **Which questions reach the user is a mechanical filter, not a judgement call.** grill-2
+  used to admit a question when "two valid answers would change what gets built" — a test
+  the model can only settle by simulating each candidate's consequences, on every
+  candidate. It is now: the work order listed it as open **(a)**, or recon found two
+  shipped things in conflict **(b)**. Everything else is answered with the recommendation
+  and shown at the Gate under `Resolved`, where one word overrules it. The upstream
+  guarantee that nothing is silently assumed is met by the gate rather than by the asking.
+- **Read phases are shorter and parallel where they can be.** `ajian-grill` step 0 reads
+  the work order and nothing else — `INDEX.md`, the "Read first" list and the shape of the
+  code all move into recon's brief. `ajian-blueprint` reads its `assets/` templates in one
+  batch at the top of step 3 instead of one immediately before each file. `ajian-adopt`
+  delegates its whole-repo document survey to a subagent rather than pulling every README
+  and wiki page through the controller's context.
+- **Second-order rationale is cut across all eight skills.** Every rule kept its
+  imperative and lost the paragraph defending it; the prohibition density that made the
+  model re-audit each step drops with it. The three shared blocks shrink and stay
+  byte-identical, and `CLAUDE.md`'s `dup()` sentinels move with them.
+- User docs for `ajian-grill` and `ajian-blueprint` say, in both languages, that questions
+  start before recon finishes and which ones wait.
+
+### Fixed
+- Nothing vendored was touched. `## The mechanic` in both `grill-engine.md` copies is
+  byte-identical to `mattpocock/skills` `grilling`, the four superpowers references
+  (`using-git-worktrees`, `verification-before-completion`, `receiving-code-review`,
+  `finishing-a-development-branch`) and `two-axis-review.md`, `roadmap-sizing.md` and
+  `executor-prompt.md` are unchanged, and the 142 lines `ajian-plan` copies from
+  `writing-plans` are untouched — only ajian's own additions around them were trimmed.
+
 ## [0.2.0] - 2026-08-15
 
 Every skill got shorter without losing a gate. `ajian-plan` had grown to 2.2x its
@@ -177,6 +225,7 @@ tag existed, so it is the whole history rather than a delta.
   plans the wiring and forbids recreating those files; the executor is told they
   exist; `ajian-review` scopes them out of Standards and flags them to Spec.
 
-[Unreleased]: https://github.com/pripanggalih/ajian/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/pripanggalih/ajian/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/pripanggalih/ajian/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/pripanggalih/ajian/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/pripanggalih/ajian/releases/tag/v0.1.0

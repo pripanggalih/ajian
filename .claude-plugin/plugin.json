@@ -1,7 +1,7 @@
 {
   "name": "ajian",
   "description": "A gated skillset that turns a free-form idea into durable development docs, then builds the project one work-order at a time — grill, blueprint, design, plan, build, review. No session hooks. Greenfield and brownfield.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "pripanggalih",
     "url": "https://github.com/pripanggalih"
