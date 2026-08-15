@@ -2,20 +2,15 @@
 name: ajian-plan
 description: >-
   Use to turn one detailed work order into a bite-sized implementation plan, before touching code.
-  This is the plan stage of the ajian pipeline: it reads a `Depth: detailed` work order and the
-  blueprint documents its anchors name, and writes the plan the executor follows. Triggers include
-  "/ajian-plan NN", "plan work order N", "write the implementation plan". Assumes the work order is
-  already detailed (run /ajian-grill NN first) and, if it has UI, designed (/ajian-design NN). The
-  plan's checkboxes become the build ledger. It stops at the plan — ajian-build executes it.
+  Triggers include "/ajian-plan NN", "plan work order N", "write the implementation plan". Reads a
+  `Depth: detailed` work order and writes the plan the executor follows; its checkboxes become the
+  build ledger. Stops at the plan — ajian-build executes it.
 ---
 
-<!-- Adapted from superpowers `writing-plans` (MIT, Jesse Vincent), copied nearly verbatim. The
-     ajian seams: the input is a detailed work order (not a loose spec); plans are saved to
-     docs/plans/NN-<slug>.md and committed (the checkboxes are ajian-build's ledger); the
-     execution handoff points at ajian-build, not superpowers' subagent-driven-development; and a
-     UI work order may arrive with its surface already built by impeccable, so the plan wires
-     existing code up rather than planning it from zero (the "Existing surface" section below —
-     original ajian, no upstream counterpart). See NOTICE.md for attribution. -->
+<!-- Adapted from superpowers `writing-plans` (MIT, Jesse Vincent), copied nearly verbatim. ajian
+     seams: the input is a detailed work order; plans live at docs/plans/NN-<slug>.md and are
+     committed (the checkboxes are ajian-build's ledger); the handoff points at ajian-build; and
+     "Existing surface" is original ajian, no upstream counterpart. See NOTICE.md. -->
 
 # Ajian · Plan
 
@@ -27,10 +22,10 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using ajian-plan (writing-plans) to create the implementation plan."
 
-**Read first:** the detailed work order `docs/work-orders/NN-<slug>.md` — its flows, contracts,
-acceptance criteria, and anchors are the spec — plus the blueprint documents its "Read first" list
-names (`ARCHITECTURE.md`, `CONVENTIONS.md`, `QUALITY.md`, and any it points to). The plan owns the
-*how*; the work order owns the *what*. Never restate the stack — link `ARCHITECTURE.md`.
+**Read first:** the work order `docs/work-orders/NN-<slug>.md` — its flows, contracts, acceptance
+criteria, and anchors are the spec. Open a blueprint document it names only when a task actually needs
+one. The plan owns the *how*; the work order owns the *what*. Never restate the stack — link
+`ARCHITECTURE.md`.
 
 **Context:** If the build will run in an isolated worktree (optional parallel work orders), it is
 created by `ajian-build` at execution time — not here.
@@ -40,122 +35,92 @@ its `- [ ]` checkboxes are the ledger `ajian-build` ticks as it goes, so it must
 
 ## Preconditions
 
-- **The work order `docs/work-orders/NN-<slug>.md` is at `Depth: detailed`.** Still `brief` → it has
-  not been sharpened against real code, and a plan written from a brief plans the wrong thing.
-  `/ajian-grill NN` owns that.
-- **If it has UI, its `## Built surface` Status is `recorded`.** See the section below — this is the
-  check that catches an interrupted design handoff.
-- **No plan exists yet at `docs/plans/NN-<slug>.md`.** One does → read it before writing anything;
-  overwriting a plan mid-build discards the ledger `ajian-build` is executing against.
+One command answers all three. Run it once, then trust the output for the rest of the session:
+
+```bash
+WO=$(ls docs/work-orders/NN-*.md)          # substitute the real NN
+grep -m1 '^Depth:' "$WO"
+sed -n '/^## Built surface/,+4p' "$WO" | grep -m1 'Status:'   # blank on a non-UI work order
+ls docs/plans/NN-* 2>/dev/null
+```
+
+- `Depth:` is not `detailed` → `/ajian-grill NN` owns that; a plan written from a brief plans the
+  wrong thing.
+- A UI work order whose `Status:` is not `recorded` → see the next section.
+- A plan already exists → read it before writing anything; overwriting one mid-build discards the
+  ledger `ajian-build` is executing against.
 
 ### When a precondition fails
 
-**Verify every precondition from the artifacts on disk, never from what the conversation seems to
-say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
-field, a checkbox, and `git log` are not.
-
-When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
-language, name the one skill that owns the gap, and offer to run **that one step**:
+Check preconditions against the files on disk, not against what the conversation says happened. When
+one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
+it, and offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
-skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
-missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
+a single yes, and running the missing step without asking is the same failure with the asking removed.
 
 ## Language
 
-Write to the user in the user's own language. This file is English because it is agent-facing —
-that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
-or Japanese gets their gates in that language.
-
-Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
-Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
-shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
-which is the same as not having one.
+Reply in the user's language. This file is English because it is agent-facing, not because the answer
+must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
+copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
+stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
-in this order, and a stop that omits them is not a gate:
+A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
+emitted as plain markdown — never inside a code block:
 
-```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what you actually did>
 
 **Evidence**
-- <one checkable fact per bullet — real command output, or the path of a committed artifact,
-  never your own assessment>
+- <one checkable fact per bullet — real command output, or the path of a committed artifact, never
+  your own assessment>
 
 **Decide**
 - <what the user has to decide, phrased as a question they can answer>
 
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
-```
 
-The fence above only delimits the template. **What you emit is plain markdown, never a code
-block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
-one pass is a gate the user approves without reading, which is the failure this protocol exists
-to prevent.
-
-Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
-wants.
-
-`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
-judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
+`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
 `Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
 
-This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+This block is identical in every ajian skill.
 
 ## Existing surface — plan the wiring, not the screens
 
-If the work order has UI, `ajian-design` ran before you and impeccable **already built the
-surface**. Read the work order's `## Built surface` section and `DESIGN.md` before writing a single
-task, and open the files it lists. They are real code in the tree, on the branch the build will
-extend.
+On a UI work order impeccable already built the surface. The `Status:` line from the precondition
+command decides what happens next:
 
-Plan around them:
+| `Status:` | Do |
+| --- | --- |
+| `recorded` | Plan around the inventory — rules below |
+| `not yet designed` | Stop. `/ajian-design NN` |
+| `handed to impeccable` | Stop. `/ajian-design NN` resumes at the recording step. Never infer the inventory from `git diff` — the guess goes wrong on exactly the files both sides touch |
 
-- **Never write a task that creates a screen the inventory already lists.** The executor will
-  either overwrite impeccable's work or stall on a file the plan swears does not exist. Both are
-  worse than no plan.
-- **Plan what impeccable left stubbed** — the work order's "Wiring left to the build" line: data
-  fetching, state, routing, validation, error paths, tests. That is the build's actual job on a UI
-  work order.
-- **Open the plan with an `## Existing surface` block** listing those paths verbatim under the
-  heading *do not recreate*, so the executor reads it before its first task. Say which files it may
-  modify to wire things up and which are impeccable's to leave alone.
-- **Visual craft is not yours to re-specify.** Do not plan tokens, spacing, or layout changes — the
-  direction passed impeccable's gate. If the surface is genuinely wrong for the work order, that is
-  a `/ajian-design NN` problem, not a plan task.
+At `recorded`, read the work order's `## Built surface` and `DESIGN.md`, then:
 
-**A UI work order is only plannable at `Status: recorded`.** Read the `## Built surface` Status
-before anything else and treat it as a gate, not a hint:
-
-- **`recorded`** — the inventory is real. Plan around it.
-- **`not yet designed`** — the surface does not exist yet. Stop and send it to `/ajian-design NN`.
-  Planning a surface that is about to be generated wastes both.
-- **`handed to impeccable`** — `ajian-design` reached the handoff and never came back to record what
-  was built. Something may well be in the tree, but nothing here knows what. **Do not infer the
-  inventory from `git diff`** — the guess goes wrong precisely on the files both sides touch, which
-  are the expensive ones. Stop and send it back to `/ajian-design NN`; it resumes at the recording
-  step rather than rebuilding.
-
-This is the one check that catches an interrupted design handoff. Skipping it is how a plan ends up
-containing tasks to create screens that already exist.
+- **Open the plan with an `## Existing surface` block** listing those paths verbatim under *do not
+  recreate*, and say which files the build may modify to wire things up. Never write a task that
+  creates a screen the inventory already lists.
+- **Plan only what impeccable left stubbed** — the "Wiring left to the build" line: data fetching,
+  state, routing, validation, error paths, tests.
+- **Do not plan tokens, spacing, or layout.** A surface that is genuinely wrong for the work order is
+  an `/ajian-design NN` problem, not a plan task.
 
 ## Scope Check
 
-One work order is one build session — the roadmap already sized it (see the sizing rails in
-`ajian-blueprint`). So the scope check here is a **size guard**, and it is the fix for the classic
-"the plan got too big and the model stalled halfway" failure: if the plan is about to run past
-roughly a dozen tasks, or gets too long to hold in one context, the **work order (or its roadmap
-line) was mis-sized** — stop, say so, and send it back to `ajian-grill` / the roadmap to split
-before you keep writing. Do not paper over a too-big line with a giant plan.
+One work order is one build session; the roadmap already sized it. If the plan runs past roughly a
+dozen tasks, the **work order was mis-sized** — stop, say so, and send it back to `ajian-grill` to
+split, rather than papering over it with a giant plan.
 
 ## File Structure
 
@@ -207,8 +172,9 @@ independently testable deliverable.
 
 [The project-wide requirements that bind every task — version floors, dependency limits,
 naming and copy rules, platform requirements, and the Definition of Done — one line each,
-with exact values copied verbatim from the work order, `ARCHITECTURE.md`, `CONVENTIONS.md`,
-and `QUALITY.md`. Every task's requirements implicitly include this section.]
+with exact values copied verbatim from the work order. Open `CONVENTIONS.md` or `QUALITY.md`
+only for a constraint the work order references but does not spell out. Every task's
+requirements implicitly include this section.]
 
 ---
 ```
@@ -286,17 +252,16 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 ## Execution Handoff
 
-After writing the plan, **commit it** (`docs/plans/NN-<slug>.md`) — the checkboxes are the ledger,
-so the plan lives in git before execution starts. Then stop for the plan gate:
+Commit the plan (`docs/plans/NN-<slug>.md`) — the checkboxes are the ledger, so it lives in git
+before execution starts. Then emit the gate:
 
-```
-GATE — Plan
+**GATE — Plan**
 
 **Done**
 - Wrote and committed the implementation plan for work order NN
 
 **Evidence**
-- docs/plans/NN-<slug>.md @ <commit hash>, <N> tasks
+- `docs/plans/NN-<slug>.md` @ <commit hash>, <N> tasks
 - Self-review — spec coverage: <what it turned up>
 - Self-review — placeholder scan: <what it turned up>
 - Self-review — type consistency: <what it turned up>
@@ -309,7 +274,6 @@ GATE — Plan
   checking in
 - Anything wrong here becomes committed code before you see it again, and the review that would
   catch it does not run until the build is finished
-```
 
 Wait for approval; apply any changes and re-commit. There is one executor — `ajian-build` — by
 design: one fresh subagent, the checkbox ledger, commit per task, and a single review at the end

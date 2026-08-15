@@ -1,14 +1,12 @@
 ---
 name: ajian-design
 description: >-
-  Use to build the visual world for a UI work order, by handing it to impeccable. This is the
-  design stage of the ajian pipeline: it runs after ajian-grill has gathered the surface's design
-  brief and before ajian-plan. It derives PRODUCT.md once, as a projection of the blueprint (not a
-  fresh interview), then invokes impeccable's new-work flow to invent and build the surface and
-  record DESIGN.md. Triggers include "/ajian-design NN", "design work order N", "build the UI for
-  this feature", "seed the visual world". Only for work orders that have UI; skip straight to
-  ajian-plan otherwise. Requires impeccable to be installed (`npx impeccable install`) — if it is
-  not, this skill stops at its gate and asks for it; it never designs or implements the surface
+  Use to build the visual world for a UI work order, by handing it to impeccable. Triggers include
+  "/ajian-design NN", "design work order N", "build the UI for this feature", "seed the visual
+  world". Runs between ajian-grill and ajian-plan: derives PRODUCT.md as a projection of the
+  blueprint (not a fresh interview), then invokes impeccable's new-work flow to invent and build the
+  surface and record DESIGN.md. Only for work orders that have UI. Requires impeccable
+  (`npx impeccable install`) — without it this skill stops at its gate; it never designs the surface
   itself.
 ---
 
@@ -29,75 +27,61 @@ does not second-guess it. The only things ajian supplies are the two seams below
 
 ## Preconditions
 
-- The work order `NN` is `Depth: detailed` and has UI (its "Screens & states" section is filled by
-  `ajian-grill`). If it is still brief, run `/ajian-grill NN` first.
-- impeccable is **available** — installed project-local, user-global, or via a plugin. This is
-  checked in Step 0, and it is a hard gate.
-- The work order's `## Built surface` Status is `not yet designed` or `handed to impeccable`.
-  `recorded` means this surface is already built and inventoried; Step 1 handles each case.
+```bash
+WO=$(ls docs/work-orders/NN-*.md)          # substitute the real NN
+grep -m1 '^Depth:' "$WO"
+sed -n '/^## Built surface/,+4p' "$WO" | grep -m1 'Status:'
+```
+
+- Still `brief` → run `/ajian-grill NN` first; its "Screens & states" section is this skill's input.
+- `Status: recorded` → the surface is already built and inventoried; Step 1 handles that case.
+- impeccable must be **available** — project-local, user-global, or via a plugin. Step 0 checks it,
+  and it is a hard gate.
 
 ### When a precondition fails
 
-**Verify every precondition from the artifacts on disk, never from what the conversation seems to
-say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
-field, a checkbox, and `git log` are not.
-
-When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
-language, name the one skill that owns the gap, and offer to run **that one step**:
+Check preconditions against the files on disk, not against what the conversation says happened. When
+one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
+it, and offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
-skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
-missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
+a single yes, and running the missing step without asking is the same failure with the asking removed.
 
 ## Language
 
-Write to the user in the user's own language. This file is English because it is agent-facing —
-that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
-or Japanese gets their gates in that language.
-
-Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
-Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
-shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
-which is the same as not having one.
+Reply in the user's language. This file is English because it is agent-facing, not because the answer
+must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
+copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
+stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
-in this order, and a stop that omits them is not a gate:
+A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
+emitted as plain markdown — never inside a code block:
 
-```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what you actually did>
 
 **Evidence**
-- <one checkable fact per bullet — real command output, or the path of a committed artifact,
-  never your own assessment>
+- <one checkable fact per bullet — real command output, or the path of a committed artifact, never
+  your own assessment>
 
 **Decide**
 - <what the user has to decide, phrased as a question they can answer>
 
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
-```
 
-The fence above only delimits the template. **What you emit is plain markdown, never a code
-block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
-one pass is a gate the user approves without reading, which is the failure this protocol exists
-to prevent.
-
-Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
-wants.
-
-`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
-judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
+`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
 `Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
 
-This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+This block is identical in every ajian skill.
 
 ## Pipeline
 
@@ -140,8 +124,7 @@ So establish availability, and gather **evidence** rather than issuing a verdict
   for its scripts; Step 4 never calls them.
 - **Neither signal** → you have evidence of absence, not proof of it. Show what you ran, and ask:
 
-  ```
-  GATE — impeccable availability
+  **GATE — impeccable availability**
 
   **Done**
   - Looked for impeccable in the project, the user directory, and the plugin caches
@@ -159,16 +142,13 @@ So establish availability, and gather **evidence** rather than issuing a verdict
   - Doing so produces an unreviewed surface outside the pipeline — no plan, no ledger, no two-axis
     review — and you would not find out until review
   - Skipping design for this work order is a valid choice, but it is yours to make, not mine
-  ```
 
   **Stop there and wait.** Do not continue to Step 1 on your own judgement.
 
 **You may not stand in for impeccable.** Without it, this skill designs nothing, writes no UI code,
-picks no colors or type, and does not touch `DESIGN.md` or `PRODUCT.md`. Doing the work yourself
-looks helpful and is the failure this gate exists to prevent: it produces an unreviewed surface
-outside the pipeline, skipping `ajian-plan` and `ajian-build` entirely, with no plan, no ledger,
-and no two-axis review. A missing dependency is the user's call to resolve, not yours to route
-around. Stopping here costs one install; continuing costs the work order's whole trail.
+picks no colors or type, and does not touch `DESIGN.md` or `PRODUCT.md`. A missing dependency is the
+user's call to resolve, not yours to route around: stopping here costs one install, continuing costs
+the work order's whole trail.
 
 The only other honest exit is the user deciding to skip design for this work order — and that is
 theirs to choose, not yours to offer as an equivalent.

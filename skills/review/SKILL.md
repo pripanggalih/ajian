@@ -1,13 +1,11 @@
 ---
 name: ajian-review
 description: >-
-  Use to review a finished build and integrate the branch. This is the last stage of each ajian
-  work order: a two-axis code review (Standards — repo conventions + Fowler smells; Spec — faithful
-  to the work order) run in parallel sub-agents, then the discipline for responding to findings,
-  then finishing the branch (tick the ROADMAP line, merge or PR). Triggers include "/ajian-review
-  NN", "review this branch", "review work order N", "finish and merge". Assumes ajian-build left a
-  green, committed branch. When the review is clean and merged, the roadmap line is ticked and the
-  next work order begins.
+  Use to review a finished build and integrate the branch. Triggers include "/ajian-review NN",
+  "review this branch", "review work order N", "finish and merge". Runs a two-axis code review
+  (Standards — repo conventions + Fowler smells; Spec — faithful to the work order) in parallel
+  sub-agents, responds to the findings, then finishes the branch: tick the ROADMAP line, merge or
+  PR. Assumes ajian-build left a green, committed branch.
 ---
 
 <!-- Original ajian wiring around three vendored sources: mattpocock/skills `code-review` (the
@@ -22,76 +20,64 @@ verifies, corrects, and finishes.
 
 ## Preconditions
 
-- **Every checkbox in `docs/plans/NN-<slug>.md` is ticked.** Unticked boxes mean the build is
-  unfinished; `/ajian-build NN` resumes from the first one. Reviewing a half-built branch reports
-  missing work as defects.
-- **The branch is committed and green.** Confirm from `git status` and a test run, not from the
-  build's report — Step 4 of `ajian-build` exists because that report is not evidence.
-- **The detailed work order `docs/work-orders/NN-<slug>.md` exists** — it is the Spec axis's source.
-  Without it there is no Spec axis, only half a review.
+One command answers all three. Run it once, then trust the output for the rest of the session:
+
+```bash
+grep -c '^- \[ \]' docs/plans/NN-*.md   # substitute the real NN; 0 means the build is finished
+git status --short
+ls docs/work-orders/NN-*.md
+```
+
+- Unticked boxes remain → the build is unfinished; `/ajian-build NN` resumes from the first one.
+  Reviewing a half-built branch reports missing work as defects.
+- The tree is dirty, or the suite has not been run on this branch → confirm green from a test run,
+  never from the build's report.
+- No work order → no Spec axis, only half a review.
 
 ### When a precondition fails
 
-**Verify every precondition from the artifacts on disk, never from what the conversation seems to
-say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
-field, a checkbox, and `git log` are not.
-
-When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
-language, name the one skill that owns the gap, and offer to run **that one step**:
+Check preconditions against the files on disk, not against what the conversation says happened. When
+one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
+it, and offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
-skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
-missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
+a single yes, and running the missing step without asking is the same failure with the asking removed.
 
 ## Language
 
-Write to the user in the user's own language. This file is English because it is agent-facing —
-that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
-or Japanese gets their gates in that language.
-
-Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
-Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
-shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
-which is the same as not having one.
+Reply in the user's language. This file is English because it is agent-facing, not because the answer
+must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
+copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
+stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
-in this order, and a stop that omits them is not a gate:
+A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
+emitted as plain markdown — never inside a code block:
 
-```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what you actually did>
 
 **Evidence**
-- <one checkable fact per bullet — real command output, or the path of a committed artifact,
-  never your own assessment>
+- <one checkable fact per bullet — real command output, or the path of a committed artifact, never
+  your own assessment>
 
 **Decide**
 - <what the user has to decide, phrased as a question they can answer>
 
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
-```
 
-The fence above only delimits the template. **What you emit is plain markdown, never a code
-block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
-one pass is a gate the user approves without reading, which is the failure this protocol exists
-to prevent.
-
-Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
-wants.
-
-`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
-judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
+`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
 `Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
 
-This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+This block is identical in every ajian skill.
 
 ## Pipeline
 
@@ -127,8 +113,7 @@ reports under `## Standards` and `## Spec`, side by side — **do not merge or r
 separation is the point (code can pass one axis and fail the other). Close the presentation with
 the gate:
 
-```
-GATE — Review findings
+**GATE — Review findings**
 
 **Done**
 - Ran both axes against the diff from <merge-base hash> to HEAD
@@ -145,7 +130,6 @@ GATE — Review findings
 - Findings are input to evaluate, not orders
 - Fixing a wrong one changes working code for a reviewer's preference; ignoring a real one ships it
 - I have marked which ones I think are which — tell me where I am wrong
-```
 
 ## Step 2 — Respond to the findings
 

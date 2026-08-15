@@ -2,13 +2,11 @@
 name: ajian-grill
 description: >-
   Use before building a work order, to sharpen it from brief to buildable against the code that
-  actually exists. This is grill-2, the micro pass of the ajian pipeline — fact-heavy, run one
-  work order at a time. It recons the real code (previous work orders have shipped), asks only the
-  genuine decisions the work order left open, and, for a UI feature, gathers the design brief the
-  design pass will need. It promotes the work order from `Depth: brief` to `Depth: detailed` —
-  deeper on WHAT must be true, never HOW. Triggers include "/ajian-grill NN", "sharpen work order
-  N", "grill the next feature", "recon before building". Stops at the detailed work order — it
-  never writes code, plans, or implementation steps.
+  actually exists. Triggers include "/ajian-grill NN", "sharpen work order N", "grill the next
+  feature", "recon before building". This is grill-2, the fact-heavy micro pass: it recons the real
+  code, asks only the genuine decisions the work order left open, gathers the design brief for a UI
+  feature, and promotes the work order from `Depth: brief` to `Depth: detailed` — deeper on WHAT
+  must be true, never HOW. Stops there: it never writes code, plans, or implementation steps.
 ---
 
 <!-- Adapted from mattpocock/skills `grilling` (the frontier/rounds mechanic, grill-2 flavour in
@@ -34,75 +32,64 @@ Two things make grill-2 different from grill-1:
 
 ## Preconditions
 
-- **`docs/work-orders/NN-<slug>.md` exists** and is at `Depth: brief`. Already `detailed` → it has
-  been grilled; refuse unless the user is deliberately re-opening it (two detailed work orders at
-  once is the drift this pass exists to prevent).
-- **Its dependencies have shipped** — every roadmap line it lists as a dependency is ticked in
-  `docs/ROADMAP.md`. Grilling ahead of a dependency is planning against an imagined past.
-- **`docs/ROADMAP.md` and `docs/INDEX.md` exist.** No blueprint, no work order to sharpen.
+One command answers all three. Run it once, then trust the output for the rest of the session:
+
+```bash
+grep -m1 '^Depth:' docs/work-orders/NN-*.md   # substitute the real NN
+ls docs/ROADMAP.md docs/INDEX.md
+grep '^- \[' docs/ROADMAP.md                  # which dependency lines are ticked
+```
+
+- Already `detailed` → it has been grilled; refuse unless the user is deliberately re-opening it
+  (two detailed work orders at once is the drift this pass exists to prevent).
+- A roadmap line it depends on is unticked → grilling ahead of a dependency is planning against an
+  imagined past.
+- No `ROADMAP.md` / `INDEX.md` → no blueprint, no work order to sharpen.
 
 ### When a precondition fails
 
-**Verify every precondition from the artifacts on disk, never from what the conversation seems to
-say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
-field, a checkbox, and `git log` are not.
-
-When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
-language, name the one skill that owns the gap, and offer to run **that one step**:
+Check preconditions against the files on disk, not against what the conversation says happened. When
+one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
+it, and offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
-skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
-missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
+a single yes, and running the missing step without asking is the same failure with the asking removed.
 
 ## Language
 
-Write to the user in the user's own language. This file is English because it is agent-facing —
-that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
-or Japanese gets their gates in that language.
-
-Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
-Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
-shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
-which is the same as not having one.
+Reply in the user's language. This file is English because it is agent-facing, not because the answer
+must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
+copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
+stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
-in this order, and a stop that omits them is not a gate:
+A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
+emitted as plain markdown — never inside a code block:
 
-```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what you actually did>
 
 **Evidence**
-- <one checkable fact per bullet — real command output, or the path of a committed artifact,
-  never your own assessment>
+- <one checkable fact per bullet — real command output, or the path of a committed artifact, never
+  your own assessment>
 
 **Decide**
 - <what the user has to decide, phrased as a question they can answer>
 
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
-```
 
-The fence above only delimits the template. **What you emit is plain markdown, never a code
-block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
-one pass is a gate the user approves without reading, which is the failure this protocol exists
-to prevent.
-
-Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
-wants.
-
-`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
-judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
+`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
 `Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
 
-This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+This block is identical in every ajian skill.
 
 ## Pipeline
 
@@ -200,8 +187,7 @@ accessibility baseline and brand non-negotiables — leaving the realised visual
 Show the user the promoted work order — specifically the flows, the resolved questions, and any
 new ADR — and wait:
 
-```
-GATE — Work order NN detailed
+**GATE — Work order NN detailed**
 
 **Done**
 - Promoted work order NN from brief to detailed against the code as it is
@@ -220,7 +206,6 @@ GATE — Work order NN detailed
 - This work order is the Spec axis ajian-review judges the finished code against
 - A flow that is wrong here produces code that passes review while being wrong, which is the most
   expensive kind of wrong in this pipeline
-```
 
 Apply changes, then commit the work order (and any new ADR / DESIGN-SYSTEM seed).
 

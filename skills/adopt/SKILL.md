@@ -1,16 +1,15 @@
 ---
 name: ajian-adopt
 description: >-
-  Use to bring an existing project onto the ajian pipeline when ajian cannot read it yet. Two
-  cases. The project already holds real documents in another shape — a long README, a PRD, an
-  ARCHITECTURE.md, leftover Spec Kit or other framework artifacts — which must be mapped into the
-  blueprint layout rather than duplicated beside it. Or the project already used ajian, but its
-  documents are partial, misplaced, or written by an older version of these skills, so a later
-  skill now refuses on a field its files do not contain. It surveys what exists, proposes a
-  per-document mapping, and migrates only what you approve — it never deletes. Triggers include
-  "/ajian-adopt", "adopt this project", "pakai ajian di project ini", "rekonsiliasi dokumen",
-  "align the docs", "migrate to ajian", "ajian-map says there is no blueprint but there are docs".
-  Not for a project with code and no documents — that is ajian-blueprint in brownfield mode.
+  Use to bring an existing project onto the ajian pipeline when ajian cannot read it yet. Triggers
+  include "/ajian-adopt", "adopt this project", "pakai ajian di project ini", "rekonsiliasi
+  dokumen", "align the docs", "migrate to ajian", "ajian-map says there is no blueprint but there
+  are docs". Two cases: the project holds real documents in another shape (a long README, a PRD, an
+  ARCHITECTURE.md, leftover Spec Kit artifacts) that must be mapped into the blueprint layout rather
+  than duplicated beside it; or it already used ajian but its documents are partial, misplaced, or
+  written to an older shape, so a later skill refuses on a field its files lack. It surveys, proposes
+  a per-document mapping, and migrates only what you approve — it never deletes. Not for a project
+  with code and no documents — that is ajian-blueprint in brownfield mode.
 ---
 
 <!-- Original ajian wiring. No upstream counterpart: the vendored sources all assume a project that
@@ -28,77 +27,62 @@ what ajian needs that nothing covers, and asks you — document by document — 
 
 ## Preconditions
 
-- **The project has documents, or a partial ajian layout, or both.** Code with no documents at all
-  is not adoption; there is nothing to reconcile, only something to write. That is
+```bash
+ls docs/INDEX.md docs/ROADMAP.md 2>/dev/null; git rev-parse --git-dir 2>/dev/null
+```
+
+- No documents at all, only code → nothing to reconcile, only something to write. That is
   `/ajian-blueprint` in brownfield mode.
-- **`docs/INDEX.md` and `docs/ROADMAP.md` are not both present and healthy.** If they are, the
-  project is already adopted — run `/ajian-map`. The exception is drift: present but stale,
-  misplaced, or written to an older shape (Step 2 detects this, and it is the whole of case **c**).
-- **You are in a git repository.** Every move this skill makes is committed, so each one can be
-  undone with `git revert` rather than reconstructed from memory.
+- Both `INDEX.md` and `ROADMAP.md` present and healthy → the project is already adopted; run
+  `/ajian-map`. The exception is drift — present but stale, misplaced, or written to an older shape
+  (Step 2 detects this, and it is the whole of case **c**).
+- No git repository → every move this skill makes is committed so it can be undone with
+  `git revert`. Say so and offer to `git init`.
 
 ### When a precondition fails
 
-**Verify every precondition from the artifacts on disk, never from what the conversation seems to
-say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
-field, a checkbox, and `git log` are not.
-
-When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
-language, name the one skill that owns the gap, and offer to run **that one step**:
+Check preconditions against the files on disk, not against what the conversation says happened. When
+one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
+it, and offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
-skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
-missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
+a single yes, and running the missing step without asking is the same failure with the asking removed.
 
 ## Language
 
-Write to the user in the user's own language. This file is English because it is agent-facing —
-that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
-or Japanese gets their gates in that language.
-
-Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
-Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
-shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
-which is the same as not having one.
+Reply in the user's language. This file is English because it is agent-facing, not because the answer
+must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
+copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
+stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
-in this order, and a stop that omits them is not a gate:
+A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
+emitted as plain markdown — never inside a code block:
 
-```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what you actually did>
 
 **Evidence**
-- <one checkable fact per bullet — real command output, or the path of a committed artifact,
-  never your own assessment>
+- <one checkable fact per bullet — real command output, or the path of a committed artifact, never
+  your own assessment>
 
 **Decide**
 - <what the user has to decide, phrased as a question they can answer>
 
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
-```
 
-The fence above only delimits the template. **What you emit is plain markdown, never a code
-block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
-one pass is a gate the user approves without reading, which is the failure this protocol exists
-to prevent.
-
-Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
-wants.
-
-`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
-judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
+`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
 `Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
 
-This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+This block is identical in every ajian skill.
 
 
 ## Pipeline
@@ -168,8 +152,7 @@ across rounds makes the shape impossible to see.
 
 Present it as a table: **source path → destination → what moves → what stays behind**. Then gate:
 
-```
-GATE — Adoption mapping
+**GATE — Adoption mapping**
 
 **Done**
 - Surveyed <N> documents, classified them, and diagnosed <M> gaps and <K> shape drifts
@@ -186,7 +169,6 @@ GATE — Adoption mapping
 - I move content and leave a pointer; I never delete, so every move is revertible
 - A document I classify as "stays where it is" stays a second source of truth
 - A document I move that you needed in place will surprise the next reader of that path
-```
 
 Approval is **per document**, not for the table as a whole. A user who approves nine of eleven
 moves has told you something useful about the two.
@@ -224,8 +206,7 @@ Adoption succeeded if `ajian-map` can locate the project. So run its signals —
 `ajian-map/SKILL.md`, in order — and read what they resolve to. This is the verification, and it is
 not the same as believing the migration went well:
 
-```
-GATE — Adoption complete
+**GATE — Adoption complete**
 
 **Done**
 - Migrated <N> documents, filled <M> gaps, repaired <K> shape drifts
@@ -242,7 +223,6 @@ GATE — Adoption complete
 - Documents I left in place still hold their original text
 - If one of them contradicts what I wrote into the blueprint, the agent reading this project will
   believe both
-```
 
 If the signals do not resolve — a work order with no `Depth:`, a roadmap with no rows — say so
 plainly and fix it. A project that adoption declares finished and the router cannot read is worse

@@ -1,21 +1,16 @@
 ---
 name: ajian-blueprint
 description: >-
-  Use when a discussion about a new project, a new feature, or a mid-project change should
-  become a durable development blueprint: foundation documents, an ordered roadmap, and one
-  paste-ready work order per feature. This is stage one of the ajian pipeline (grill-1, the
-  macro interrogation). Run it at the START of a build, where it holds the design interrogation
-  itself, or at the END of a discussion, where it distils what was settled. Triggers include
-  "/ajian-blueprint", "turn this into a blueprint", "buat dokumen pengembangan", "jadikan patokan",
-  "bikin PRD dan arsitekturnya", "lock the decisions", "buat roadmap dan urutan kerjanya",
-  "siapkan dokumennya biar bisa dikerjakan agent". Handles greenfield (choose the stack),
-  brownfield (scan the repo, extend it), and resumed runs. A resumed run both deepens the next
-  feature and is **the** way to insert or change a feature in a roadmap already being built —
-  "add a feature", "sisipkan fitur", "ubah roadmap", "improve this mid-project" — because the
-  roadmap has one owner and this is it; it checks the impact on what already shipped, resolves
-  unbuilt work orders the change makes obsolete, and supersedes decisions it falsifies. Framework-
-  and executor-agnostic: the output is consumed by any AI coding agent or human. Stops at the
-  blueprint — it never writes code or implementation steps.
+  Use when a discussion about a new project, a new feature, or a mid-project change should become a
+  durable development blueprint: foundation documents, an ordered roadmap, and one paste-ready work
+  order per feature. Triggers include "/ajian-blueprint", "turn this into a blueprint", "buat
+  dokumen pengembangan", "jadikan patokan", "bikin PRD dan arsitekturnya", "lock the decisions",
+  "buat roadmap dan urutan kerjanya", "siapkan dokumennya biar bisa dikerjakan agent". This is
+  grill-1, the macro interrogation: run it at the START of a build to hold the design conversation
+  itself, or at the END of one to distil what was settled. Handles greenfield, brownfield, and
+  resumed runs — and a resumed run is **the** way to insert or change a feature in a roadmap already
+  being built ("add a feature", "sisipkan fitur", "ubah roadmap"), because the roadmap has one owner
+  and this is it. Stops at the blueprint — it never writes code or implementation steps.
 ---
 
 <!-- The foundation-doc machinery (docs, roadmap, work orders) is the author's own prior work. The
@@ -49,30 +44,27 @@ start asking.
 
 ## Preconditions
 
-- **`docs/ROADMAP.md` does not exist.** If it does, a blueprint has already been written and this
-  is a **resumed** run — go to [Resumed runs](#resumed-runs) and extend it. Never regenerate the
-  foundation over a roadmap that exists: its checkboxes are the only record of what shipped, and
-  a re-run that overwrites them erases the project's memory of itself. Re-running this skill after
-  a failed or interrupted attempt is common and expected — that is exactly why this is checked
-  against the file rather than inferred from the conversation.
-- **You are in a git repository.** The foundation is committed at Gate 1; without git there is no
-  gate. If there is no repo, say so and offer to `git init`.
+```bash
+ls docs/ROADMAP.md 2>/dev/null; git rev-parse --git-dir 2>/dev/null
+```
+
+- `docs/ROADMAP.md` exists → a blueprint has been written and this is a **resumed** run; go to
+  [Resumed runs](#resumed-runs) and extend it. Never regenerate the foundation over a roadmap that
+  exists — its checkboxes are the only record of what shipped.
+- No git repository → the foundation is committed at Gate 1, so without git there is no gate. Say
+  so and offer to `git init`.
 
 ### When a precondition fails
 
-**Verify every precondition from the artifacts on disk, never from what the conversation seems to
-say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
-field, a checkbox, and `git log` are not.
-
-When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
-language, name the one skill that owns the gap, and offer to run **that one step**:
+Check preconditions against the files on disk, not against what the conversation says happened. When
+one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
+it, and offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
-skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
-missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
+a single yes, and running the missing step without asking is the same failure with the asking removed.
 
 ## The three rules that keep a blueprint alive
 
@@ -126,50 +118,36 @@ philosophy alone is not.
 
 ## Language
 
-Write to the user in the user's own language. This file is English because it is agent-facing —
-that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
-or Japanese gets their gates in that language.
-
-Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
-Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
-shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
-which is the same as not having one.
+Reply in the user's language. This file is English because it is agent-facing, not because the answer
+must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
+copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
+stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
-in this order, and a stop that omits them is not a gate:
+A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
+emitted as plain markdown — never inside a code block:
 
-```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what you actually did>
 
 **Evidence**
-- <one checkable fact per bullet — real command output, or the path of a committed artifact,
-  never your own assessment>
+- <one checkable fact per bullet — real command output, or the path of a committed artifact, never
+  your own assessment>
 
 **Decide**
 - <what the user has to decide, phrased as a question they can answer>
 
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
-```
 
-The fence above only delimits the template. **What you emit is plain markdown, never a code
-block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
-one pass is a gate the user approves without reading, which is the failure this protocol exists
-to prevent.
-
-Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
-wants.
-
-`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
-judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
+`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
 `Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
 
-This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+This block is identical in every ajian skill.
 
 ## Pipeline
 
@@ -322,8 +300,7 @@ So make it discoverable by the tools that will actually read it:
 
 Commit first — the `Evidence` line has to point at something that exists in git — then stop:
 
-```
-GATE — Foundation
+**GATE — Foundation**
 
 **Done**
 - Wrote and committed the foundation documents
@@ -340,7 +317,6 @@ GATE — Foundation
 - Every work order, plan, and build downstream is written against these files
 - A wrong stack or a missing non-goal here is not a document defect — it is code that gets written
   and later thrown away
-```
 
 Wait. Apply the changes, re-run the self-review, and only then continue.
 
@@ -372,8 +348,7 @@ tests from `roadmap-sizing.md` — *sizing* (one build session), *slice* (vertic
 *order* (dependencies respected, risk and the thinnest slice first) — and split or merge any line
 that fails, out loud, before you present it. Then present the list as a gate and wait:
 
-```
-GATE — Roadmap
+**GATE — Roadmap**
 
 **Done**
 - Ordered <N> feature lines and ran each through the sizing / slice / order tests
@@ -390,7 +365,6 @@ GATE — Roadmap
 - A line that is too big produces a plan that stalls halfway through the build
 - A wrong order means building against a dependency that does not exist yet
 - Both are found late and cost the line
-```
 
 Once approved, write `ROADMAP.md` from its template.
 
@@ -491,8 +465,7 @@ differently, which is the whole value of the ledger.
 
 #### Gate
 
-```
-GATE — Roadmap change
+**GATE — Roadmap change**
 
 **Done**
 - Placed <feature> as row <position>, number <NN>, and checked its impact
@@ -512,7 +485,6 @@ GATE — Roadmap change
 - An overlap I miss becomes two work orders that both claim to build the same thing
 - The one that finds it is ajian-review's Spec axis — weeks later, after the code has been written
   twice
-```
 
 ### 4 · Promote the next feature
 

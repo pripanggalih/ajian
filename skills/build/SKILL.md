@@ -1,13 +1,10 @@
 ---
 name: ajian-build
 description: >-
-  Use to execute an approved implementation plan. This is the build stage of the ajian pipeline: it
-  runs the whole plan in ONE fresh subagent, tests and commits per task, and ticks the plan's
-  committed checkboxes as its ledger — with the code review saved for the end (ajian-review), not
-  run per task. Triggers include "/ajian-build NN", "build work order N", "execute the plan",
-  "implement this". Assumes an approved plan at docs/plans/NN-<slug>.md (run /ajian-plan NN first).
-  It resumes cleanly after interruption from the ticked checkboxes plus git log. It does not review
-  or merge — that is ajian-review.
+  Use to execute an approved implementation plan. Triggers include "/ajian-build NN", "build work
+  order N", "execute the plan", "implement this". Runs the whole plan in ONE fresh subagent, tests
+  and commits per task, ticks the plan's committed checkboxes as its ledger, and resumes cleanly
+  after interruption. It does not review or merge — that is ajian-review.
 ---
 
 <!-- Original ajian wiring, distilled from superpowers `executing-plans`, `subagent-driven-
@@ -28,76 +25,63 @@ it is the heart of this skill.
 
 ## Preconditions
 
-- **A committed plan at `docs/plans/NN-<slug>.md` with `- [ ]` task checkboxes.** No plan file, or
-  a plan not in git → `/ajian-plan NN` owns that. The checkboxes are the ledger; a plan outside git
-  cannot survive a compaction or an interruption, which is the whole reason it is committed.
-- **The plan was approved at its gate.** Verify from git that the plan is committed, not from a
-  recollection that the user said yes.
-- **You are not on `main`/`master`.** Never start implementation on the default branch without the
-  user's explicit consent. Say which branch you would create and ask.
+One command answers all three. Run it once, then trust the output for the rest of the session:
+
+```bash
+git log --oneline -1 -- docs/plans/NN-*.md   # substitute the real NN
+grep -c '^- \[ \]' docs/plans/NN-*.md       # 0 means every task is already ticked
+git branch --show-current
+```
+
+- No commit for the plan → `/ajian-plan NN` owns that. The checkboxes are the ledger, and a plan
+  outside git cannot survive a compaction or an interruption.
+- On `main`/`master` → never start implementation on the default branch without explicit consent.
+  Say which branch you would create and ask.
 
 ### When a precondition fails
 
-**Verify every precondition from the artifacts on disk, never from what the conversation seems to
-say happened.** The conversation is the least reliable record in this pipeline; a file, a `Depth:`
-field, a checkbox, and `git log` are not.
-
-When one fails, do not proceed and do not quietly fix it. Say where the user actually is in plain
-language, name the one skill that owns the gap, and offer to run **that one step**:
+Check preconditions against the files on disk, not against what the conversation says happened. When
+one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
+it, and offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. **One step, never a chain.** Offering to run the next four skills is how a gate gets
-skipped while sounding helpful: it trades the user's whole pipeline for a single yes. Running the
-missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
+a single yes, and running the missing step without asking is the same failure with the asking removed.
 
 ## Language
 
-Write to the user in the user's own language. This file is English because it is agent-facing —
-that is not an instruction to answer in English, and a user who wrote to you in Indonesian, Spanish,
-or Japanese gets their gates in that language.
-
-Every quoted line here — gate text, refusal, offer — is **meaning to convey, not a string to copy**.
-Translate it. Keep the `GATE / Done / Evidence / Decide / Risk` field labels as they are, so the
-shape stays recognisable in any language. A gate the user has to decode is a gate they rubber-stamp,
-which is the same as not having one.
+Reply in the user's language. This file is English because it is agent-facing, not because the answer
+must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
+copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
+stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate in this skill carries these five fields,
-in this order, and a stop that omits them is not a gate:
+A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
+emitted as plain markdown — never inside a code block:
 
-```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what you actually did>
 
 **Evidence**
-- <one checkable fact per bullet — real command output, or the path of a committed artifact,
-  never your own assessment>
+- <one checkable fact per bullet — real command output, or the path of a committed artifact, never
+  your own assessment>
 
 **Decide**
 - <what the user has to decide, phrased as a question they can answer>
 
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
-```
 
-The fence above only delimits the template. **What you emit is plain markdown, never a code
-block** — one fact per bullet, short lines, no wrapped paragraph. A gate the user cannot scan in
-one pass is a gate the user approves without reading, which is the failure this protocol exists
-to prevent.
-
-Then **stop and wait for a reply.** Never continue on your own reading of what the user probably
-wants.
-
-`Evidence` is the load-bearing line. A gate is cleared on facts a reader can check, never on your
-judgement that things look fine — if you cannot produce evidence, you have not reached the gate.
+Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
+`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
 `Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
 
-This block is identical in every ajian skill. If its shape changes, it changes in all of them.
+This block is identical in every ajian skill.
 
 ## Pipeline
 
@@ -133,8 +117,7 @@ treat as defects (see the pre-flight section of `executor-and-ledger.md`). If th
 proceed without comment. If it is not, stop for **one batched gate** — never one question per
 finding. The build is not the place to discover the plan fights itself.
 
-```
-GATE — Plan conflicts
+**GATE — Plan conflicts**
 
 **Done**
 - Scanned the plan for internal contradictions before dispatching the executor
@@ -148,7 +131,6 @@ GATE — Plan conflicts
 **Risk**
 - The executor runs the whole plan continuously without checking in
 - A contradiction I resolve by guessing becomes committed code in whichever direction I guessed
-```
 
 ## Step 2 — Execute (one subagent, whole plan)
 
@@ -173,8 +155,7 @@ Handle its return status:
   re-dispatch one model tier up. Plan is wrong → stop and escalate to the user as a gate. Never
   force the same model to retry unchanged.
 
-  ```
-  GATE — Build blocked
+  **GATE — Build blocked**
 
   **Done**
   - Executor stopped at task <N> of <M>; tasks 1–<N-1> are committed and ticked
@@ -192,7 +173,6 @@ Handle its return status:
   - The branch is half-built and the ledger says so
   - Guessing a fix here writes code the plan never described, which the Spec axis will flag at
     review as something built that nobody asked for
-  ```
 
 Never dispatch a second implementer subagent against the same tree in parallel — commits would
 interleave. (Parallel is only ever across *independent* work orders, opt-in, each in its own

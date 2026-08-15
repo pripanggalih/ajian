@@ -47,7 +47,7 @@ Ajian tak pernah mengambil keputusan mahal-dibatalkan untukmu. Tiap perhentian d
 yang sama, sehingga gerbang yang dilewati kelihatan justru karena bloknya hilang:
 
 ```
-GATE — <nama gerbang>
+**GATE — <nama gerbang>**
 
 **Done**
 - <apa yang benar-benar sudah dikerjakan agent>

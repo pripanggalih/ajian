@@ -47,7 +47,7 @@ Ajian never makes an expensive-to-undo decision for you. Every stop is written i
 so a skipped gate is visible by its absence:
 
 ```
-GATE — <name of the gate>
+**GATE — <name of the gate>**
 
 **Done**
 - <what the agent actually did>
