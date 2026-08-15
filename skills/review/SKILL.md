@@ -14,9 +14,8 @@ description: >-
 
 # Ajian · Review
 
-Judge the build on two independent axes, respond to what they find like an engineer rather than a
-people-pleaser, then integrate the branch and tick the roadmap. Nothing here re-runs the build; it
-verifies, corrects, and finishes.
+Judge the build on two independent axes, respond like an engineer rather than a people-pleaser, then
+integrate the branch and tick the roadmap. Nothing here re-runs the build.
 
 ## Preconditions
 
@@ -36,27 +35,25 @@ ls docs/work-orders/NN-*.md
 
 ### When a precondition fails
 
-Check preconditions against the files on disk, not against what the conversation says happened. When
-one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
-it, and offer that one step:
+Check the files on disk, not what the conversation claims happened. When one fails, stop — do not
+quietly fix it. Name the gap in plain language, name the one skill that owns it, offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
-a single yes, and running the missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain, and never run the missing step without asking.
 
 ## Language
 
-Reply in the user's language. This file is English because it is agent-facing, not because the answer
-must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
-copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
-stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
+Reply in the user's language — this file is English because it is agent-facing, not because the
+answer must be. Quoted lines here are meaning to convey, not strings to copy: translate them, but
+keep the labels `GATE / Done / Evidence / Decide / Risk` verbatim. A gate the user has to decode is
+a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
-emitted as plain markdown — never inside a code block:
+A gate is a full stop that waits for the user. Emit it as plain markdown — never inside a code
+block — carrying these five fields, in this order:
 
 **GATE — <name of the gate>**
 
@@ -73,9 +70,9 @@ emitted as plain markdown — never inside a code block:
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
 
-Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
-`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
-`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+Then stop and wait. Never continue on your own reading of what the user probably wants. `Evidence`
+is load-bearing: if you cannot produce it, you have not reached the gate. `Risk` is what lets a user
+who cannot audit your work decide anyway.
 
 This block is identical in every ajian skill.
 
@@ -139,12 +136,10 @@ with technical reasoning where a finding is wrong for this stack; apply YAGNI to
 suggestions. No performative agreement, no gratitude — state the fix or the reasoned pushback.
 
 For the findings that stand, dispatch **one fix wave** — a single subagent carrying the complete
-list of confirmed findings, not one fixer per finding (per-finding fixers each rebuild context and
-re-run suites; a real session's final-review fix wave cost more than all its tasks combined). Fix
-in order — blocking/security first, then simple, then complex — testing each. Then **re-verify**:
-apply the verification discipline (run the full suite and build, read the output, confirm green)
-before calling it clean. Escalate to the user only a finding that is real, load-bearing, and
-collides with the work order or plan.
+list of confirmed findings, never one fixer per finding (each would rebuild context and re-run the
+suite). Fix in order — blocking/security first, then simple, then complex — testing each. Then
+**re-verify**: run the full suite and build, read the output, confirm green. Escalate to the user
+only a finding that is real, load-bearing, and collides with the work order or plan.
 
 ## Step 3 — Tick the roadmap
 
@@ -165,11 +160,9 @@ user's decision — present the menu and wait. Clean up the worktree per that sk
 The work order is merged and its roadmap row ticked. The next work order starts its own pass at
 `ajian-grill`.
 
-**The next work order is not `NN+1`.** Build order is row order, and numbers are permanent
-identities that may run out of sequence after an insertion — so read the next number off the
-**topmost unticked row** of `docs/ROADMAP.md` rather than incrementing. Guessing `NN+1` sends the
-next pass at whatever feature happens to hold that number, which after any insertion is the wrong
-one.
+**The next work order is not `NN+1`.** Build order is row order; numbers are permanent identities
+that run out of sequence after an insertion. Read the next number off the **topmost unticked row** of
+`docs/ROADMAP.md` rather than incrementing.
 
 **→ Next: `/ajian-grill <number of the topmost unticked row>`** (or `/ajian-map`, which reads it
 for you).

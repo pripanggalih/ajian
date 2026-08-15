@@ -52,27 +52,25 @@ ls docs/plans/NN-* 2>/dev/null
 
 ### When a precondition fails
 
-Check preconditions against the files on disk, not against what the conversation says happened. When
-one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
-it, and offer that one step:
+Check the files on disk, not what the conversation claims happened. When one fails, stop — do not
+quietly fix it. Name the gap in plain language, name the one skill that owns it, offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
-a single yes, and running the missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain, and never run the missing step without asking.
 
 ## Language
 
-Reply in the user's language. This file is English because it is agent-facing, not because the answer
-must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
-copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
-stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
+Reply in the user's language — this file is English because it is agent-facing, not because the
+answer must be. Quoted lines here are meaning to convey, not strings to copy: translate them, but
+keep the labels `GATE / Done / Evidence / Decide / Risk` verbatim. A gate the user has to decode is
+a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
-emitted as plain markdown — never inside a code block:
+A gate is a full stop that waits for the user. Emit it as plain markdown — never inside a code
+block — carrying these five fields, in this order:
 
 **GATE — <name of the gate>**
 
@@ -89,9 +87,9 @@ emitted as plain markdown — never inside a code block:
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
 
-Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
-`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
-`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+Then stop and wait. Never continue on your own reading of what the user probably wants. `Evidence`
+is load-bearing: if you cannot produce it, you have not reached the gate. `Risk` is what lets a user
+who cannot audit your work decide anyway.
 
 This block is identical in every ajian skill.
 
@@ -118,9 +116,8 @@ At `recorded`, read the work order's `## Built surface` and `DESIGN.md`, then:
 
 ## Scope Check
 
-One work order is one build session; the roadmap already sized it. If the plan runs past roughly a
-dozen tasks, the **work order was mis-sized** — stop, say so, and send it back to `ajian-grill` to
-split, rather than papering over it with a giant plan.
+One work order is one build session; the roadmap already sized it. Past roughly a dozen tasks the
+**work order was mis-sized** — stop, say so, send it back to `ajian-grill` to split.
 
 ## File Structure
 
@@ -275,8 +272,7 @@ before execution starts. Then emit the gate:
 - Anything wrong here becomes committed code before you see it again, and the review that would
   catch it does not run until the build is finished
 
-Wait for approval; apply any changes and re-commit. There is one executor — `ajian-build` — by
-design: one fresh subagent, the checkbox ledger, commit per task, and a single review at the end
-(not a per-task review). See `ajian-build` for why.
+Wait for approval; apply changes and re-commit. There is one executor by design — `ajian-build`: one
+fresh subagent, the checkbox ledger, commit per task, a single review at the end.
 
 **→ Next: `/ajian-build NN`** (or `/ajian-map` if unsure).

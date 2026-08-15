@@ -36,20 +36,21 @@ Finding _facts_ is your job, never the user's. When a frontier question needs a 
 
 The raw mechanic can sprawl and can overwhelm. Two rails keep it usable without losing coverage:
 
-1. **Themes, as guaranteed coverage.** The design tree is not free-form — its top-level branches
-   are the six themes below, worked in dependency order. A theme is not done until it is decided
-   enough to govern every later feature. This is what stops a fluent conversation from skipping
-   non-goals or the accessibility baseline.
+1. **Themes, as guaranteed coverage.** The design tree's top-level branches are the six themes
+   below, worked in dependency order. A theme is not done until it is decided enough to govern every
+   later feature. This is what stops a fluent conversation from skipping non-goals or the
+   accessibility baseline.
 
-2. **One theme at a time, as a bound.** Do not open the entire frontier across all six themes at
-   once — that is the message no one reads. Compute the frontier **within the current theme**,
-   ask that round, settle it, then move to the next theme. A user who is tired and answering
-   "sure, sounds good" is a user you are overwhelming; a bounded round of two-to-four questions,
-   each with a recommendation, is one they can actually weigh.
+2. **One theme at a time, as a bound.** Compute the frontier **within the current theme**, ask that
+   round, settle it, move on. Never open all six at once — a bounded round of two-to-four questions
+   is one the user can actually weigh; the full sweep is the message nobody reads.
 
-And, always: **a recommended answer on every question** (the `➡️` line). The user is choosing
-between your options, not staring at a blank prompt. A recommendation the user overrules costs one
-word; a blank question costs a paragraph and often a worse answer.
+And, always: **a recommended answer on every question** (the `➡️` line). A recommendation the user
+overrules costs one word; a blank question costs a paragraph and often a worse answer.
+
+On a **brownfield** run the repo scan is a subagent running underneath these rounds, not a stage in
+front of them. Themes 1 and 2 do not depend on it — ask them while it works; only *the stack* and
+*conventions & quality* wait for its report.
 
 ## The six themes (the rails)
 

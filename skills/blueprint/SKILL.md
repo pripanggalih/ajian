@@ -31,16 +31,13 @@ conversation itself — step 2 is a full interrogation from the problem statemen
 the **end** of one, step 2 opens from what that conversation settled and interrogates only the
 gaps. Either way the run ends identically: `docs/` committed, one work order per roadmap line.
 
-This skill sits at the head of the ajian pipeline. It **does** have a downstream — `ajian-grill`
-sharpens each work order, `ajian-plan` writes the *how*, `ajian-build` executes — but nothing
-downstream regenerates the foundation documents, so the blueprint remains the single source of
-truth. The depth discipline is what keeps that boundary clean: the blueprint owns *what must be
-true*, the plan owns *how to get there*, and the two never overlap. It is not optional — read
-[references/depth-and-drift.md](references/depth-and-drift.md) before writing anything.
+Nothing downstream regenerates these documents, so the blueprint stays the single source of truth.
+The boundary that keeps it clean: the blueprint owns *what must be true*, `ajian-plan` owns *how to
+get there*. Read [references/depth-and-drift.md](references/depth-and-drift.md) before writing —
+it is where that line is drawn.
 
-The interrogation in step 2 runs on the ajian grill engine — the frontier/rounds mechanic railed
-by the six themes below. Read [references/grill-engine.md](references/grill-engine.md) before you
-start asking.
+Step 2 runs on [references/grill-engine.md](references/grill-engine.md) — the frontier/rounds
+mechanic railed by the six themes below. Read it before you start asking.
 
 ## Preconditions
 
@@ -56,33 +53,29 @@ ls docs/ROADMAP.md 2>/dev/null; git rev-parse --git-dir 2>/dev/null
 
 ### When a precondition fails
 
-Check preconditions against the files on disk, not against what the conversation says happened. When
-one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
-it, and offer that one step:
+Check the files on disk, not what the conversation claims happened. When one fails, stop — do not
+quietly fix it. Name the gap in plain language, name the one skill that owns it, offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
-a single yes, and running the missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain, and never run the missing step without asking.
 
 ## The three rules that keep a blueprint alive
 
 A blueprint fails in one of three ways: it rots, it drowns the reader, or nobody opens it.
 Each rule kills one failure mode.
 
-1. **Depth follows need, never ambition.** Every feature gets a **brief**. Only the feature
-   about to be built gets **detail**. Detail written for feature #7 today is wrong by the time
-   feature #1 ships. Re-run this skill to deepen the next feature, reading the real code first.
+1. **Depth follows need, never ambition.** Every feature gets a **brief**; only the feature about
+   to be built gets **detail**. Detail written for feature #7 today is wrong by the time feature #1
+   ships.
 
-2. **State what must be true when done, never how to get there.** The cut line is exact: the
-   moment a document contains ordered implementation steps, function names, or code, it has
-   crossed into work the executing agent owns. Acceptance criteria, contracts and invariants
-   are in bounds. Task breakdowns are not.
+2. **State what must be true when done, never how to get there.** Acceptance criteria, contracts
+   and invariants are in bounds. Ordered implementation steps, function names, code and task
+   breakdowns are not — they belong to the executing agent.
 
-3. **No document that will not be reopened during development.** Every file must earn its place
-   by being consulted while coding. A document read once and archived should be folded into
-   another or cut. This is the inclusion test for every conditional file.
+3. **No document that will not be reopened during development.** A file earns its place by being
+   consulted while coding. This is the inclusion test for every conditional file.
 
 ## What this skill delivers
 
@@ -104,8 +97,9 @@ the whole project's durable truth. Nothing here is branded `ajian`; the work pro
 | `DESIGN-SYSTEM.md` | Tokens, components, states, accessibility baseline | the project has an interface |
 | `GLOSSARY.md` | Domain term → definition (CONTEXT.md format, with `_Avoid_`) | the domain has ambiguous terms |
 
-Every file has a template in `assets/`. **Read the template immediately before writing its
-file** — not earlier, not from memory.
+Every file has a template in `assets/`. **At the top of step 3, read the templates for the files
+this run will write — all of them, in one batch — then write from them.** Never from memory, and
+never earlier than step 3: a template read at step 0 is a template written from memory.
 
 **ADRs are split** (an ajian seam): one file per decision under `decisions/`, plus a thin
 `DECISIONS.md` ledger that lists each ADR's number, title, and status. This keeps a work order
@@ -118,15 +112,15 @@ philosophy alone is not.
 
 ## Language
 
-Reply in the user's language. This file is English because it is agent-facing, not because the answer
-must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
-copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
-stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
+Reply in the user's language — this file is English because it is agent-facing, not because the
+answer must be. Quoted lines here are meaning to convey, not strings to copy: translate them, but
+keep the labels `GATE / Done / Evidence / Decide / Risk` verbatim. A gate the user has to decode is
+a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
-emitted as plain markdown — never inside a code block:
+A gate is a full stop that waits for the user. Emit it as plain markdown — never inside a code
+block — carrying these five fields, in this order:
 
 **GATE — <name of the gate>**
 
@@ -143,9 +137,9 @@ emitted as plain markdown — never inside a code block:
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
 
-Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
-`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
-`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+Then stop and wait. Never continue on your own reading of what the user probably wants. `Evidence`
+is load-bearing: if you cannot produce it, you have not reached the gate. `Risk` is what lets a user
+who cannot audit your work decide anyway.
 
 This block is identical in every ajian skill.
 
@@ -192,44 +186,41 @@ counts as settled only if the user actually decided it, not if it merely came up
   naming and DoD sections up front; the reuse inventory is filled in after the skeleton exists,
   because inventing one before there is code produces conventions the agent will follow into a
   shape nobody chose.
-- **Brownfield** — an existing stack. **Scan the repo before step 2**: the build and lint
-  config, the test setup, and the two or three largest modules the roadmap will touch. Scan
-  until every reuse-inventory row cites a real path. Record the stack **verbatim** — versions
-  from the manifest, not from memory. `ARCHITECTURE.md` says *extend the existing codebase, do
-  not scaffold.* Then have the user correct your draft: an inferred convention is worse than a
-  missing one, because the agent will obey it.
+- **Brownfield** — an existing stack. **Dispatch the scan as a subagent and start step 2 anyway.**
+  Themes 1 and 2 (problem, users & scope) do not depend on it — ask them while it runs; only the
+  stack and conventions themes wait for its report. Its brief: the build and lint config, the test
+  setup, and the two or three largest modules the roadmap will touch, worked until every
+  reuse-inventory row cites a real path, with the stack recorded **verbatim** from the manifest, not
+  from memory. `ARCHITECTURE.md` says *extend the existing codebase, do not scaffold.* Then have the
+  user correct your draft: an inferred convention is worse than a missing one, because the agent
+  will obey it.
 
 ## Step 1 — Orient
 
-Say three things once, then stop and wait for a go-ahead:
+One short message, then wait for a go-ahead. Say three things:
 
-1. **The shape of the run** — the steps above, and where it ends: `docs/` committed,
-   one work order per roadmap line. Say plainly what it does **not** do: write code, write
-   implementation steps, or estimate timelines.
-2. **Where they decide** — twice, and both are hard stops: on the written foundation before the
-   roadmap is built, and on the roadmap order before the work orders are written.
-3. **Which modes** this run is in — entry and codebase — and what each changes. On a *cold
-   start*, say plainly that the next step is an extended interrogation and roughly how many
-   themes it covers, so the user knows what they are agreeing to.
+1. **The shape of the run** — the steps above; it ends with `docs/` committed and one work order per
+   roadmap line. It does **not** write code, implementation steps, or timelines.
+2. **Where they decide** — twice, both hard stops: the written foundation, then the roadmap order.
+3. **Which modes** this run is in, and what each changes. On a *cold start*, say the next step is an
+   extended interrogation and roughly how many themes, so the user knows what they are agreeing to.
 
-A user who actually wanted a single feature spec, or who is not yet sure of the direction,
-finds out here for the price of one message instead of after a long interrogation.
+Keep it to a message. A user who wanted a single feature spec finds out here rather than after a
+long interrogation.
 
 ## Step 2 — Interrogate the foundation
 
 This is the highest-leverage part of the run, and the only part that cannot be recovered later.
 
-**Run it on the grill engine** — read [references/grill-engine.md](references/grill-engine.md).
-In short: the interrogation is the frontier/rounds mechanic **railed by the six themes below**,
-so nothing is silently skipped, **bounded to one theme at a time** so the user is never
-overwhelmed, with **a recommended answer on every question**. Work one theme to a close, ask its
-open frontier as a single numbered round, wait, then move to the next theme. This is grill-1 —
-the macro pass, where the decisions are the user's to make.
+**Run it on the grill engine** — [references/grill-engine.md](references/grill-engine.md). Frontier
+and rounds, railed by the six themes below so nothing is silently skipped, bounded to one theme at a
+time, a recommended answer on every question. Work a theme to a close, ask its open frontier as one
+numbered round, wait, then move on. On a brownfield run the repo scan is already running: take the
+themes it does not block first.
 
-**On a distil run, open by replaying.** Before asking anything, put back what the conversation
-above already settled, theme by theme, and have the user confirm it. What survives that pass is
-answered; interrogate only the rest. Restating a decision the user made twenty messages ago
-costs one message; inheriting a misremembered one costs the whole blueprint.
+**On a distil run, open by replaying.** Put back what the conversation already settled, theme by
+theme, and have the user confirm it in one round. What survives is answered; interrogate only the
+rest.
 
 Work the themes in dependency order — they are the rails the grill engine runs on — and move on
 only when a theme is decided enough to govern every later feature:
@@ -280,21 +271,19 @@ So make it discoverable by the tools that will actually read it:
   settled — raise a new ADR rather than re-deciding them.
   ```
 
-### Self-review — run it yourself, fix inline
+### Self-review — one pass, fix inline, no narration
 
-1. **Placeholder scan** — any "TBD", "TODO", or requirement too vague to check? Fix or convert
-   to an open ADR.
-2. **Charter check** — each document stays inside its charter in
-   [references/doc-charters.md](references/doc-charters.md). Move leaked content to its home.
-3. **Cross-document consistency** — the stack in `ARCHITECTURE.md` matches its ADR in
-   `DECISIONS.md`; entities named in `PRD.md` exist in `DATA-MODEL.md`; test-file naming
-   (`CONVENTIONS.md`) does not contradict the gates (`QUALITY.md`).
-4. **Traceability** — every feature in the `PRD.md` list appears in `ROADMAP.md`; every entity,
-   screen or reuse target an anchor names exists in the document that owns it.
-5. **Depth discipline** — no ordered implementation steps, function signatures, or code
-   anywhere; no feature detailed except the next one.
-6. **Stranger test** — could a competent agent that did not witness this conversation start
-   work from these files without asking a question? If not, name what is missing and fix it.
+1. **Placeholders** — any "TBD", "TODO", or requirement too vague to check? Fix, or convert to an
+   open ADR.
+2. **Charters** — each document stays inside its charter in
+   [references/doc-charters.md](references/doc-charters.md). Move leaked content home.
+3. **Consistency** — stack in `ARCHITECTURE.md` matches its ADR; entities in `PRD.md` exist in
+   `DATA-MODEL.md`; test-file naming (`CONVENTIONS.md`) does not contradict the gates
+   (`QUALITY.md`); every `PRD.md` feature appears in `ROADMAP.md`.
+4. **Depth** — no implementation steps, signatures or code anywhere; no feature detailed except the
+   next one.
+5. **Stranger test** — could an agent that did not witness this conversation start work from these
+   files without asking? If not, name what is missing and fix it.
 
 ### Gate 1
 
@@ -335,18 +324,16 @@ Keep the granularity coarse: **one roadmap row is one work order is one build se
 build order, dependencies, and the reason for the order (dependency, risk-first, thinnest slice
 first).
 
-**Row order is build order; the number is identity.** A work order's number names its files
-(`work-orders/NN-*`, `plans/NN-*`, `plans/reports/NN-*`), so it is assigned once and never
-reassigned. Numbers are handed out in sequence as features are added, and a feature inserted later
-keeps whatever number it was given while sitting in the row where it must be built. Renumbering to
-keep the column tidy breaks every path, ADR reference, and commit message that names the old
-number — the tidiness is not worth it, and after the first insertion the column is expected to run
-out of sequence.
+**Row order is build order; the number is identity.** A number names its files (`work-orders/NN-*`,
+`plans/NN-*`, `plans/reports/NN-*`), so it is assigned once and never reassigned — a feature
+inserted later keeps its number while sitting in the row where it must be built. Renumbering breaks
+every path, ADR reference and commit message naming the old number. After the first insertion the
+`#` column is expected to run out of sequence.
 
-**Gate 2 is a mini-interrogation, not a rubber stamp.** Put every line through the three sizing
-tests from `roadmap-sizing.md` — *sizing* (one build session), *slice* (vertical and demoable),
-*order* (dependencies respected, risk and the thinnest slice first) — and split or merge any line
-that fails, out loud, before you present it. Then present the list as a gate and wait:
+Put every line through the three sizing tests from `roadmap-sizing.md` — *sizing* (one build
+session), *slice* (vertical and demoable), *order* (dependencies respected, risk and thinnest slice
+first). Split or merge what fails **before** presenting, and show the result rather than the
+deliberation. Then gate and wait:
 
 **GATE — Roadmap**
 
@@ -402,10 +389,9 @@ at a time.
 
 ## Resumed runs
 
-`docs/ROADMAP.md` exists. The job is to keep the blueprint true and change the plan safely — never
-to regenerate anything. This is also the **only** place a feature is inserted into a roadmap that is
-already being built: the roadmap has one owner, because a second skill with the right to reorder its
-rows means two owners of one file, and that drift stays invisible until it is expensive.
+`docs/ROADMAP.md` exists. Keep the blueprint true and change the plan safely — never regenerate
+anything. This is also the **only** place a feature is inserted into a roadmap already being built:
+the roadmap has one owner.
 
 Two kinds of resumed run, and they diverge at step 2:
 
@@ -441,27 +427,24 @@ This is the step that makes an insertion different from an extension, and it is 
 insertion is not a matter of adding a row. A feature arriving mid-project almost always touches
 something already decided or already built. Three questions, answered by reading the repo:
 
-**What shipped on the assumption this feature did not exist?** Read the merged work orders the new
-feature touches. Code that shipped under an assumption the insertion breaks is not this skill's to
-fix — but it is this skill's to *name*, because the new work order's scope depends on it, and
-discovering it during the build is discovering it too late.
+**What shipped on the assumption this feature did not exist?** Read the merged work orders it
+touches. Code that shipped under an assumption the insertion breaks is not this skill's to fix, but
+it is this skill's to *name* — the new work order's scope depends on it.
 
 **Which unbuilt work orders does this make obsolete?** Look for overlap with every unticked row. For
-each overlap, present both options and let the user choose — the boundary is a product judgement,
-not a mechanical one:
+each, present both options and let the user choose — the boundary is a product judgement:
 
 - **`Status: superseded by NN`** — when the insertion covers substantially all of it. The row is
   struck through in `ROADMAP.md` and the file stays.
 - **Narrow it** — when the insertion covers part. Remove what has moved, leave the rest, and say in
   the work order what moved and where.
 
-**Never delete a work order.** It may already carry a plan, a build report, or commits, and
-`superseded` is revertible in a way deletion is not.
+**Never delete a work order.** It may carry a plan, a build report, or commits; `superseded` is
+revertible, deletion is not.
 
-**Which recorded decisions does this falsify?** Re-read `DECISIONS.md`. A decision the insertion
-contradicts is raised as a **new ADR** that supersedes the old one, with the old one's status
-updated in the ledger. Editing the original in place erases the reason the project once chose
-differently, which is the whole value of the ledger.
+**Which recorded decisions does this falsify?** Re-read `DECISIONS.md`. A contradicted decision gets
+a **new ADR** superseding the old one, with the ledger status updated. Editing the original in place
+erases why the project once chose differently.
 
 #### Gate
 

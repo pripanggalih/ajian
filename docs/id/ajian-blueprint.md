@@ -21,7 +21,8 @@ rekomendasi di tiap pertanyaan. Ia menulis apa yang harus benar, bukan cara memb
 
 - **Apakah ia menulis kode atau plan?** Tidak. Ia berhenti di blueprint. `ajian-plan` yang memegang *cara*.
 - **Stack greenfield?** Ia mengusulkan 2–3 opsi masuk akal beserta tradeoff dan membiarkanmu memilih;
-  baris roadmap #1 adalah walking skeleton. Brownfield: ia memindai repo dan mencatat stack apa adanya.
+  baris roadmap #1 adalah walking skeleton. Brownfield: ia memindai repo di latar — tema-tema awal
+  ditanyakan sementara pemindaian berjalan — dan mencatat stack apa adanya.
 - **Kenapa banyak interogasi di depan?** Pertanyaan yang dilewati di sini jadi asumsi yang diwarisi tiap
   work order berikutnya. Dua gerbang (fondasi, roadmap) adalah hentian keras yang menunggumu.
 - **Penentuan ukuran roadmap?** Gerbang 2 adalah mini-interogasi: tiap baris harus lolos ukuran (satu

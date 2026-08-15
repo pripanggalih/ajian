@@ -18,20 +18,20 @@ description: >-
 
 # Ajian · Map
 
-You don't remember every skill or where you left off — especially after a compaction. So ask. This
-skill reads the project and tells you which of the eight skills to run next.
+You don't remember every skill or where you left off — especially after a compaction. This skill
+reads the project and tells you which of the eight to run next.
 
 ## Language
 
-Reply in the user's language. This file is English because it is agent-facing, not because the answer
-must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
-copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
-stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
+Reply in the user's language — this file is English because it is agent-facing, not because the
+answer must be. Quoted lines here are meaning to convey, not strings to copy: translate them, but
+keep the labels `GATE / Done / Evidence / Decide / Risk` verbatim. A gate the user has to decode is
+a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
-emitted as plain markdown — never inside a code block:
+A gate is a full stop that waits for the user. Emit it as plain markdown — never inside a code
+block — carrying these five fields, in this order:
 
 **GATE — <name of the gate>**
 
@@ -48,9 +48,9 @@ emitted as plain markdown — never inside a code block:
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
 
-Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
-`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
-`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+Then stop and wait. Never continue on your own reading of what the user probably wants. `Evidence`
+is load-bearing: if you cannot produce it, you have not reached the gate. `Risk` is what lets a user
+who cannot audit your work decide anyway.
 
 This block is identical in every ajian skill.
 
@@ -76,11 +76,9 @@ Read these signals, cheapest first, and stop at the first that tells you the ans
      **Next: `ajian-blueprint`** (grill-1 → foundation docs).
    - **Neither, but the repo does hold real documents** — a substantial README, a PRD, an
      `ARCHITECTURE.md`, a checked-in wiki, leftover Spec Kit or other framework artifacts →
-     **Next: `ajian-adopt`**. Do not send this to `ajian-blueprint`: it would write a second set of
-     documents beside the first, and the project would then have two sources of truth with nothing
-     saying which governs. **Look before you route** — this signal is a presence check on two
-     filenames, so a project whose documents are real but shaped differently reads identically to
-     one that has nothing.
+     **Next: `ajian-adopt`**. Not `ajian-blueprint` — it would write a second set of documents beside
+     the first, leaving two sources of truth. **Look before you route:** this signal is a presence
+     check on two filenames, so real documents in another shape read identically to nothing.
    - **One present, or present but incomplete** (a roadmap with no work orders, work orders with no
      `Depth:`, an INDEX routing to files that do not exist) → the layout is partial or was written
      by an older version of these skills. **Next: `ajian-adopt`**, which repairs shape without
@@ -113,8 +111,8 @@ Read these signals, cheapest first, and stop at the first that tells you the ans
    - **All boxes ticked and the branch merged / roadmap line ticked** → this work order is done.
      Go back to signal 2 for the next line.
 
-Report the finding as a gate block. Routing is a decision — yours to inform, the user's to make —
-and the `Evidence` line is what stops a confident guess from passing as a reading of the project:
+Report as a gate block. Routing is yours to inform, the user's to make, and `Evidence` is what stops
+a confident guess from passing as a reading of the project:
 
 **GATE — Where you are**
 
@@ -134,20 +132,18 @@ and the `Evidence` line is what stops a confident guess from passing as a readin
 - If those 4 commits are not actually on this branch, the build restarts work that exists and you
   get duplicate commits. Say so and I will check before resuming
 
-**One step, never a chain.** Name the single next skill and ask. Do not offer to run the rest of
-the pipeline for the user, and do not run even the one skill until they say so — routing that
-launches itself is the thing this skill exists instead of.
+**One step, never a chain.** Name the single next skill and ask. Do not offer the rest of the
+pipeline, and do not run even that one until they say so.
 
 ## When the signals conflict
 
-Trust git and the committed artifacts over any recollection — the checkboxes and `git log` are the
-ledger. If a plan's boxes are ticked but the code isn't committed, or a roadmap line is ticked but
-the branch never merged, say so plainly and recommend the safe next step (usually re-verifying with
-`ajian-build`'s verification, or `ajian-review`) rather than guessing.
+Trust git and the committed artifacts over any recollection. If a plan's boxes are ticked but the
+code isn't committed, or a roadmap line is ticked but the branch never merged, say so and recommend
+the safe next step rather than guessing.
 
 ## What ajian-map does not do
 
-It routes; it does not run the work. It never edits code, promotes a work order, or writes a plan —
-it points at the one skill that should. If the user wants that skill run, they invoke it.
+It routes; it does not run the work. It never edits code, promotes a work order, or writes a plan.
+If the user wants that skill run, they invoke it.
 
 **→ Next: whichever skill the signals above resolved to.**

@@ -28,17 +28,22 @@ Finding _facts_ is your job, never the user's. When a frontier question needs a 
 
 ## The grill-2 tuning
 
-Two things bend the raw mechanic for the micro pass:
+Two things bend the raw mechanic for the micro pass.
 
-1. **Read before you ask.** The agenda is the work order's open questions plus whatever the recon
-   surfaced. Before any question reaches the frontier, check whether the code already answers it. A
-   question the shipped code settles is not a question — it is a fact to record. Most of a brief's
-   open questions die this way, silently and correctly.
+1. **Recon runs underneath the rounds, never in front of them.** Dispatch it, then ask the frontier
+   that does not depend on it. Holding the first round until recon reports turns a background fact-
+   find into a silent wait, which is the opposite of what the mechanic above prescribes.
 
-2. **Only genuine decisions reach the user.** A question earns a place in a round only when two
-   valid answers would change what gets built and the code does not pick between them. Everything
-   else a subagent settles. The user in grill-2 should see a short, sharp round — often two or
-   three questions — not the broad sweep of grill-1. Always a recommendation on every one.
+2. **A mechanical filter, not a judgement call.** A question reaches the user only if it is
+   **(a)** listed under the work order's `Open questions`, or **(b)** a conflict recon found between
+   two things already shipped. Everything else: take your own recommendation, record it as a resolved
+   question naming its source, and move on. Apply (a)/(b) and move — do not re-derive the test per
+   question.
+
+   Nothing is silently assumed. Every recommendation you took is shown at the Gate under `Resolved`,
+   where the user overrules any of them in one word. The upstream guarantee is met by the gate, not
+   by the asking — which is why a grill-2 round is often two or three questions where grill-1 sweeps
+   broad. Always a recommendation on every one.
 
 For a UI feature the frontier also carries the design brief — mode, what-changes, key states,
 constraints — but never CSS values or aesthetic lanes; those are impeccable's to invent.

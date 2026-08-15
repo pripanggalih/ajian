@@ -23,12 +23,10 @@ of the **next feature** — and only that one. It is the last stop before `ajian
 
 Two things make grill-2 different from grill-1:
 
-- **Facts, not decisions, dominate.** Previous work orders have shipped. Most gaps in the brief
-  are answered by reading the code, not by asking the user. Read first; ask only what the code
-  cannot answer. Finding facts is your job, never the user's.
-- **The user's time is scarce.** Only genuine decisions — where two valid answers change what gets
-  built — reach them, each with a recommendation. Everything a subagent can settle, a subagent
-  settles.
+- **Facts, not decisions, dominate.** Previous work orders have shipped, so most gaps in the brief
+  are answered by reading the code. Finding facts is your job, never the user's.
+- **The user's time is scarce.** Only genuine decisions reach them, each with a recommendation.
+  Everything a subagent can settle, a subagent settles.
 
 ## Preconditions
 
@@ -48,27 +46,25 @@ grep '^- \[' docs/ROADMAP.md                  # which dependency lines are ticke
 
 ### When a precondition fails
 
-Check preconditions against the files on disk, not against what the conversation says happened. When
-one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
-it, and offer that one step:
+Check the files on disk, not what the conversation claims happened. When one fails, stop — do not
+quietly fix it. Name the gap in plain language, name the one skill that owns it, offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
-a single yes, and running the missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain, and never run the missing step without asking.
 
 ## Language
 
-Reply in the user's language. This file is English because it is agent-facing, not because the answer
-must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
-copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
-stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
+Reply in the user's language — this file is English because it is agent-facing, not because the
+answer must be. Quoted lines here are meaning to convey, not strings to copy: translate them, but
+keep the labels `GATE / Done / Evidence / Decide / Risk` verbatim. A gate the user has to decode is
+a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
-emitted as plain markdown — never inside a code block:
+A gate is a full stop that waits for the user. Emit it as plain markdown — never inside a code
+block — carrying these five fields, in this order:
 
 **GATE — <name of the gate>**
 
@@ -85,63 +81,57 @@ emitted as plain markdown — never inside a code block:
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
 
-Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
-`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
-`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+Then stop and wait. Never continue on your own reading of what the user probably wants. `Evidence`
+is load-bearing: if you cannot produce it, you have not reached the gate. `Risk` is what lets a user
+who cannot audit your work decide anyway.
 
 This block is identical in every ajian skill.
 
 ## Pipeline
 
 ```
-0  Orient          which work order (NN) · read it, ROADMAP, INDEX, its "read first" docs
-1  Recon           dispatch a subagent to read the real code the work order will touch
-2  Grill-2         frontier/rounds over the work order's open questions + what recon surfaced
-                   (design questions too, if the feature has UI)              [only genuine asks]
-3  Promote         brief → detailed: flows, edge cases, contracts, data effects, resolved Qs
+0  Orient          which work order (NN) · read that one file — it is the agenda
+1  Grill-2         dispatch recon, then open round 1 immediately; only the questions
+                   downstream of recon wait for its report                    [only genuine asks]
+2  Promote         brief → detailed: flows, edge cases, contracts, data effects, resolved Qs
                    project-wide changes → a new ADR                           [Gate: confirm]
-4  Hand off        commit · → design (if UI) or → plan
+3  Hand off        commit · → design (if UI) or → plan
 ```
 
 ---
 
 ## Step 0 — Orient
 
-You are given a work order number (`NN`). If none was given, open `docs/ROADMAP.md` and take the
-topmost unticked row — position in the table is the
-build order, not the number in the `#` column. Then:
+You are given a work order number (`NN`). If none was given, take the topmost unticked row of
+`docs/ROADMAP.md` — position in the table is the build order, not the number in the `#` column.
 
-- Read `docs/work-orders/NN-<slug>.md` in full — its intent, scope, anchors, and **open questions**
-  are the agenda for this pass.
-- Read the documents its "Read first" list names, and `docs/INDEX.md` for anything it points to.
-- Confirm this is the right work order and that its dependencies (the lines it lists) have shipped.
-  If a blocker is unbuilt, say so and stop — grilling ahead of a dependency is planning against
-  an imagined past.
+**Read `docs/work-orders/NN-<slug>.md`, and only that.** Its intent, scope, anchors and **open
+questions** are the agenda. Everything else it points at — `docs/INDEX.md`, its "Read first" list,
+the shape of the code — goes to recon in step 1. The controller does not need any of it to write the
+agenda, and reading it here delays the first question for nothing.
 
 Refuse to promote a work order that is already `Depth: detailed` unless the user is deliberately
 re-opening it; two detailed work orders at once is the drift this pass exists to prevent.
 
-## Step 1 — Recon the real code
+## Step 1 — Grill-2, with recon running underneath
 
-**Dispatch a subagent** to read the code the work order will touch and report back the facts a
-brief cannot know until now:
+**Dispatch recon first, then keep talking — do not wait for it.** A running exploration is an
+unsettled prerequisite: only the questions downstream of it wait for the report; ask the rest of the
+frontier now.
+
+Recon's brief — the facts a brief cannot know until now:
 
 - The modules, functions, and types that already exist where this feature will live.
 - The reuse targets the work order's anchors name — do they exist, at what path, with what shape?
-- The conventions the shipped code actually follows (which may have drifted from `CONVENTIONS.md`;
-  note the drift, do not silently obey it).
+- The conventions the shipped code actually follows, and where they drift from `CONVENTIONS.md`
+  (note the drift, do not silently obey it).
+- What `docs/INDEX.md` and the work order's "Read first" list carry that binds this feature.
 - For a UI feature: the components, tokens, and states already realised in `DESIGN.md` and code.
 
-A running recon is an unsettled prerequisite: the questions that depend on it wait for the report;
-everything else in the frontier proceeds. Do not ask the user anything a recon could find.
-
-## Step 2 — Grill-2 (micro)
-
-Run the interrogation on the grill engine — read
-[references/grill-engine.md](references/grill-engine.md). The agenda is narrow and concrete: the
-work order's own open questions, plus whatever recon surfaced that changes what must be true. Work
-the frontier in rounds, one tight round at a time, a recommendation on every question, and **ask
-only genuine decisions** — anything the code already answers is not a question.
+Run the interrogation on the grill engine — [references/grill-engine.md](references/grill-engine.md).
+The agenda is narrow: the work order's open questions, plus whatever recon surfaces that changes what
+must be true. Frontier in rounds, one tight round at a time, a recommendation on every question. The
+engine's (a)/(b) filter decides what reaches the user — apply it, do not re-derive it per question.
 
 **If the feature has UI**, this pass also gathers the design brief, so `ajian-design` can hand
 impeccable answers instead of re-interviewing. Cover, for this surface only:
@@ -156,7 +146,7 @@ impeccable answers instead of re-interviewing. Cover, for this surface only:
 Do not ask for CSS values or aesthetic lanes — that is impeccable's craft, invented downstream.
 Capture the answers as the surface's design brief inside the work order's detailed UI sections.
 
-## Step 3 — Promote brief → detailed
+## Step 2 — Promote brief → detailed
 
 Rewrite the work order in place, from `Depth: brief` to `Depth: detailed`, adding on top of the
 brief (never removing the brief's intent, scope, or acceptance criteria):
@@ -168,7 +158,7 @@ brief (never removing the brief's intent, scope, or acceptance criteria):
   meaning: takes what, returns what, fails when — not signatures, not code.
 - **Data effects** — which entities are created, read, updated, invalidated, and which
   `DATA-MODEL.md` invariants it upholds.
-- **Screens & states** (UI only) — the surface's design brief from step 2, by name.
+- **Screens & states** (UI only) — the surface's design brief from step 1, by name.
 - **Built surface** (UI only) — leave it at `Status: not yet designed`. The section exists so
   `ajian-design` has somewhere to stamp the handoff before it invokes impeccable; do not fill it
   in, and do not delete it from a work order that has UI.
@@ -209,7 +199,7 @@ new ADR — and wait:
 
 Apply changes, then commit the work order (and any new ADR / DESIGN-SYSTEM seed).
 
-## Step 4 — Hand off
+## Step 3 — Hand off
 
 - **UI feature →** `ajian-design` builds the visual world before planning, so the plan can name
   real screens.

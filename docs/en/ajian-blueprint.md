@@ -21,7 +21,8 @@ time, with a recommendation on every question. It writes what must be true, neve
 
 - **Does it write code or plans?** No. It stops at the blueprint. `ajian-plan` owns the *how*.
 - **Greenfield stack?** It proposes 2–3 defensible options with tradeoffs and lets you choose;
-  roadmap line #1 is a walking skeleton. Brownfield: it scans the repo and records the stack verbatim.
+  roadmap line #1 is a walking skeleton. Brownfield: it scans the repo in the background — the first
+  themes are asked while the scan runs — and records the stack verbatim.
 - **Why so much interrogation up front?** A question skipped here becomes an assumption every later
   work order inherits. The two gates (foundation, roadmap) are hard stops that wait for you.
 - **Roadmap sizing?** Gate 2 is a mini-interrogation: every row must pass sizing (one build session),

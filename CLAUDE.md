@@ -49,9 +49,9 @@ document, and a change that contradicts it is a bug in one of the two.
    ```bash
    dup() { for f in skills/*/SKILL.md; do sed -n "$1" "$f" | shasum | cut -c1-12; done \
              | grep -v da39a3ee5e6b | sort -u | wc -l; }   # must print 1 for each
-   dup '/^## Language$/,/A gate the user has to decode is a gate they rubber-stamp\.$/p'
+   dup '/^## Language$/,/^a gate they rubber-stamp\.$/p'
    dup '/^## The gate protocol$/,/^This block is identical in every ajian skill\./p'
-   dup '/^### When a precondition fails$/,/same failure with the asking removed\.$/p'
+   dup '/^### When a precondition fails$/,/never run the missing step without asking\.$/p'
    ```
 
 ## Before you push

@@ -40,27 +40,25 @@ sed -n '/^## Built surface/,+4p' "$WO" | grep -m1 'Status:'
 
 ### When a precondition fails
 
-Check preconditions against the files on disk, not against what the conversation says happened. When
-one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
-it, and offer that one step:
+Check the files on disk, not what the conversation claims happened. When one fails, stop — do not
+quietly fix it. Name the gap in plain language, name the one skill that owns it, offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
-a single yes, and running the missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain, and never run the missing step without asking.
 
 ## Language
 
-Reply in the user's language. This file is English because it is agent-facing, not because the answer
-must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
-copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
-stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
+Reply in the user's language — this file is English because it is agent-facing, not because the
+answer must be. Quoted lines here are meaning to convey, not strings to copy: translate them, but
+keep the labels `GATE / Done / Evidence / Decide / Risk` verbatim. A gate the user has to decode is
+a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
-emitted as plain markdown — never inside a code block:
+A gate is a full stop that waits for the user. Emit it as plain markdown — never inside a code
+block — carrying these five fields, in this order:
 
 **GATE — <name of the gate>**
 
@@ -77,9 +75,9 @@ emitted as plain markdown — never inside a code block:
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
 
-Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
-`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
-`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+Then stop and wait. Never continue on your own reading of what the user probably wants. `Evidence`
+is load-bearing: if you cannot produce it, you have not reached the gate. `Risk` is what lets a user
+who cannot audit your work decide anyway.
 
 This block is identical in every ajian skill.
 
@@ -101,14 +99,12 @@ This block is identical in every ajian skill.
 ## Step 0 — Gate: is impeccable available?
 
 **Do this first, before reading anything else.** What this skill needs is the **impeccable skill,
-callable in this session** — not a file at one particular path. impeccable installs project-local
-(`.claude/skills/`), user-global (`~/.claude/skills/`), or inside a plugin cache, and it resolves
-its own base directory at runtime. A check that knows only one of those locations reports a missing
-dependency that is sitting right there — and an agent told to stop for a reason it can disprove
-learns that this skill's gates are negotiable. That lesson is expensive: it is not confined to this
-gate.
+callable in this session** — not a file at one particular path. It installs project-local
+(`.claude/skills/`), user-global (`~/.claude/skills/`), or inside a plugin cache, and resolves its
+own base directory at runtime, so a check that knows only one location reports a missing dependency
+that is sitting right there.
 
-So establish availability, and gather **evidence** rather than issuing a verdict:
+Gather **evidence**, do not issue a verdict:
 
 1. Look in the canonical locations:
 
@@ -146,12 +142,8 @@ So establish availability, and gather **evidence** rather than issuing a verdict
   **Stop there and wait.** Do not continue to Step 1 on your own judgement.
 
 **You may not stand in for impeccable.** Without it, this skill designs nothing, writes no UI code,
-picks no colors or type, and does not touch `DESIGN.md` or `PRODUCT.md`. A missing dependency is the
-user's call to resolve, not yours to route around: stopping here costs one install, continuing costs
-the work order's whole trail.
-
-The only other honest exit is the user deciding to skip design for this work order — and that is
-theirs to choose, not yours to offer as an equivalent.
+picks no colors or type, and does not touch `DESIGN.md` or `PRODUCT.md`. The only other honest exit
+is the user deciding to skip design for this work order — theirs to choose, not yours to offer.
 
 ## Step 1 — Orient
 
@@ -187,20 +179,15 @@ Commit `PRODUCT.md` if it was created or changed.
 
 ## Step 3 — Mark the handoff before you make it
 
-You are about to hand control to another skill. It has its own flow, its own gates, and its own
-closing breadcrumb — and it does not owe you a return. Steps 5 and 6 below may simply never run.
-
-So write the record of the handoff **now**, while you still hold the turn. In the work order's
-`## Built surface`:
+impeccable has its own flow and does not owe you a return — steps 5 and 6 may never run. So record
+the handoff **now**, while you hold the turn. In the work order's `## Built surface`:
 
 - **Status:** `handed to impeccable`
 - **Branch:** the branch impeccable's output must land on — the one `ajian-build` will extend
 
-Commit that. It costs one commit and it converts the failure mode from silent to loud: if control
-never returns, the stamp is on disk, `ajian-plan` refuses the work order until the inventory is
-real, and re-running `/ajian-design NN` resumes at Step 5 instead of building the surface twice.
-Without it, an interrupted handoff looks exactly like a work order that was never designed — and
-the next skill down cheerfully plans screens that already exist.
+Commit it. If control never returns, the stamp is on disk, `ajian-plan` refuses the work order until
+the inventory is real, and `/ajian-design NN` resumes at Step 5 instead of building the surface
+twice. Without it, an interrupted handoff is indistinguishable from a work order never designed.
 
 ## Step 4 — Invoke impeccable (new-work)
 
@@ -215,15 +202,10 @@ interview collapses to a confirmation rather than a fresh interrogation:
    user's).
 2. Let impeccable build the surface and write/replace `DESIGN.md` as its flow dictates.
 
-**Its setup is its own — never run impeccable's scripts for it.** Loading product and design context
-is impeccable's own Setup step, and its instructions already tell it how to locate its base
-directory on any install layout. Reproducing that step here is exactly how this skill acquired a
-hardcoded path that broke on every layout it had not anticipated. impeccable knows where it lives;
-ajian does not need to.
-
-Do not reimplement any of impeccable's steps here. If impeccable asks for something the blueprint
-already settled, answer from the blueprint; if it surfaces a genuine new decision, that is the
-user's to make.
+**Its setup is its own — never run impeccable's scripts for it, and never reimplement its steps.**
+It knows where it lives on any install layout; reproducing that here is how this skill once acquired
+a hardcoded path that broke everywhere else. If impeccable asks for something the blueprint already
+settled, answer from the blueprint; a genuine new decision is the user's.
 
 ## Step 5 — Record the realised design
 
@@ -238,12 +220,11 @@ the realised system stays in `DESIGN.md`.
 
 ## Step 6 — Record the inventory, then hand off
 
-The surface now exists as real code in the tree. Everything downstream has to know that, or it will
-build it a second time. Two things make the handoff survive:
+The surface now exists as real code. Everything downstream has to know, or it builds it twice.
 
-**Commit it where the build will find it.** Commit the built surface, `DESIGN.md`, and
-`.impeccable/` **on the branch `ajian-build` will extend** — the branch Step 3 stamped. A surface
-committed on a branch the build never sees is a surface the build rebuilds.
+**Commit it where the build will find it.** The built surface, `DESIGN.md`, and `.impeccable/` **on
+the branch `ajian-build` will extend** — the one Step 3 stamped. A surface on a branch the build
+never sees is a surface the build rebuilds.
 
 **Complete the work order's `## Built surface` section** in `docs/work-orders/NN-<slug>.md`. Step 3
 already stamped the Status and the branch; now fill in the files impeccable created or replaced and
@@ -251,7 +232,7 @@ what it left stubbed for the build (data, state, routing, tests), and move the S
 `handed to impeccable` to **`recorded`**. That flip is what releases the work order: `ajian-plan`
 refuses to plan a UI work order at any other Status. Commit the work order with it.
 
-Be exact about the file list; `ajian-review` scopes its Standards axis by it, so a path missing here
+Be exact about the file list — `ajian-review` scopes its Standards axis by it, so a missing path
 gets audited against `CONVENTIONS.md` as if ajian had written it.
 
 **→ Next: `/ajian-plan NN`** (or `/ajian-map` if unsure).

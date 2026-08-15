@@ -22,8 +22,8 @@ description: >-
 Bring a project that ajian cannot read yet to the point where it can. The finish line is exact:
 `/ajian-map` runs and resolves to a real next step.
 
-This skill does not decide anything about the product. It finds what is already written, works out
-what ajian needs that nothing covers, and asks you — document by document — what should move where.
+It decides nothing about the product: it finds what is already written, works out what ajian needs
+that nothing covers, and asks you — document by document — what should move where.
 
 ## Preconditions
 
@@ -41,27 +41,25 @@ ls docs/INDEX.md docs/ROADMAP.md 2>/dev/null; git rev-parse --git-dir 2>/dev/nul
 
 ### When a precondition fails
 
-Check preconditions against the files on disk, not against what the conversation says happened. When
-one fails, stop — do not quietly fix it. Name the gap in plain language, name the one skill that owns
-it, and offer that one step:
+Check the files on disk, not what the conversation claims happened. When one fails, stop — do not
+quietly fix it. Name the gap in plain language, name the one skill that owns it, offer that one step:
 
 > "<what is missing, in a sentence a non-developer follows>. That is `<skill>`'s job — it <what it
 > does, in plain words>. Run it now?"
 
-Then wait. One step, never a chain: offering the next four skills trades the user's whole pipeline for
-a single yes, and running the missing step without asking is the same failure with the asking removed.
+Then wait. One step, never a chain, and never run the missing step without asking.
 
 ## Language
 
-Reply in the user's language. This file is English because it is agent-facing, not because the answer
-must be. Every quoted line here — gate text, refusal, offer — is meaning to convey, not a string to
-copy: translate it, but keep the `GATE / Done / Evidence / Decide / Risk` labels verbatim so the shape
-stays recognisable. A gate the user has to decode is a gate they rubber-stamp.
+Reply in the user's language — this file is English because it is agent-facing, not because the
+answer must be. Quoted lines here are meaning to convey, not strings to copy: translate them, but
+keep the labels `GATE / Done / Evidence / Decide / Risk` verbatim. A gate the user has to decode is
+a gate they rubber-stamp.
 
 ## The gate protocol
 
-A gate is a full stop that waits for the user. Every gate carries these five fields, in this order,
-emitted as plain markdown — never inside a code block:
+A gate is a full stop that waits for the user. Emit it as plain markdown — never inside a code
+block — carrying these five fields, in this order:
 
 **GATE — <name of the gate>**
 
@@ -78,9 +76,9 @@ emitted as plain markdown — never inside a code block:
 **Risk**
 - <what breaks if this is wrong and you proceed anyway>
 
-Then stop and wait for a reply. Never continue on your own reading of what the user probably wants.
-`Evidence` is the load-bearing field: if you cannot produce it, you have not reached the gate.
-`Risk` is written for a user who cannot audit your work; it is what lets them decide anyway.
+Then stop and wait. Never continue on your own reading of what the user probably wants. `Evidence`
+is load-bearing: if you cannot produce it, you have not reached the gate. `Risk` is what lets a user
+who cannot audit your work decide anyway.
 
 This block is identical in every ajian skill.
 
@@ -101,16 +99,14 @@ This block is identical in every ajian skill.
 
 ## Step 0 — Survey what is actually there
 
-Find every document in the repo, not just the ones in `docs/`. Product truth hides in READMEs,
-wikis checked into the tree, `CONTRIBUTING.md`, design notes, and the leftovers of whichever
-framework was tried before this one.
+**Dispatch a subagent to survey.** It is a read-heavy sweep over files you will mostly not migrate,
+and it does not belong in the controller's context.
 
-For each file record three things: its **path**, **what it claims to own** (in your words, not its
-title's), and **how stale it looks** against the code — a document describing modules that no
-longer exist is evidence, not truth.
-
-Read the code too, but only enough to judge staleness and to fill gaps later. This is not
-`ajian-grill`'s recon; you are surveying documents, not designing a feature.
+Its brief: every document in the repo, not just `docs/` — product truth hides in READMEs, wikis
+checked into the tree, `CONTRIBUTING.md`, design notes, and the leftovers of whichever framework was
+tried before. Per file, three things: **path**, **what it claims to own** (in words, not its
+title's), and **how stale it looks** against the code. Read the code only enough to judge staleness —
+this is not `ajian-grill`'s recon.
 
 ## Step 1 — Classify each document
 
@@ -135,20 +131,15 @@ Two questions, and both are answered by reading files, never by asking:
 is not a failure of this skill — it is something to fill in Step 4, from the code where the code
 knows, and from the user where it does not.
 
-**What is already ajian's, but the wrong shape?** These skills change their artifacts over time,
-and nothing in a project records which version wrote it. So detect the **shape**, not a version
-stamp: read [references/shape-drift.md](references/shape-drift.md), which lists the artifact
-shapes the current skills expect and the older shapes that still turn up. Shape detection cannot
-lie the way a version field that nobody remembered to increment can.
-
-The reason this matters is concrete rather than theoretical: a skill downstream will refuse a work
-order over a field its file does not contain, and the refusal will name a field the user has never
-seen. Fixing that here is the difference between an afternoon and a dead end.
+**What is already ajian's, but the wrong shape?** Nothing in a project records which version wrote
+its artifacts, so detect the **shape**, not a version stamp: read
+[references/shape-drift.md](references/shape-drift.md) for the shapes the current skills expect and
+the older ones that still turn up. Left unfixed, a skill downstream refuses a work order over a field
+its file does not contain, naming a field the user has never seen.
 
 ## Step 3 — Propose the mapping
 
-One round, the whole survey at once — this is a mapping, not an interrogation, and splitting it
-across rounds makes the shape impossible to see.
+One round, the whole survey at once — this is a mapping, not an interrogation.
 
 Present it as a table: **source path → destination → what moves → what stays behind**. Then gate:
 
@@ -170,41 +161,37 @@ Present it as a table: **source path → destination → what moves → what sta
 - A document I classify as "stays where it is" stays a second source of truth
 - A document I move that you needed in place will surprise the next reader of that path
 
-Approval is **per document**, not for the table as a whole. A user who approves nine of eleven
-moves has told you something useful about the two.
+Approval is **per document**, not for the table as a whole.
 
 ## Step 4 — Migrate what was approved
 
 Rules, in order of how easy they are to violate:
 
-1. **Never delete.** Move content out, leave a pointer in its place — a line saying what moved and
-   where it went. Deleting is the user's call, in their own commit, once they can see the result.
+1. **Never delete.** Move content out, leave a pointer saying what moved and where. Deleting is the
+   user's call, in their own commit, once they can see the result.
 2. **Move meaning, not prose.** Each ajian document has a charter
    (`ajian-blueprint/references/doc-charters.md`); content arrives in that document's shape, not
    the source's. Read the destination's template in `ajian-blueprint/assets/` immediately before
    writing it.
-3. **Fill gaps honestly.** From the code where the code answers. From the user where it does not.
-   An unknown becomes an **open ADR** — `docs/decisions/NNNN-<slug>.md` with `Status: open`, plus a
-   ledger row — never a placeholder. A placeholder is a lie the next agent reads as fact.
-4. **Repair drift in place.** Add the missing field to the shape that lacks it; do not rewrite a
-   work order that is merely old. An old document that still says the right thing is not a defect.
-5. **Commit per document.** One document, one commit. A mapping decision the user regrets is then
-   one `git revert` away, and the git history reads as a record of what moved.
+3. **Fill gaps honestly.** From the code where it answers, from the user where it does not. An
+   unknown becomes an **open ADR** — `docs/decisions/NNNN-<slug>.md`, `Status: open`, plus a ledger
+   row — never a placeholder.
+4. **Repair drift in place.** Add the missing field to the shape that lacks it; do not rewrite a work
+   order that is merely old.
+5. **Commit per document.** One document, one commit, so a regretted move is one `git revert` away.
 
 Write `docs/INDEX.md` last, from its template — it is the routing table, and it can only be honest
 once everything it routes to exists. Then wire the pointer block into whichever of `AGENTS.md`,
 `CLAUDE.md`, `.cursor/rules/` or the README the repo already uses, exactly as `ajian-blueprint`
 does.
 
-**A roadmap is not invented here.** If the project has no `ROADMAP.md`, adoption ends without one
-and hands off to `ajian-blueprint` in resumed mode, which owns the roadmap and its sizing gate.
-Inventing an ordered feature list without that gate produces lines nobody sized.
+**A roadmap is not invented here.** No `ROADMAP.md` → adoption ends without one and hands off to
+`ajian-blueprint` in resumed mode, which owns the roadmap and its sizing gate.
 
 ## Step 5 — Verify against the router, not against yourself
 
-Adoption succeeded if `ajian-map` can locate the project. So run its signals — the ones in
-`ajian-map/SKILL.md`, in order — and read what they resolve to. This is the verification, and it is
-not the same as believing the migration went well:
+Adoption succeeded if `ajian-map` can locate the project. Run its signals in order and read what they
+resolve to — that is the verification, not your sense that the migration went well:
 
 **GATE — Adoption complete**
 
@@ -224,9 +211,9 @@ not the same as believing the migration went well:
 - If one of them contradicts what I wrote into the blueprint, the agent reading this project will
   believe both
 
-If the signals do not resolve — a work order with no `Depth:`, a roadmap with no rows — say so
-plainly and fix it. A project that adoption declares finished and the router cannot read is worse
-than one that was never adopted, because the next skill will trust it.
+If the signals do not resolve — a work order with no `Depth:`, a roadmap with no rows — say so and
+fix it. A project adoption declares finished but the router cannot read is worse than one never
+adopted: the next skill will trust it.
 
 ## Step 6 — Hand off
 
