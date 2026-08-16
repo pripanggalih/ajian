@@ -105,7 +105,11 @@ Run the review per [references/two-axis-review.md](references/two-axis-review.md
 - **Spec axis:** does the diff faithfully implement the work order `docs/work-orders/NN-<slug>.md`
   — every acceptance criterion met, nothing built that wasn't asked for, nothing implemented wrong?
 
-Spawn both as parallel sub-agents so they don't pollute each other's context. Present the two
+Spawn both as parallel sub-agents so they don't pollute each other's context. **Name the model on
+each** — an omitted model inherits the session's most expensive one, and both axes are mid-tier
+judgement work scaled to the diff, not architecture work. Their 400-word cap is already in the
+brief; keep it. Add one line to each prompt: *if `docs/INDEX.md` declares a discovery channel — a
+symbol index, a code graph, ctags — use it before reaching for grep.* Present the two
 reports under `## Standards` and `## Spec`, side by side — **do not merge or rerank** them; the
 separation is the point (code can pass one axis and fail the other). Close the presentation with
 the gate:
@@ -130,7 +134,8 @@ the gate:
 
 ## Step 2 — Respond to the findings
 
-Apply [references/receiving-code-review.md](references/receiving-code-review.md) — the findings are
+Apply [references/receiving-code-review.md](references/receiving-code-review.md) (**open only if
+an axis returned findings** — with a clean review there is nothing to receive) — the findings are
 input to evaluate, not orders to obey. Verify each against the codebase before acting; push back
 with technical reasoning where a finding is wrong for this stack; apply YAGNI to "do it properly"
 suggestions. No performative agreement, no gratitude — state the fix or the reasoned pushback.
@@ -138,7 +143,17 @@ suggestions. No performative agreement, no gratitude — state the fix or the re
 For the findings that stand, dispatch **one fix wave** — a single subagent carrying the complete
 list of confirmed findings, never one fixer per finding (each would rebuild context and re-run the
 suite). Fix in order — blocking/security first, then simple, then complex — testing each. Then
-**re-verify**: run the full suite and build, read the output, confirm green. Escalate to the user
+**re-verify**: run the full suite and build, read the output, confirm green.
+
+Dispatch it with the same discipline as the executor, and for the same reason — it is execution
+work, the judgement was spent deciding which findings stand:
+
+- **Name the model** (mid-tier), and set reasoning effort low where the harness exposes that dial.
+- **Bound the reading:** *read the findings list, the files they name, and nothing else; if
+  `docs/INDEX.md` declares a discovery channel, use it before grep.*
+- **Bound the reply:** *write the detail to the report file; reply with only the status, the
+  findings fixed (N of M), the one-line suite summary, and anything you could not fix — under 15
+  lines.* An essay here lands in the controller's context and rides into the merge decision. Escalate to the user
 only a finding that is real, load-bearing, and collides with the work order or plan.
 
 ## Step 3 — Tick the roadmap
@@ -150,7 +165,9 @@ is the project-level record of what shipped). Record anything that changed a pro
 
 ## Step 4 — Finish the branch
 
-Run [references/finishing-a-development-branch.md](references/finishing-a-development-branch.md):
+Run [references/finishing-a-development-branch.md](references/finishing-a-development-branch.md)
+(**open here, at this step — not earlier**; it is 200 lines of integration procedure that is dead
+weight in context until the review is clean):
 verify the full suite on the tree you're about to integrate, detect the environment, present the
 merge / PR / keep options exactly as written, and execute the user's choice. Integration is the
 user's decision — present the menu and wait. Clean up the worktree per that skill's rules.

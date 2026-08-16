@@ -128,6 +128,21 @@ Recon's brief — the facts a brief cannot know until now:
 - What `docs/INDEX.md` and the work order's "Read first" list carry that binds this feature.
 - For a UI feature: the components, tokens, and states already realised in `DESIGN.md` and code.
 
+**Dispatch recon on a cheap model, and say so explicitly** — an omitted model silently inherits the
+session's most expensive one, and recon is fact-gathering, not judgement. It is also the subagent
+that reads the most, so the read scope is part of the brief, not an afterthought. Give it these
+three lines verbatim:
+
+- *Read the work order `docs/work-orders/NN-<slug>.md`, `docs/INDEX.md`, and the files those two
+  name. Nothing else — do not survey the tree and do not read files for background.*
+- *If `docs/INDEX.md` declares a discovery channel — a symbol index, a code graph, ctags — use it
+  before reaching for grep; if it declares none, grep.*
+- *Reply in under 400 words. If the findings need more room, write the long version to
+  `docs/work-orders/recon/NN-<slug>.md` and reply with the summary plus that path.*
+
+The cap is not tidiness. The report sits in the controller's context for every remaining round of
+the interrogation, and then rides along into the gate, the promotion, and the commit.
+
 Run the interrogation on the grill engine — [references/grill-engine.md](references/grill-engine.md).
 The agenda is narrow: the work order's open questions, plus whatever recon surfaces that changes what
 must be true. Frontier in rounds, one tight round at a time, a recommendation on every question. The

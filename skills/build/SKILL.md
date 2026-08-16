@@ -96,9 +96,10 @@ This block is identical in every ajian skill.
 
 ## Step 0 — Setup and resume check
 
-Ensure the work is isolated. Use [references/using-git-worktrees.md](references/using-git-worktrees.md)
-to create or verify a workspace, or work on a feature branch if the user prefers; never build on
-`main` without consent.
+Ensure the work is isolated. A feature branch is the default and needs no reference file. Open
+[references/using-git-worktrees.md](references/using-git-worktrees.md) **only if this build actually
+uses a worktree** — the user asked for one, or work orders are running in parallel; otherwise it is
+170 lines of procedure you will not follow. Never build on `main` without consent.
 
 Then **check for resume**: read `docs/plans/NN-<slug>.md`. If some tasks are already ticked
 (`- [x]`), a previous executor got partway. Trust the ledger and `git log` over any recollection —
@@ -179,8 +180,9 @@ interleave. Parallel is only ever across *independent* work orders, each in its 
 
 Before claiming the build complete, apply
 [references/verification-before-completion.md](references/verification-before-completion.md): run
-the full test suite and the build yourself, read the output, confirm 0 failures and exit 0. Do not
-trust the executor's success report — check the git diff and re-run the suite. Then re-read the
+the full test suite and the build yourself, read the output, confirm 0 failures and exit 0. This is
+the second and last full-suite run of the build — the executor now runs it once, at the end of the
+plan, instead of once per task. Do not trust the executor's success report — check the git diff and re-run the suite. Then re-read the
 plan's acceptance criteria and the work order's Definition of Done (`docs/QUALITY.md`) and confirm
 each is met. If anything is red, it is not done: send the specifics back to the executor.
 

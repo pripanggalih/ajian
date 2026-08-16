@@ -45,6 +45,15 @@ Two things bend the raw mechanic for the micro pass.
    by the asking — which is why a grill-2 round is often two or three questions where grill-1 sweeps
    broad. Always a recommendation on every one.
 
+3. **A round budget: aim for two or three, stop at five.** Each round is a fresh model turn over a
+   context that only grows, so the fifth round is the most expensive one and usually the least
+   productive — by then the (a)/(b) filter is scraping. Aim to empty the frontier in two or three
+   rounds; batch harder rather than trickling one question per round. If a fifth round would be
+   needed, stop asking: take your own recommendation on what is left, record each as a resolved
+   question naming its source, and show them at the Gate under `Resolved` where the user overrules
+   any of them in one word. The budget is a release valve, not a cap on rigour — a genuine
+   architectural fork that appears in round four still gets asked.
+
 For a UI feature the frontier also carries the design brief — mode, what-changes, key states,
 constraints — but never CSS values or aesthetic lanes; those are impeccable's to invent.
 

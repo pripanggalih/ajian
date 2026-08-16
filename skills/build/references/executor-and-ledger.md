@@ -76,11 +76,20 @@ dispatching — an omitted model inherits the session's most expensive one.
   multi-step work and cost more overall.
 - **Resume on a stuck build:** dispatch the fresh executor one tier above the one that stalled.
 
+**Reasoning effort is a separate dial from model.** Where the harness exposes one, dispatch the
+executor on a low setting: ajian spent its reasoning in `ajian-grill` and `ajian-plan`, and by the
+time a plan exists the decisions are made — this is execution work. Where the harness exposes no
+such dial, the prompt carries it instead (`assets/executor-prompt.md` tells the executor not to
+re-open the plan's choices), which is why that instruction is not optional decoration.
+
 ## Continuous execution
 
 Do not pause to check in between tasks. The user asked for the plan to be built; build it. The only
-stops are BLOCKED the executor cannot resolve, genuine ambiguity, or all tasks complete. "Should I
-continue?" between tasks wastes the user's time.
+stops are BLOCKED the executor cannot resolve, NEEDS_CONTEXT for information it was never given, or
+all tasks complete. "Should I continue?" between tasks wastes the user's time — and so does weighing
+whether to ask it, which is why the executor prompt tells the executor outright that the plan already
+decided. The pre-flight conflict scan above is where ambiguity gets raised; nothing that survives it
+is a mid-task deliberation.
 
 ## Optional parallel across independent work orders
 

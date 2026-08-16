@@ -27,6 +27,21 @@ newcomer needs before opening anything else.>
 | What a domain term precisely means | `GLOSSARY.md` <!-- drop if not written --> |
 | What to build next, and in what order | `ROADMAP.md` |
 | The brief for one feature | `work-orders/NN-<slug>.md` |
+| How to find code here before reaching for grep | the **Discovery channel** section below |
+
+## Discovery channel
+
+<How an agent should find code in this repo before it reaches for grep — a symbol index, a code
+graph, a language server, `ctags`, a generated map, or a script that produces one. Name the tool
+and the exact command to query it. Write "none — use grep" if the repo has nothing; that is a real
+answer and stops every subagent from re-deciding it.>
+
+- **Channel:** <tool name, or "none">
+- **Query it with:** <the exact command or tool call>
+- **Refresh it with:** <the command that rebuilds the index, if it can go stale>
+
+Every subagent ajian dispatches reads this section first. A repo with thousands of symbols pays for
+layered grep on every dispatch; one line here is the cheapest fix in the blueprint.
 
 ## Ground rules for anyone building here
 

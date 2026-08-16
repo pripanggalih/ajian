@@ -3,7 +3,15 @@
 <!-- Adapted from superpowers subagent-driven-development `implementer-prompt.md` (MIT, Jesse
      Vincent). The ajian change: this ONE subagent executes the WHOLE plan (every remaining task),
      ticking the plan's committed checkboxes as its ledger and committing per task, with NO
-     per-task review — the single review happens at the end, in ajian-review. See NOTICE.md. -->
+     per-task review — the single review happens at the end, in ajian-review. See NOTICE.md.
+
+     Two upstream passages are deliberately dropped, because the shape diverged. Upstream dispatches
+     one implementer PER TASK, so "ask now / it is always OK to pause and clarify" costs a cheap
+     restart and "run the full suite once before committing" means once, full stop. Here one
+     executor runs the WHOLE plan: pausing throws away the entire built-up context, and a per-task
+     suite run multiplies the slowest command in the repo by the task count. So the pause invitation
+     is replaced by an execute-don't-deliberate instruction, and the full suite runs once at the
+     end. Ambiguity is caught earlier instead, by the controller's pre-flight conflict scan. -->
 
 Use this template when dispatching the single executor subagent for a plan. There is one executor,
 not one per task: it runs every remaining task in its own fresh context, so the main session stays
@@ -14,6 +22,8 @@ Subagent (general-purpose):
   description: "Execute plan NN: [feature name]"
   model: [MODEL — REQUIRED: choose per SKILL.md / references/executor-and-ledger.md Model
          Selection; an omitted model silently inherits the session's most expensive one]
+  effort: low  [only if your harness exposes a reasoning-effort dial — omit the line if it does
+         not. This is execution work: the reasoning was already spent in ajian-grill and ajian-plan]
   prompt: |
     You are executing an entire implementation plan, task by task, in order.
 
@@ -48,23 +58,35 @@ Subagent (general-purpose):
 
     Work from: [directory]. You are on branch [BRANCH]; never commit to main/master.
 
-    ## Before you begin
+    ## How to work
 
-    If anything in the plan is unclear — requirements, an approach with multiple valid answers, a
-    dependency or assumption — **ask now**. It is always OK to pause and clarify. Don't guess.
+    The plan already decided. Execute it — do not re-open its choices, do not propose design
+    alternatives, and do not spend turns weighing whether a step is "clear enough" to continue.
+    Ambiguity the plan could not resolve was already caught by the controller's pre-flight conflict
+    scan before you were dispatched. Anything that survives that scan is a BLOCKED or
+    NEEDS_CONTEXT case (see below), never a reason to deliberate mid-task.
+
+    ## What to read
+
+    Read exactly this: [PLAN_FILE], the files each task names, and the few documents the plan links
+    when a task actually needs one. Do not open the blueprint, do not survey the tree, do not read
+    files "for background". If `docs/INDEX.md` declares a discovery channel — a symbol index, a code
+    graph, ctags — use it before reaching for grep; if it declares none, grep.
 
     ## Your loop — for each task, in order
 
     1. Follow the task's steps exactly (the plan is bite-sized and TDD-shaped: write the failing
        test, watch it fail, write minimal code, watch it pass).
-    2. While iterating, run the focused test for what you're changing; run the full suite once
-       before committing, not after every edit.
+    2. Run the focused test for what you're changing — that test, not the whole suite, and not
+       after every edit. The full suite runs **once**, at the end of the plan (see "Before
+       reporting DONE"). Running it per task multiplies the slowest command you own by the number
+       of tasks and proves nothing the end-of-plan run will not prove.
     3. **Commit the task's code** with a clear message.
     4. **Tick that task's checkboxes** (`- [ ]` → `- [x]`) in [PLAN_FILE] and commit the plan file
        too (message: `chore(plan): tick task N`). This advances the ledger in git, so a fresh
        executor could resume exactly here if you were interrupted.
     5. Move to the next task. Do not stop to check in between tasks — execute the whole plan
-       continuously. The only reasons to stop are BLOCKED, genuine ambiguity, or all tasks done.
+       continuously. The only reasons to stop are BLOCKED, NEEDS_CONTEXT, or all tasks done.
 
     ## Code organization
 
@@ -84,9 +106,10 @@ Subagent (general-purpose):
 
     ## Before reporting DONE: verify and self-review
 
-    You may not claim the plan complete without fresh verification evidence. Run the full test
-    suite and the build, read the output, confirm 0 failures / exit 0. Then re-read the plan's
-    acceptance criteria and the Global Constraints and check each is met. Fix anything you find
+    You may not claim the plan complete without fresh verification evidence. This is the plan's
+    one full-suite run: run the full test suite and the build, read the output, confirm 0 failures
+    / exit 0. Then re-read the plan's acceptance criteria and the Global Constraints and check each
+    is met. Fix anything you find
     now — there is no per-task reviewer behind you; the only review is a whole-branch review after
     you finish, so leave the branch genuinely green.
 

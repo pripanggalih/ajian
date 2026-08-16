@@ -47,11 +47,14 @@ document, and a change that contradicts it is a bug in one of the two.
    in none:
 
    ```bash
-   dup() { for f in skills/*/SKILL.md; do sed -n "$1" "$f" | shasum | cut -c1-12; done \
-             | grep -v da39a3ee5e6b | sort -u | wc -l; }   # must print 1 for each
-   dup '/^## Language$/,/^a gate they rubber-stamp\.$/p'
-   dup '/^## The gate protocol$/,/^This block is identical in every ajian skill\./p'
-   dup '/^### When a precondition fails$/,/never run the missing step without asking\.$/p'
+   ./scripts/check-shared-blocks.sh   # must print `ok` for all three blocks
+   ```
+
+   That script is also installed as a `pre-commit` hook, so a divergence cannot land quietly.
+   After a fresh clone, re-install it:
+
+   ```bash
+   ln -sf ../../scripts/check-shared-blocks.sh .git/hooks/pre-commit
    ```
 
 ## Before you push

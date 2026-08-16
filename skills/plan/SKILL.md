@@ -20,7 +20,7 @@ Write comprehensive implementation plans assuming the engineer has zero context 
 
 Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
 
-**Announce at start:** "I'm using ajian-plan (writing-plans) to create the implementation plan."
+**Announce at start:** "I'm using ajian-plan to create the implementation plan."
 
 **Read first:** the work order `docs/work-orders/NN-<slug>.md` — its flows, contracts, acceptance
 criteria, and anchors are the spec. Open a blueprint document it names only when a task actually needs
