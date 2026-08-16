@@ -28,7 +28,7 @@ Finding _facts_ is your job, never the user's. When a frontier question needs a 
 
 ## The grill-2 tuning
 
-Two things bend the raw mechanic for the micro pass.
+Three things bend the raw mechanic for the micro pass.
 
 1. **Recon runs underneath the rounds, never in front of them.** Dispatch it, then ask the frontier
    that does not depend on it. Holding the first round until recon reports turns a background fact-
