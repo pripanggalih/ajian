@@ -6,6 +6,80 @@ All notable changes to `ajian` are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-16
+
+Reported from a real build: every pass overthought, and one work order took far longer
+than the work in it. The cost was not in any single skill — it was in four habits ajian
+had added around the vendored text. The executor was invited to pause and clarify on a
+run where pausing throws away everything it had built. It ran the full suite once per
+task, so an eight-task plan paid the repo's slowest command eight times. Four of the
+subagents ajian dispatches never named a model, so they silently inherited the session's
+most expensive one. And no subagent was ever told what *not* to read, so each one
+rediscovered the codebase with layered grep.
+
+### Changed
+- **The full suite runs twice per build, not once per task.** The executor's per-task run
+  is now the focused test for what it is changing; the full suite runs once at the end of
+  the plan, and the controller runs it again independently in step 3. Upstream dispatches
+  one implementer *per task*, where "once before committing" means once — ajian runs one
+  executor across the whole plan, where the same words meant once per task.
+- **The executor is told the plan already decided.** `## Before you begin` — *"ask now… it
+  is always OK to pause and clarify"* — is replaced by `## How to work`, which forbids
+  re-opening the plan's choices and forbids weighing mid-task whether a step is clear
+  enough to continue. It contradicted the line six rows below it (*"Do not stop to check in
+  between tasks"*), and a subagent has no channel to the user anyway: pausing means ending
+  the run. Ambiguity is raised earlier instead, by the controller's pre-flight conflict
+  scan. "Genuine ambiguity" is gone from the stop conditions in both places that listed it.
+- **Every dispatch names its model.** Recon (`ajian-grill`), both review axes and the fix
+  wave (`ajian-review`) never specified one, so all four inherited the session's most
+  expensive model. Recon is fact-gathering and runs cheap; the axes and the fix wave run
+  mid-tier. This restores the upstream rule ajian had dropped — superpowers'
+  subagent-driven-development picks a model per role, scaled to the work.
+- **Reasoning effort is named as its own dial.** `executor-and-ledger.md` covers it beside
+  model selection, and the executor template carries an optional `effort: low` line for
+  harnesses that expose one. Where a harness does not, the prompt carries the same
+  instruction in words — which is why the execute-don't-deliberate paragraph is not
+  decoration.
+- **Subagents are told what not to read, and where to look first.** Recon, the executor,
+  both axes and the fix wave now receive a closed read list, plus one line: if
+  `docs/INDEX.md` declares a discovery channel — a symbol index, a code graph, ctags — use
+  it before reaching for grep. `INDEX-template.md` gains the **Discovery channel** section
+  that answers it, where *"none — use grep"* is a valid answer that stops every subagent
+  from re-deciding.
+- **Recon's report is capped like every other dispatch.** 400 words, matching the cap the
+  two review axes already carry from upstream, with the long version written to
+  `docs/work-orders/recon/NN-<slug>.md`. The report sits in the controller's context for
+  every remaining round, then rides into the gate, the promotion and the commit. The fix
+  wave gets the executor's under-15-lines contract for the same reason.
+- **The grill has a round budget.** Aim for two or three rounds, stop at five: each round
+  is a fresh turn over a context that only grows, so the fifth is the most expensive and
+  the least productive. What is left is answered with the recommendation and shown at the
+  gate under `Resolved`. It is a release valve, not a cap — an architectural fork that
+  appears in round four is still asked.
+- **Rarely-taken references are marked as such.** `using-git-worktrees.md` (171 lines) is
+  opened only when the build actually uses a worktree, `receiving-code-review.md` (209)
+  only when an axis returned findings, `finishing-a-development-branch.md` (205) only at
+  the step that runs it. Without a stated condition the model opens every link up front to
+  be "ready".
+
+### Fixed
+- `ajian-plan`'s announce line leaked the upstream name to the user
+  (*"I'm using ajian-plan (writing-plans)…"*). It now announces `ajian-plan`.
+- The three deliberately-duplicated blocks are guarded by
+  `scripts/check-shared-blocks.sh`, installed as a `pre-commit` hook, instead of a `dup()`
+  snippet in `CLAUDE.md` that had to be pasted by hand.
+
+### Note on vendored text
+0.3.0 recorded `executor-prompt.md` as unchanged. It is no longer: this release drops two
+of its upstream passages, and the file's header now records which, and why the workflow
+diverged. Nothing else vendored was touched — `verification-before-completion.md`,
+`two-axis-review.md`, `receiving-code-review.md`, `finishing-a-development-branch.md`,
+`using-git-worktrees.md`, `## The mechanic` in both `grill-engine.md` copies and the 142
+lines `ajian-plan` copies from `writing-plans` are byte-identical to upstream. In
+particular, the reuse-verification-evidence rule that would have shortened this further was
+*not* added, because it would have meant rewriting a file vendored verbatim; a redundant
+run was deleted instead.
+
 ## [0.3.0] - 2026-08-15
 
 The interrogations were slow, and the cost was not in the questions — it was in the
@@ -225,7 +299,8 @@ tag existed, so it is the whole history rather than a delta.
   plans the wiring and forbids recreating those files; the executor is told they
   exist; `ajian-review` scopes them out of Standards and flags them to Spec.
 
-[Unreleased]: https://github.com/pripanggalih/ajian/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/pripanggalih/ajian/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/pripanggalih/ajian/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/pripanggalih/ajian/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/pripanggalih/ajian/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/pripanggalih/ajian/releases/tag/v0.1.0
